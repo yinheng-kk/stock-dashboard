@@ -3,177 +3,240 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>新松机器人 300024 · 个股分析</title>
+<title>新松机器人 300024 · 天机阁个股分析</title>
 <style>
-:root{--bg:#0f1419;--card:#1a2029;--line:#2a323d;--txt:#e6e9ee;--sub:#9aa4b2;--up:#ff5b5b;--dn:#2bbf6a;--warn:#ffb454;--accent:#4ea1ff}
-*{box-sizing:border-box;margin:0;padding:0}
-body{background:var(--bg);color:var(--txt);font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif;line-height:1.7;padding:0 0 60px}
-.wrap{max-width:880px;margin:0 auto;padding:0 16px}
-header{padding:28px 16px 18px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,#141b24,#0f1419)}
-header .wrap{padding:0 0}
-h1{font-size:22px;font-weight:700}
-.code{color:var(--accent);font-weight:600}
-.meta{color:var(--sub);font-size:13px;margin-top:6px}
-.price{display:flex;align-items:baseline;gap:12px;margin-top:14px;flex-wrap:wrap}
-.price .now{font-size:30px;font-weight:700}
-.price .chg{font-size:16px;font-weight:600}
-.verdict{margin:18px 0;padding:14px 16px;border-radius:12px;background:#241a17;border:1px solid #5a3a26}
-.verdict b{color:var(--warn)}
-section{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:18px;margin-top:16px}
-h2{font-size:16px;margin-bottom:10px;display:flex;align-items:center;gap:8px}
-h2 .n{display:inline-flex;width:24px;height:24px;border-radius:7px;background:#22303f;color:var(--accent);font-size:13px;align-items:center;justify-content:center;font-weight:700}
-table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:6px}
-td,th{padding:7px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
-th{color:var(--sub);font-weight:600}
-.up{color:var(--up)}.dn{color:var(--dn)}.warn{color:var(--warn)}.sub{color:var(--sub)}
-.tag{display:inline-block;font-size:12px;padding:2px 8px;border-radius:20px;margin:2px 4px 2px 0}
-.tag.g{background:#163524;color:#5fe39b}.tag.r{background:#3a1b1b;color:#ff8f8f}.tag.y{background:#3a2f17;color:#ffce8a}
-.chain{padding:14px 16px;background:#15202b;border-left:3px solid var(--accent);border-radius:8px;font-size:14px}
-.strat td:first-child{color:var(--sub);width:74px;white-space:nowrap}
-.lv{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px}
-.lv div{flex:1;min-width:120px;background:#11181f;border:1px solid var(--line);border-radius:10px;padding:10px 12px}
-.lv .k{font-size:12px;color:var(--sub)}.lv .v{font-size:18px;font-weight:700;margin-top:2px}
-footer{color:var(--sub);font-size:12px;margin-top:24px;padding:0 4px}
-ul{padding-left:20px}li{margin:3px 0;font-size:13.5px}
-.disc{font-size:12px;color:var(--sub);background:#161b22;border:1px dashed var(--line);border-radius:10px;padding:12px;margin-top:14px}
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#293040;
+    --gold:#e8b84b; --gold2:#f5d27a; --txt:#e6edf3; --sub:#9aa7b8; --muted:#6b7689;
+    --up:#ff5b5b; --down:#2ecc71; --warn:#ffb454; --good:#5ad1a0; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; font-size:15px; padding:0 0 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{
+    text-align:center;padding:38px 16px 26px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent);
+  }
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{
+    display:flex;justify-content:center;gap:26px;flex-wrap:wrap;
+    margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);max-width:560px;margin-left:auto;margin-right:auto;
+  }
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .down{color:var(--up)} /* A股红涨绿跌 */
+  .neg{color:var(--down)}
+  .caveat{
+    margin:22px 0;padding:14px 16px;border-radius:10px;
+    background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);
+    font-size:13px;color:#ffd9a3;
+  }
+  .caveat b{color:var(--warn)}
+  section.card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:16px 0;
+  }
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{
+    min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px;
+  }
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  b.hl{color:var(--gold2)}
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  td.l,th.l{text-align:left}
+  tr.self td{background:rgba(232,184,75,.09);font-weight:600}
+  .pos{color:var(--up)} .negc{color:var(--down)}
+  .compare th:first-child,.compare td:first-child{text-align:left}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:19px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
 </style>
 </head>
 <body>
-<header><div class="wrap">
-  <h1>新松机器人 <span class="code">300024</span></h1>
-  <div class="meta">自动化设备 · 机器人/人形机器人主题 · 阿波罗9段框架 · 数据截至 2026-05-28</div>
-  <div class="price">
-    <span class="now">¥15.88</span>
-    <span class="chg dn">-0.59 (-3.58%)</span>
-    <span class="sub">PB 6.14 · 总市值约285亿 · 总股本15.66亿</span>
+<header class="hero">
+  <div class="brand">天 机 阁 · 个 股 分 析</div>
+  <h1>新松机器人<span class="code">300024</span></h1>
+  <div class="meta">截至 2026-05-28 ｜ 自动化设备 / 机器人·人形机器人主题 ｜ 总股本 15.66亿 ｜ 总市值 ≈285亿</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">现价(5-28收)</div><div class="val">¥15.88</div></div>
+    <div class="item"><div class="lbl">当日涨跌</div><div class="val neg">−3.58% <span style="font-size:13px">(−0.59)</span></div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--warn);font-size:16px">主题博弈·偏谨慎</div></div>
   </div>
-</div></header>
+</header>
 
 <div class="wrap">
 
-<div class="verdict">
-  <b>核心结论：</b>主题资金推动 vs 基本面持续失血的<b>典型背离</b>。港资单季增持+41%、股东户数收缩(筹码集中)、MACD金叉等资金/情绪面偏暖；但公司<b>连续亏损且2025年报与2026Q1亏损继续扩大</b>、营收下滑、经营现金流持续为负，PB处历史高位(全历史86.9%分位)。估值由"人形机器人"故事+被动ETF资金支撑，而非盈利。<b>策略：短期不追高、中期偏谨慎/减仓</b>，仅适合主题博弈轻仓，不宜作价值底仓。
-</div>
-
-<section>
-  <h2><span class="n">①</span>量能与价格结构</h2>
-  <table>
-    <tr><th>近5日/20日量比</th><td>1.34 — 温和放量</td></tr>
-    <tr><th>5/28当日</th><td class="dn">放量下跌 -3.58%，收盘近全天最低</td></tr>
-    <tr><th>120日区间(现价口径)</th><td>低约 ¥14.20 ~ 高约 ¥19.29，现价处区间中下部，距高点回落约18%</td></tr>
-  </table>
-  <p class="sub" style="margin-top:8px">注：5/26冲高(复权415)后连续两日回落，5/28放量收阴，短线动能转弱。</p>
-</section>
-
-<section>
-  <h2><span class="n">②</span>资金流向</h2>
-  <ul>
-    <li><span class="warn">北向(港资)</span>：日度明细自2024-08-16上游停更，改用十大股东"香港中央结算"季度口径 → 持股2117万股(占1.35%)，最新季度<span class="up">变动 +41.06%(大幅增持)</span>。偏多。</li>
-    <li><span class="warn">主力净流入</span>：东财push2接口本机被墙(ConnectionError)，本期无法取得，仅作定性说明。</li>
-    <li>机器人主题ETF(前十)动向分化：易方达国证机器人ETF <span class="up">+5.09%增持</span>；华夏中证机器人 <span class="dn">-12.27%</span>、天弘中证机器人 <span class="dn">-18.64%</span>、景顺长城国证机器人 <span class="dn">-3.63%</span> 减持。宽基ETF(创业板/中证500)各减持约<span class="dn">-49%</span>。被动资金整体偏退潮。</li>
-  </ul>
-</section>
-
-<section>
-  <h2><span class="n">③</span>板块对比</h2>
-  <p class="sub">本工具暂无专用板块/同业对比数据源(缺口)。定性：属"机器人/人形机器人/自动化设备"主题，2025–2026为市场热点主题之一，估值受主题贝塔影响显著。</p>
-</section>
-
-<section>
-  <h2><span class="n">④</span>股东户数变化(筹码)</h2>
-  <table>
-    <tr><th>报告期</th><th>股东户数</th><th>环比</th></tr>
-    <tr><td>2025-09-30</td><td>181,222</td><td class="dn">-6.24%</td></tr>
-    <tr><td>2025-12-31</td><td>183,629</td><td class="up">+1.33%</td></tr>
-    <tr><td>2026-03-31</td><td>177,921</td><td class="dn">-3.11%</td></tr>
-  </table>
-  <p class="sub" style="margin-top:8px">户数自2025Q1峰值(21.2万)持续回落至17.8万，户均持股上升 → 筹码趋于集中，偏多信号。</p>
-</section>
-
-<section>
-  <h2><span class="n">⑤</span>十大流通股东结构</h2>
-  <ul>
-    <li>第一大股东 <b>沈阳中科天盛自动化</b> 25.18%(中科院系国资背景，持股不变)，治理结构稳定。</li>
-    <li>香港中央结算 1.35%，<span class="up">+41.06%</span>(港资增持，见②)。</li>
-    <li>前十中聚集多只<b>机器人主题ETF</b>(易方达/华夏/天弘/景顺长城)，说明该股是机器人指数权重股，<b>股价高度绑定主题资金的申赎</b>。</li>
-    <li>自然人"方天成"新进0.5%；无破产清算等异常账户。</li>
-  </ul>
-</section>
-
-<section>
-  <h2><span class="n">⑥</span>财务反转判断 <span class="tag r">无反转 · 持续恶化</span></h2>
-  <table>
-    <tr><th>报告期</th><th>每股收益</th><th>销售净利率</th><th>营收增速</th><th>ROE</th></tr>
-    <tr><td>2024年报</td><td class="dn">-0.1255</td><td class="dn">-4.75%</td><td>+4.33%</td><td class="dn">-4.37%</td></tr>
-    <tr><td>2025Q3累计</td><td class="dn">-0.0988</td><td class="dn">-6.98%</td><td class="dn">-8.73%</td><td class="dn">-3.71%</td></tr>
-    <tr><td>2025年报</td><td class="dn">-0.2481</td><td class="dn">-9.43%</td><td>-0.40%</td><td class="dn">-9.60%</td></tr>
-    <tr><td>2026Q1</td><td class="dn">-0.0611</td><td class="dn">-15.17%</td><td class="dn">-8.42%</td><td class="dn">-2.29%</td></tr>
-  </table>
-  <ul style="margin-top:10px">
-    <li>连续多年/多季亏损，<b>2025年报亏损同比扩大</b>(EPS从-0.13扩大到-0.25)，2026Q1单季净利率进一步恶化至-15%。</li>
-    <li>营收转为<b>负增长</b>，经营性现金流持续为负(2026Q1每股-0.29)。</li>
-    <li>资产负债率60.5%→63.5%上升；存货周转天数559天、应收账款周转天数219天，<b>营运效率差</b>。</li>
-    <li class="warn">与"业绩反转"无关，纯基本面失血 → 当前估值无盈利支撑。</li>
-  </ul>
-</section>
-
-<section>
-  <h2><span class="n">⑦</span>估值分位</h2>
-  <table>
-    <tr><th>PE(TTM)</th><td class="dn">负值(亏损，无意义)</td></tr>
-    <tr><th>PB</th><td>6.14</td></tr>
-    <tr><th>PB历史分位(全历史/近3年)</th><td class="warn">86.9% / 64.4%</td></tr>
-  </table>
-  <p class="sub" style="margin-top:8px">亏损股看PB：6.14倍对一家ROE为负、持续亏损的公司显著偏贵，且处历史高位(全历史近87%分位)。估值已price-in强主题预期。</p>
-</section>
-
-<section>
-  <h2><span class="n">⑧</span>上游商品关联</h2>
-  <p class="sub">机器人/自动化设备无单一对应期货品种(不同于硅材—工业硅)，本维度<b>不适用</b>。上游为减速器/伺服/钢材等，无直接期货背离信号可用。</p>
-</section>
-
-<section>
-  <h2><span class="n">⑨</span>技术指标</h2>
-  <table>
-    <tr><th>RSI14</th><td>51.1 — 中性</td></tr>
-    <tr><th>MACD</th><td class="up">金叉(DIF 8.19 &gt; DEA 6.78，红柱2.83)，但已在高位且5/28走弱</td></tr>
-    <tr><th>均线(现价口径)</th><td>MA20≈¥15.78、MA60≈¥15.53，现价15.88于均线上方，多头但乖离小</td></tr>
-  </table>
-</section>
-
-<section>
-  <h2>⚔ 矛盾逻辑链</h2>
-  <div class="chain">
-    资金/情绪面偏暖(港资单季+41%、户数收缩筹码集中、MACD金叉、人形机器人主题热)
-    <b style="color:var(--warn)"> ⟷ 严重背离 ⟷ </b>
-    基本面持续失血(连续亏损且2025报+26Q1亏损扩大、营收负增、现金流持续为负、PB历史高位87%分位)。
-    <br><br>
-    本质：<b>主题资金 + 被动ETF推动的估值，而非盈利支撑</b>。一旦主题降温或ETF资金赎回(已见多只机器人主题ETF于Q1减持)，高PB缺乏业绩兜底，易触发戴维斯双杀。
+  <div class="caveat">
+    <b>⚠ 数据口径先说清：</b>
+    ① 实时价取腾讯行情（不复权），技术位由后复权K线按现价折算（系数 ≈0.0422）；
+    ② 北向日度自 2024-08-16 上游停更，改用十大股东「香港中央结算」季度口径替代；
+    ③ 主力净流入接口（东财 push2）本机被墙（ConnectionError），本期缺失；
+    ④ 板块/同业对比暂无专用数据源；⑤ 公司亏损致 PE 失效，估值以 <b>PB</b> 为准。
   </div>
-</section>
 
-<section>
-  <h2>🎯 策略与点位</h2>
-  <table class="strat">
-    <tr><td>短期</td><td>5/28放量阴线、动能转弱 → <b>不追高，观望</b>；若博主题反弹严格轻仓，破位即走。</td></tr>
-    <tr><td>中期</td><td>基本面无反转 + PB历史高位 → <b>偏谨慎/逢高减仓</b>；不宜作价值底仓，仅主题博弈资金参与。</td></tr>
-  </table>
-  <div class="lv">
-    <div><div class="k">支撑1 (MA60)</div><div class="v">¥15.5</div></div>
-    <div><div class="k">支撑2 (箱体下沿)</div><div class="v warn">¥14.2</div></div>
-    <div><div class="k">压力 (箱体上沿)</div><div class="v">¥19.3</div></div>
-    <div><div class="k">止损参考</div><div class="v dn">跌破¥15.5/¥14.2</div></div>
-  </div>
-  <p class="sub" style="margin-top:8px">点位由后复权均线/箱体按现价折算(系数≈0.0422)，仅供参考。反弹至¥19附近压力区建议减仓。</p>
-</section>
+  <!-- ① 量能 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能与价格结构</div><div class="sec-tag">冲高回落·放量收阴</div></div>
+    <ul>
+      <li>近5日 / 近20日量比 = <b class="hl">1.34（温和放量）</b></li>
+      <li>5-28 当日 <span class="negc">放量下跌 −3.58%</span>，收盘近全天最低</li>
+      <li>120日区间（现价口径）：低约 <b class="hl">¥14.20</b> ~ 高约 <b class="hl">¥19.29</b>，现价处区间中下部，距高点回落约 18%</li>
+    </ul>
+    <p>5-26 冲高后连续两日回落，5-28 放量收阴，<b class="hl">短线动能转弱</b>。</p>
+  </section>
 
-<div class="disc">
-  <b>数据口径与局限：</b>① 实时价取腾讯行情(不复权)，技术位由后复权K线折算回现价口径；② 北向日度自2024-08-16上游停更，已改用十大股东"香港中央结算"季度口径替代；③ 主力净流入接口(东财push2)本机被墙，本期缺失；④ 板块/同业对比暂无专用数据源；⑤ 亏损导致PE失效，估值以PB为准。数据源：腾讯行情 / akshare(新浪·东财)。
-</div>
+  <!-- ② 资金流向 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">港资进 · 被动盘退潮</div></div>
+    <ul>
+      <li>北向（港资）：季度口径 <b class="hl">香港中央结算 持股 2117万股(1.35%)，季度 +41.06%（大幅增持）</b>，偏多</li>
+      <li>主力净流入：<span class="x">❌ 接口被墙，本期无法定量</span></li>
+      <li>机器人主题ETF分化：易方达国证机器人 <span class="pos">+5.09%（增持）</span>；华夏中证机器人 <span class="negc">−12.27%</span>、天弘中证机器人 <span class="negc">−18.64%</span>、景顺长城 <span class="negc">−3.63%</span>（减持）；宽基ETF（创业板/中证500）各减约 <span class="negc">−49%</span></li>
+    </ul>
+    <p>港资单季加仓与被动ETF退潮并存 —— <b class="hl">资金面分化，且被动盘整体偏退潮</b>。</p>
+  </section>
 
-<footer>
-  本报告由量化数据自动采集 + 阿波罗9段框架生成，<b>仅供研究参考，不构成任何投资建议</b>。市场有风险，决策需自负。生成时间 2026-05-28。
-</footer>
+  <!-- ③ 板块对比 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">板块 / 同业对比</div><div class="sec-tag">机器人·自动化主题</div></div>
+    <p>本工具暂无专用板块/同业对比数据源（<span class="x">缺口</span>）。定性：属「机器人 / 人形机器人 / 自动化设备」主题，2025–2026 为市场热点主题之一，<b class="hl">估值受主题贝塔影响显著</b>，与个股盈利基本面脱钩。</p>
+  </section>
+
+  <!-- ④ 股东户数 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">股东户数</div><div class="sec-tag">筹码持续集中</div></div>
+    <table>
+      <thead><tr><th class="l">报告期</th><th>股东户数</th><th>环比</th></tr></thead>
+      <tbody>
+        <tr><td class="l">2025-09-30</td><td>181,222</td><td class="negc">−6.24%</td></tr>
+        <tr><td class="l">2025-12-31</td><td>183,629</td><td class="pos">+1.33%</td></tr>
+        <tr><td class="l">2026-03-31</td><td>177,921</td><td class="negc">−3.11%</td></tr>
+      </tbody>
+    </table>
+    <p>户数自 2025Q1 峰值（21.2万）持续回落至 <b class="hl">17.8万</b>，户均持股上升 → <b class="hl">筹码趋于集中，偏多信号</b>。</p>
+  </section>
+
+  <!-- ⑤ 十大股东 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">十大流通股东</div><div class="sec-tag">国资控盘·绑定主题ETF</div></div>
+    <ul>
+      <li>第一大股东 <b>沈阳中科天盛自动化 25.18%</b>（中科院系国资背景，持股不变），治理结构稳定</li>
+      <li><span class="ok">✅ 香港中央结算 1.35%，季度 +41.06%（港资增持，见②）</span></li>
+      <li><b style="color:var(--warn)">⚠ 前十聚集多只机器人主题ETF</b>（易方达/华夏/天弘/景顺长城）—— 该股是机器人指数权重股，<b class="hl">股价高度绑定主题资金的申赎</b></li>
+      <li>自然人「方天成」新进 0.5%；无破产清算等异常账户</li>
+    </ul>
+  </section>
+
+  <!-- ⑥ 财务 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑥</div><div class="sec-t">财务</div><div class="sec-tag">无反转·持续失血（核心）</div></div>
+    <table>
+      <thead><tr><th class="l">报告期</th><th>每股收益</th><th>销售净利率</th><th>营收增速</th><th>ROE</th></tr></thead>
+      <tbody>
+        <tr><td class="l">2024 年报</td><td class="negc">−0.1255</td><td class="negc">−4.75%</td><td class="pos">+4.33%</td><td class="negc">−4.37%</td></tr>
+        <tr><td class="l">2025Q3 累计</td><td class="negc">−0.0988</td><td class="negc">−6.98%</td><td class="negc">−8.73%</td><td class="negc">−3.71%</td></tr>
+        <tr><td class="l">2025 年报</td><td class="negc">−0.2481</td><td class="negc">−9.43%</td><td class="negc">−0.40%</td><td class="negc">−9.60%</td></tr>
+        <tr class="self"><td class="l">2026Q1</td><td class="negc">−0.0611</td><td class="negc">−15.17%</td><td class="negc">−8.42%</td><td class="negc">−2.29%</td></tr>
+      </tbody>
+    </table>
+    <ul>
+      <li>连续多年/多季亏损，<b class="hl">2025 年报亏损同比扩大</b>（EPS −0.13 → −0.25），2026Q1 单季净利率进一步恶化至 −15%</li>
+      <li>营收转为 <b class="hl">负增长</b>，经营性现金流持续为负（2026Q1 每股 −0.29）</li>
+      <li>资产负债率 60.5% → 63.5% 上升；存货周转 559 天、应收账款周转 219 天，<b class="hl">营运效率差</b></li>
+    </ul>
+    <p><b class="x">与「业绩反转」无关，纯基本面失血 → 当前估值无盈利支撑。</b></p>
+  </section>
+
+  <!-- ⑦ 估值 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑦</div><div class="sec-t">估值</div><div class="sec-tag">亏损看PB·历史高位</div></div>
+    <ul>
+      <li>PE-TTM：<span class="x">负值（亏损，无意义）</span></li>
+      <li>PB <b class="hl">6.14</b></li>
+      <li>PB 历史分位（全历史 / 近3年）：<b style="color:var(--bad)">86.9% / 64.4%</b></li>
+    </ul>
+    <p>亏损股看 PB：6.14 倍对一家 ROE 为负、持续亏损的公司<b class="hl">显著偏贵</b>，且处全历史近 87% 分位高位。估值已 price-in 强主题预期。</p>
+  </section>
+
+  <!-- ⑧ 上游商品关联 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑧</div><div class="sec-t">上游商品关联</div><div class="sec-tag">无对应期货·不适用</div></div>
+    <p>机器人/自动化设备<b class="hl">无单一对应期货品种</b>（不同于硅材—工业硅），本维度不适用。上游为减速器/伺服/钢材等，无直接期货背离信号可用。</p>
+  </section>
+
+  <!-- ⑨ 技术指标 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑨</div><div class="sec-t">技术指标</div><div class="sec-tag">金叉但高位走弱</div></div>
+    <ul>
+      <li>RSI14 <b class="hl">51.1</b>（中性）</li>
+      <li>MACD <b style="color:var(--up)">金叉</b>（DIF 8.19 &gt; DEA 6.78，红柱 2.83），但已在高位且 5-28 走弱</li>
+      <li>均线（现价口径）：MA20 ≈ ¥15.78、MA60 ≈ ¥15.53，现价 15.88 于均线上方，多头但乖离小</li>
+    </ul>
+  </section>
+
+  <!-- 矛盾逻辑链 -->
+  <section class="card logic">
+    <div class="sec-h"><div class="sec-t">⚖ 矛盾逻辑链 —— 一只「主题博弈股」</div></div>
+    <table>
+      <thead><tr><th class="l good-col">利好 / 资金情绪面</th><th class="l bad-col">利空 / 基本面风险</th></tr></thead>
+      <tbody>
+        <tr><td class="l">港资单季 +41.06% 大幅增持</td><td class="l">连续亏损，2025 年报 + 26Q1 亏损继续扩大</td></tr>
+        <tr><td class="l">股东户数收缩、筹码集中</td><td class="l">营收负增长、经营现金流持续为负</td></tr>
+        <tr><td class="l">MACD 金叉、人形机器人主题热</td><td class="l">PB 6.14、全历史 87% 分位（贵）</td></tr>
+        <tr><td class="l">国资 25.18% 控盘稳定</td><td class="l">多只机器人主题ETF 于 Q1 减持，被动盘退潮</td></tr>
+        <tr><td class="l">—</td><td class="l">5-28 放量阴线、短线动能转弱</td></tr>
+      </tbody>
+    </table>
+    <div class="takeaway"><b>本质矛盾：</b>资金/情绪面偏暖（港资 +41%、户数收缩、MACD 金叉、主题热）↔ <b>严重背离</b> ↔ 基本面持续失血（连续亏损且扩大、营收负增、现金流为负、PB 历史高位）。估值由<b class="hl">「人形机器人」故事 + 被动ETF资金</b>支撑，而非盈利。一旦主题降温或 ETF 赎回，高 PB 缺乏业绩兜底，易触发<b class="hl">戴维斯双杀</b>。</div>
+  </section>
+
+  <!-- 操作策略 -->
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-t">🎯 操作策略（现价 ¥15.88）</div></div>
+    <ul>
+      <li><b class="hl">短期（1-4周）：不追高 / 观望。</b>5-28 放量阴线、动能转弱；若博主题反弹严格轻仓，破位即走。</li>
+      <li><b class="hl">中期（1-2季）：偏谨慎 / 逢高减仓。</b>基本面无反转 + PB 历史高位，不宜作价值底仓，仅适合主题博弈轻仓参与。反弹至 ¥19 附近压力区建议减仓。</li>
+    </ul>
+    <div class="lvl">
+      <div class="chip res"><div class="k">压力位（箱体上沿）</div><div class="v">¥19.3</div></div>
+      <div class="chip sup"><div class="k">关键支撑</div><div class="v">¥15.5 / ¥14.2</div></div>
+      <div class="chip stop"><div class="k">止损参考</div><div class="v">跌破 ¥15.5 / ¥14.2</div></div>
+    </div>
+  </section>
+
+  <footer>
+    以上基于公开行情 / 公告 / 财务数据的客观梳理，<b>非投资建议，市场有风险</b>。<br>
+    数据缺口（主力净流入、北向日度、同业对比）已如实标注。技术位由后复权K线按现价折算（系数 ≈0.0422）。<br>
+    <span class="small">天机阁 9 段框架 · 数据截至 2026-05-28 · 数据源：腾讯行情 / akshare(新浪·东财)</span>
+  </footer>
 
 </div>
 </body>
