@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>南大光电 300346 · 天机阁个股分析</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#293040;
+    --gold:#e8b84b; --gold2:#f5d27a; --txt:#e6edf3; --sub:#9aa7b8; --muted:#6b7689;
+    --up:#ff5b5b; --down:#2ecc71; --warn:#ffb454; --good:#5ad1a0; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; font-size:15px; padding:0 0 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{
+    text-align:center;padding:38px 16px 26px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent);
+  }
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{
+    display:flex;justify-content:center;gap:26px;flex-wrap:wrap;
+    margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);max-width:600px;margin-left:auto;margin-right:auto;
+  }
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .down{color:var(--up)} /* A股红涨绿跌 */
+  .neg{color:var(--down)}
+  .caveat{
+    margin:22px 0;padding:14px 16px;border-radius:10px;
+    background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);
+    font-size:13px;color:#ffd9a3;
+  }
+  .caveat b{color:var(--warn)}
+  section.card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:16px 0;
+  }
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{
+    min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px;
+  }
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  b.hl{color:var(--gold2)}
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  td.l,th.l{text-align:left}
+  tr.self td{background:rgba(232,184,75,.09);font-weight:600}
+  .pos{color:var(--up)} .negc{color:var(--down)}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:19px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="brand">天 机 阁 · 个 股 分 析</div>
+  <h1>南大光电<span class="code">300346</span></h1>
+  <div class="meta">截至 2026-05-29 ｜ 电子化学品Ⅱ / 半导体材料 ｜ 创业板 ｜ 上市 2012-08-07</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">最新价(5-29盘中)</div><div class="val neg">¥54.4 <span style="font-size:13px">-6.0%</span></div></div>
+    <div class="item"><div class="lbl">近30日</div><div class="val down">+74.5%</div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--warn);font-size:16px">高位放量后回调·谨慎</div></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="caveat">
+    <b>⚠ 数据口径先说清：</b>
+    ① 本机数据层覆盖<b>行情/K线/基本信息/研报</b>，<b>主力资金净流入、股东户数、十大股东、北向</b>四项暂无稳定接口，本报告不臆造，相关结论以「盘面量价 + 研报」为准；
+    ② K线为<b>前复权</b>价，与交易软件除权口径可能略有出入；
+    ③ 盈利预测引自券商研报，非本人测算，仅供参考。
+  </div>
+
+  <!-- ① 公司与赛道 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">公司与赛道</div><div class="sec-tag">半导体材料国产替代</div></div>
+    <p>三大主业均为晶圆制程「卡脖子」关键材料，自主可控核心标的：</p>
+    <ul>
+      <li><b class="hl">MO源 / 前驱体</b> —— 化合物半导体、先进制程沉积材料，公司起家与基本盘</li>
+      <li><b class="hl">电子特气</b> —— 高纯特种气体，国产替代稳步推进，现金牛业务</li>
+      <li><b class="hl">ArF 光刻胶</b> —— 最大想象空间所在，产业化进程加快（2020 年通过认证后一直是市场标签）</li>
+    </ul>
+    <p>行业归类<b class="hl">电子化学品Ⅱ</b>。本轮上涨的核心叙事就是「光刻胶 / 半导体材料自主可控」主题，属<b class="hl">题材+成长双驱动</b>的高弹性品种。</p>
+  </section>
+
+  <!-- ② 盘面与量能 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">盘面与量能</div><div class="sec-tag">急涨见顶·缩量回调</div></div>
+    <ul>
+      <li>近30日 <b class="hl">+74.5%</b>，主题资金驱动的一波急拉（5月初约47元 → 5月下旬冲60+）</li>
+      <li>阶段高点：<b class="hl">5-25 摸 63.05</b>（收61.00，巨量90.2万手，为窗口内天量）；5-20 摸 61.66（97.5万手）</li>
+      <li>顶部后逐级走低：5-26 收59.48 → 5-27 56.22 → 5-28 57.91 → <b class="hl">5-29 盘中跌至53.75，最新约54.4（-6%）</b></li>
+      <li>量能：5日均量/20日均量 = <b class="hl">0.94（缩量）</b>；今日(5-29) 仅约26.6万手，较前几日50万~90万手大幅萎缩</li>
+    </ul>
+    <p>典型<b class="hl">「天量见天价 → 缩量回调」</b>结构。缩量回落是良性洗盘还是主力撤退，需看能否在 MA60(51) 一带止跌企稳放量。<b class="hl">当前上攻动能明显衰减。</b></p>
+  </section>
+
+  <!-- ③ 资金 / 筹码 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">资金 / 筹码</div><div class="sec-tag">接口缺失·据实标注</div></div>
+    <ul>
+      <li>主力净流入：<span class="x">❌ 本机无稳定接口，本期无法定量</span></li>
+      <li>股东户数 / 十大股东 / 北向：<span class="x">❌ 同上，未取到</span></li>
+    </ul>
+    <p>仅能从量价侧证：高位（60+）连续两天天量换手（90万手量级），<b class="hl">说明顶部分歧极大、有明显获利盘出逃迹象</b>。这类急涨股顶部天量后，短线套牢盘往往集中在 56~61 区间，反弹至此即有解套抛压。</p>
+  </section>
+
+  <!-- ④ 财务与盈利预测 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">财务与盈利预测</div><div class="sec-tag">群益证券 2026-05-28</div></div>
+    <table>
+      <thead><tr><th class="l">年度</th><th>EPS(元)</th><th>对应PE<br>(现价54.4)</th></tr></thead>
+      <tbody>
+        <tr><td class="l">2026E</td><td>0.62</td><td><b style="color:var(--bad)">≈87.7×</b></td></tr>
+        <tr><td class="l">2027E</td><td>0.76</td><td>≈71.6×</td></tr>
+        <tr><td class="l">2028E</td><td>0.92</td><td>≈59.1×</td></tr>
+      </tbody>
+    </table>
+    <p>盈利保持<b class="hl">逐年两位数增长</b>（前驱体+电子特气基本盘稳健，光刻胶放量为弹性），成长性确实存在；但<b class="hl">绝对增速无法支撑当前估值</b>——见下。</p>
+  </section>
+
+  <!-- ⑤ 估值 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">估值</div><div class="sec-tag">动态PE 80×+·很贵</div></div>
+    <ul>
+      <li>按现价与研报预测：<b class="hl">2026E 动态PE ≈ 88倍</b>，即便给到2028年仍有 ~59倍</li>
+      <li>PEG 远大于1：成长虽在，但价格已price-in大量乐观预期</li>
+    </ul>
+    <p>这是典型的<b class="hl">「高景气赛道 + 高估值」</b>组合。88倍PE意味着市场已把光刻胶产业化的成功提前兑现到股价里，<b class="hl">一旦光刻胶放量不及预期或主题降温，估值向下修正空间大</b>。估值是本股最大的风险点。</p>
+  </section>
+
+  <!-- ⑥ 机构观点 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑥</div><div class="sec-t">机构观点 / 研报</div><div class="sec-tag">态度偏谨慎</div></div>
+    <ul>
+      <li><b class="hl">最新(5-28 群益证券)：「增持」</b>——「前驱体与电子特气基本盘稳健，ArF光刻胶产业化进程加快」。注意评级仅<b class="hl">增持</b>而非买入，态度偏谨慎</li>
+      <li>历史「买入」研报集中在 2019~2022 国产替代主题<b class="hl">初期</b>（ArF光刻胶、电子特气题材），近期机构热度反而不算高</li>
+    </ul>
+    <p>解读：基本面叙事被认可，但在股价急涨+高估值后，卖方明显<b class="hl">不愿给更激进评级</b>，与盘面顶部分歧相互印证。</p>
+  </section>
+
+  <!-- ⑦ 技术指标 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑦</div><div class="sec-t">技术指标</div><div class="sec-tag">短期调整中</div></div>
+    <ul>
+      <li>RSI14 <b class="hl">46.7</b>（中性偏弱，已破50）</li>
+      <li>MACD <b style="color:var(--down)">死叉</b>（DIF 1.60 &lt; DEA 1.95，柱 −0.70 绿柱，高位死叉）</li>
+      <li>均线：现价 54.4 已<b class="hl">跌破 MA5(57.8)/MA10(57.6)/MA20(56.2)</b>，仅高于 MA60(51.2)；短期均线拐头向下、空头排列初成</li>
+      <li>形态：冲高回落、缩量阴跌，正在向 MA60/缺口区回踩</li>
+    </ul>
+  </section>
+
+  <!-- 矛盾逻辑链 -->
+  <section class="card logic">
+    <div class="sec-h"><div class="sec-t">⚖ 矛盾逻辑链 —— 一只「主题弹性股」</div></div>
+    <table>
+      <thead><tr><th class="l good-col">利好 / 多头逻辑</th><th class="l bad-col">利空 / 风险</th></tr></thead>
+      <tbody>
+        <tr><td class="l">光刻胶 / 半导体材料自主可控，赛道叙事极强</td><td class="l">动态PE ~88×，估值严重透支，业绩撑不起</td></tr>
+        <tr><td class="l">前驱体+电子特气基本盘稳健，盈利逐年增长</td><td class="l">+74%急涨后，高位连续天量，顶部分歧大、有出逃迹象</td></tr>
+        <tr><td class="l">ArF光刻胶产业化加速，弹性大</td><td class="l">研报仅给「增持」，机构态度谨慎</td></tr>
+        <tr><td class="l">现价仍站上 MA60，主升结构尚未破坏</td><td class="l">已跌破 MA5/10/20，MACD 高位死叉、缩量阴跌</td></tr>
+      </tbody>
+    </table>
+    <div class="takeaway"><b>本质矛盾：</b>赛道叙事极强（光刻胶自主可控）↔ 估值极贵（88×）↔ 盘面高位天量后缩量回调。三者打架，说明这是<b class="hl">情绪/资金驱动行情而非业绩驱动</b>，波动会很大，属<b class="hl">「赌赔率不赌确定性」</b>的弹性品种。</div>
+  </section>
+
+  <!-- 操作策略 -->
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-t">🎯 操作策略（参考现价 ¥54.4）</div></div>
+    <ul>
+      <li><b class="hl">持有者：</b>已有较大浮盈，建议在 <b class="hl">56~58 反弹处分批止盈</b>，跌破今日低点 53.5 或 5日线减仓，防回吐。</li>
+      <li><b class="hl">空仓者：</b>现价不追高。等回踩 <b class="hl">50~52（MA60）区间企稳放量</b>再看，或观察缺口回补后的承接力度。</li>
+      <li><b class="hl">中期胜负手：</b>盯 ArF光刻胶放量与季度盈利兑现——兑现则高估值可被消化，不及预期则估值向下修正。</li>
+    </ul>
+    <div class="lvl">
+      <div class="chip res"><div class="k">压力位</div><div class="v">57.8 / 60</div></div>
+      <div class="chip sup"><div class="k">关键支撑</div><div class="v">53.5 / 51(MA60)</div></div>
+      <div class="chip stop"><div class="k">止损线</div><div class="v">跌破 51 主升走坏</div></div>
+    </div>
+  </section>
+
+  <footer>
+    以上基于公开行情 / 研报数据的客观梳理，<b>非投资建议，市场有风险，投资需谨慎</b>。<br>
+    数据缺口（主力净流入 / 股东户数 / 十大股东 / 北向）已如实标注；盈利预测引自群益证券 2026-05-28 研报。<br>
+    <span class="small">天机阁框架 · 生成于 2026-05-29</span>
+  </footer>
+
+</div>
+</body>
+</html>
