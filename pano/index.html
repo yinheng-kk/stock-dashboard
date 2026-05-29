@@ -46,7 +46,7 @@
 //   渲染  = Pano.js rendering:'software'（Canvas 2D 光线投射，无 WebGL）
 //   交互  = 手写 touch polyfill（单指拖→mouse / 双指→改 cam_fov）
 // ───────────────────────────────────────────────────────────
-var IMG = 'assets/sample.png';
+var IMG = 'assets/pano_own.png';  // 自建参数化等距全景（接缝/极点均无缝），替换 chuchuran 占位图
 var canvas = document.getElementById('pano-canvas');
 var loader = document.getElementById('loader');
 var bar    = document.querySelector('#bar>i');
