@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+<title>360° 全景 · 自建 demo</title>
+<style>
+  html,body{margin:0;height:100%;background:#0b0b0f;overflow:hidden;
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",sans-serif;}
+  #scene{position:fixed;inset:0;display:block;}
+  #pano-canvas{position:absolute;inset:0;width:100%;height:100%;display:block;
+    touch-action:none;image-rendering:auto;}
+  /* blur-up 占位：真图加载前先糊一张铺底，首屏立刻有内容 */
+  #blur{position:absolute;inset:0;background-size:cover;background-position:center;
+    filter:blur(18px);transform:scale(1.06);transition:opacity .6s ease-out;
+    pointer-events:none;z-index:1;}
+  #pano-canvas{position:relative;z-index:2;}
+  #loader{position:absolute;inset:0;z-index:5;display:flex;flex-direction:column;
+    align-items:center;justify-content:center;color:#e8e0cf;gap:14px;
+    background:radial-gradient(circle at 50% 40%,#1a1410,#0b0b0f);transition:opacity .5s;}
+  #bar{width:180px;height:3px;border-radius:3px;background:rgba(255,255,255,.12);overflow:hidden;}
+  #bar>i{display:block;height:100%;width:2%;background:linear-gradient(90deg,#c9a24b,#f0d68a);
+    transition:width .25s;}
+  #pct{font-size:13px;letter-spacing:.05em;opacity:.85;}
+  #tip{position:absolute;left:0;right:0;bottom:22px;z-index:4;text-align:center;
+    color:#d8cfb8;font-size:12px;letter-spacing:.04em;opacity:.7;
+    text-shadow:0 1px 4px rgba(0,0,0,.6);pointer-events:none;}
+  #err{position:absolute;inset:0;z-index:6;display:none;align-items:center;justify-content:center;
+    color:#e88;background:#0b0b0f;font-size:14px;text-align:center;padding:24px;}
+</style>
+</head>
+<body>
+<div id="scene">
+  <div id="blur"></div>
+  <canvas id="pano-canvas"></canvas>
+</div>
+<div id="loader"><div id="pct">初始化 2%</div><div id="bar"><i></i></div>
+  <div style="font-size:11px;opacity:.5">软件球面渲染 · 兼容所有设备</div></div>
+<div id="tip">单指拖动旋转 · 双指捏合缩放</div>
+<div id="err"></div>
+
+<script>
+// ───────────────────────────────────────────────────────────
+// 自建 360° 全景 demo（复刻 chuchuran 方案，渲染器为 MIT Pano.js）
+//   图源  = 2:1 等距投影(equirectangular)全景图  assets/sample.png
+//   渲染  = Pano.js rendering:'software'（Canvas 2D 光线投射，无 WebGL）
+//   交互  = 手写 touch polyfill（单指拖→mouse / 双指→改 cam_fov）
+// ───────────────────────────────────────────────────────────
+var IMG = 'assets/sample.png';
+var canvas = document.getElementById('pano-canvas');
+var loader = document.getElementById('loader');
+var bar    = document.querySelector('#bar>i');
+var pct    = document.getElementById('pct');
+var blur   = document.getElementById('blur');
+blur.style.backgroundImage = 'url(' + IMG + ')';
+
+function setProgress(p, label){ bar.style.width = p + '%'; pct.textContent = (label||'') + ' ' + p + '%'; }
+function fail(msg){ var e=document.getElementById('err'); e.textContent='加载失败：'+msg; e.style.display='flex'; loader.style.display='none'; }
+
+// ─── patch 0: setTimeout(30ms) → rAF，突破 Pano.js 内部 30Hz tick cap ───
+// 只拦截 callback 源码含 inertial_yaw / dirty / image_filtering 的 30ms 任务，避免误伤。
+if (!window.__panoTickPatched) {
+  window.__panoTickPatched = true;
+  var origSetTimeout = window.setTimeout;
+  window.setTimeout = function(cb, delay){
+    if (delay === 30 && typeof cb === 'function') {
+      var src=''; try{ src=String(cb); }catch(e){}
+      if (src.indexOf('inertial_yaw')>=0 || src.indexOf('self.dirty')>=0 ||
+          src.indexOf('this.dirty')>=0  || src.indexOf('image_filtering')>=0) {
+        return requestAnimationFrame(cb);
+      }
+    }
+    return origSetTimeout.apply(window, arguments);
+  };
+}
+
+var s = document.createElement('script');
+s.src = 'vendor/pano.js?v=20260427';
+s.onerror = function(){ fail('渲染引擎 pano.js 未能加载'); };
+s.onload = function(){
+  setProgress(20, '渲染引擎已就绪');
+  if (!window.Pano || !Pano.View) { fail('Pano.View 未定义'); return; }
+  try {
+    var view = new Pano.View(canvas, {
+      heading: 90, pitch: 90, fov: 80,
+      rendering: 'software',   // 强制 Canvas 2D，绕开 WebGL → 全设备兼容
+      inertial:  'on',         // 走原生惯性（在 rAF 节奏下更顺）
+      filtering: 'on-idle'     // 静止时 bilinear 滤波
+    });
+
+    // patch 1: 重写 _draw，按 renderScale × min(DPR,2.0) 决定物理像素
+    var DPR_CAP = 2.0;
+    var renderScale = 1.0;
+    var dpr = Math.min(window.devicePixelRatio || 1, DPR_CAP);
+    view._draw = function(){
+      var tW = Math.max(1, Math.floor(canvas.clientWidth  * renderScale * dpr));
+      var tH = Math.max(1, Math.floor(canvas.clientHeight * renderScale * dpr));
+      if (canvas.width  !== tW) canvas.width  = tW;
+      if (canvas.height !== tH) canvas.height = tH;
+      if (view.on_enter_frame_handler) view.on_enter_frame_handler.call(null, view, canvas.width, canvas.height);
+      view.renderer.beginFrame();
+      view._drawPanorama();
+      view._drawLensFlares();
+      view.renderer.endFrame();
+      view.last_draw_ms = Date.now();
+      if (view.on_exit_frame_handler) view.on_exit_frame_handler.call(null, view, canvas.width, canvas.height);
+    };
+
+    view.onLoadStart = function(){ setProgress(30, '下载全景图'); };
+    view.onLoadEnd   = function(){ setProgress(95, '渲染中'); };
+    view.onLoad = function(){
+      setProgress(100, '已就绪');
+      loader.style.opacity = '0';
+      setTimeout(function(){ loader.style.display='none'; }, 500);
+      blur.style.opacity = '0';
+      setTimeout(function(){ if(blur.parentNode) blur.parentNode.removeChild(blur); }, 700);
+    };
+    window.__pano_view = view;  // 便于 devtools 读 cam_heading 调试
+
+    // ─── touch polyfill：Pano.js 库本身没有 touch 监听 ───
+    // 单指拖动 → 合成 mousedown/move/up（旋转视角）
+    // 双指 pinch → 改 view.cam_fov（fov 越小越放大，钳制 [30,110]）
+    (function installTouchPolyfill(){
+      var down=false, pinching=false, pinchInitDist=0, pinchInitFov=80;
+      function _dist(a,b){ var dx=a.clientX-b.clientX, dy=a.clientY-b.clientY; return Math.sqrt(dx*dx+dy*dy); }
+      canvas.addEventListener('touchstart', function(e){
+        if (e.touches.length===2){ pinching=true; pinchInitDist=_dist(e.touches[0],e.touches[1]);
+          pinchInitFov=view.cam_fov||80; e.preventDefault(); return; }
+        var t=e.touches[0]; if(!t) return; down=true;
+        try{ canvas.dispatchEvent(new MouseEvent('mousedown',{bubbles:true,cancelable:true,
+          clientX:t.clientX,clientY:t.clientY,button:0,buttons:1,view:window})); }catch(_){}
+        e.preventDefault();
+      },{passive:false});
+      canvas.addEventListener('touchmove', function(e){
+        if (pinching && e.touches.length===2){
+          var d=_dist(e.touches[0],e.touches[1]);
+          if (pinchInitDist>0){
+            var newFov=Math.max(30,Math.min(110, pinchInitFov*(pinchInitDist/d)));
+            view.cam_fov=newFov;
+            if (typeof view.update==='function') view.update(); else view._draw();
+          }
+          e.preventDefault(); return;
+        }
+        var t=e.touches[0]; if(!t) return;
+        try{ canvas.dispatchEvent(new MouseEvent('mousemove',{bubbles:true,cancelable:true,
+          clientX:t.clientX,clientY:t.clientY,button:0,buttons:down?1:0,view:window})); }catch(_){}
+        e.preventDefault();
+      },{passive:false});
+      function endTouch(e){
+        if (pinching && e.touches.length<2){ pinching=false; pinchInitDist=0; }
+        if (e.touches.length===0 && down){
+          var ct=e.changedTouches&&e.changedTouches[0];
+          try{ canvas.dispatchEvent(new MouseEvent('mouseup',{bubbles:true,cancelable:true,
+            clientX:ct?ct.clientX:0,clientY:ct?ct.clientY:0,button:0,buttons:0,view:window})); }catch(_){}
+          down=false;
+        }
+      }
+      canvas.addEventListener('touchend', endTouch,{passive:false});
+      canvas.addEventListener('touchcancel', endTouch,{passive:false});
+    })();
+
+    view.load(IMG);
+    // 兜底：3s 后若还没 onLoad 也把 loader 收起来，避免卡死在进度条
+    setTimeout(function(){ if(loader.style.display!=='none'){ loader.style.opacity='0';
+      setTimeout(function(){ loader.style.display='none'; },500);} }, 3000);
+  } catch(err){ fail(String(err && err.message || err)); }
+};
+document.head.appendChild(s);
+</script>
+</body>
+</html>
