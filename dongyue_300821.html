@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>东岳硅材 300821 · 阿波罗个股分析</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#293040;
+    --gold:#e8b84b; --gold2:#f5d27a; --txt:#e6edf3; --sub:#9aa7b8; --muted:#6b7689;
+    --up:#ff5b5b; --down:#2ecc71; --warn:#ffb454; --good:#5ad1a0; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; font-size:15px; padding:0 0 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{
+    text-align:center;padding:38px 16px 26px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent);
+  }
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{
+    display:flex;justify-content:center;gap:26px;flex-wrap:wrap;
+    margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);max-width:600px;margin-left:auto;margin-right:auto;
+  }
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .up{color:var(--up)}
+  .neg{color:var(--down)}
+  .caveat{
+    margin:22px 0;padding:14px 16px;border-radius:10px;
+    background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);
+    font-size:13px;color:#ffd9a3;
+  }
+  .caveat b{color:var(--warn)}
+  section.card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:16px 0;
+  }
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{
+    min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px;
+  }
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  b.hl{color:var(--gold2)}
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  td.l,th.l{text-align:left}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:19px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 个 股 分 析</div>
+  <h1>东岳硅材<span class="code">300821</span></h1>
+  <div class="meta">截至 2026-06-02 收盘 ｜ 有机硅 / 硅基材料 ｜ 创业板 ｜ 总股本 12亿 ｜ 总市值 ≈178.6亿 ｜ 近乎全流通</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">最新价(6-02收)</div><div class="val neg">¥14.88 <span style="font-size:13px">-5.04%</span></div></div>
+    <div class="item"><div class="lbl">阶段顶(5-28)</div><div class="val">¥17.49</div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--warn);font-size:16px">冲高出货·破位回落</div></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="caveat">
+    <b>⚠ 一句话定性：</b>有<b>真实盈利</b>打底的有机硅弹性品种(PE动仅23倍、净利率高)，但 5-26~28 主力一波拉高到 17.49 后<b>连续3日净流出出货</b>，今日再杀 -5.04% 跌破短期均线。<b>基本面不差，但短线是「拉高出货 + 破位」格局，反弹不追。</b>
+  </div>
+
+  <!-- ① 量价 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量价走势</div><div class="sec-tag">放量见顶后破位</div></div>
+    <ul>
+      <li>5-26 起主力发动：5-26 收 15.94 → 5-27 16.27 → <b class="hl">5-28 放量冲到 17.49(当日量124.8万手,阶段顶)</b></li>
+      <li>5-29 高开低走 <b class="x">放量杀跌至 15.74</b>(量110万手),一根长阴吞掉两天涨幅</li>
+      <li>6-01 微跌 15.67 → <b class="x">6-02 再杀 -5.04% 收 14.88</b>,盘中最低 14.30 回踩前期支撑</li>
+    </ul>
+    <p>形态：<b class="hl">一波脉冲拉升 → 见顶长阴 → 连续两日阴跌破位</b>。今日量比 0.66、换手 5.55%,杀跌中量能并未恐慌放大,属获利盘+套牢盘有序了结。</p>
+  </section>
+
+  <!-- ② 资金流向 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">主力拉高后连续出货</div></div>
+    <table>
+      <thead><tr><th class="l">日期</th><th>主力净额</th><th>主力净占比</th><th>股价</th></tr></thead>
+      <tbody>
+        <tr><td class="l">5-26</td><td class="pos" style="color:var(--up)">+1.07亿</td><td>+6.68%</td><td>15.94 拉升</td></tr>
+        <tr><td class="l">5-27</td><td class="pos" style="color:var(--up)">+0.20亿</td><td>+1.27%</td><td>16.27</td></tr>
+        <tr><td class="l">5-28</td><td class="pos" style="color:var(--up)">+1.68亿</td><td>+7.89%</td><td>17.49 见顶</td></tr>
+        <tr><td class="l">5-29</td><td class="x">−1.73亿</td><td>−9.78%</td><td>15.74 杀跌</td></tr>
+        <tr><td class="l">6-01</td><td class="x">−0.68亿</td><td>−6.30%</td><td>15.67</td></tr>
+        <tr><td class="l">6-02</td><td class="x">−1.01亿</td><td>−10.20%</td><td>14.88 破位</td></tr>
+      </tbody>
+    </table>
+    <p>口径清晰：<b class="hl">主力用 3 天约 +2.95亿 把股价拉到 17.49,随后 3 天约 −3.42亿 全部倒出还多</b>。这是一次完整的「拉高 → 派发」,当前处派发尾段,反弹缺主力承接。</p>
+  </section>
+
+  <!-- ③ 公司/题材定位 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">公司 / 行业定位</div><div class="sec-tag">有机硅·硅基材料</div></div>
+    <ul>
+      <li>主营有机硅(DMC/硅橡胶/硅油)+硅基新材料,东岳氟硅科技控股,有机硅一体化产能国内前列</li>
+      <li>行业属性:<b class="hl">强周期</b>——盈利随「有机硅售价 − 工业硅成本」价差波动,2026 受益于硅价差修复,Q1 利润高弹性</li>
+      <li>近期催化:有机硅景气回升 + 硅基/储能/光伏链情绪轮动,带来一波资金脉冲</li>
+    </ul>
+  </section>
+
+  <!-- ④ 估值与盈利 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">估值与盈利</div><div class="sec-tag">PE23·有真实盈利</div></div>
+    <table>
+      <thead><tr><th>总市值</th><th>PE(动)</th><th>PB</th><th>ROE</th><th>净利(最新)</th><th>换手率</th></tr></thead>
+      <tbody>
+        <tr class="self"><td>≈178.6亿</td><td><b class="hl">23.0</b></td><td>3.50</td><td>3.86%</td><td class="pos" style="color:var(--up)">≈1.94亿</td><td>5.55%</td></tr>
+      </tbody>
+    </table>
+    <p><b class="hl">这是与「机器人/华天」纯题材股最大的不同——东岳是真盈利、PE 动态仅 23 倍</b>,周期景气向上时估值不算贵。隐患在 PB 3.50 处近年偏高位,且盈利高度依赖硅价差,价差一旦收窄业绩弹性会反向。</p>
+  </section>
+
+  <!-- ⑤ 技术面 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">技术面</div><div class="sec-tag">短期均线空头</div></div>
+    <ul>
+      <li>现价 14.88 已 <b class="x">跌破 MA5(≈15.6)、MA10(≈15.5)</b>,短期均线拐头向下</li>
+      <li>5-28 长上影 + 5-29/6-02 两根中阴,<b class="hl">17.5 一线形成明确头部</b></li>
+      <li>下方 14.30(今日低=5-21 低点)为第一支撑,失守看 13.8 缺口/平台</li>
+    </ul>
+  </section>
+
+  <!-- 矛盾逻辑链 -->
+  <section class="card logic">
+    <div class="sec-h"><div class="sec-t">⚖ 矛盾逻辑链</div></div>
+    <table>
+      <thead><tr><th class="l good-col">利好 / 支撑</th><th class="l bad-col">利空 / 风险</th></tr></thead>
+      <tbody>
+        <tr><td class="l">有真实盈利,PE动仅23倍,周期景气向上</td><td class="l">主力连续3日净流出约-3.4亿,派发明确</td></tr>
+        <tr><td class="l">有机硅价差修复,Q1利润高弹性</td><td class="l">5-28见顶17.49后破位,短期均线空头</td></tr>
+        <tr><td class="l">控股稳定、近全流通无大解禁压力</td><td class="l">PB 3.50处近年高位,业绩依赖价差</td></tr>
+        <tr><td class="l">14.30前低支撑,跌深有盈利托底</td><td class="l">今日-5%放量杀跌,反弹缺主力承接</td></tr>
+      </tbody>
+    </table>
+    <div class="takeaway"><b>本质矛盾：</b>基本面(有盈利、PE低、周期向上)↔ 资金面与技术面(拉高出货、破位回落)。中期看价差兑现,短期是退潮。</div>
+  </section>
+
+  <!-- 操作策略 -->
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-t">🎯 操作策略（现价 ¥14.88）</div></div>
+    <ul>
+      <li><b class="hl">短期(1-2周)：偏谨慎、不追反弹。</b>主力刚出货完、技术破位,任何反弹优先视为减仓/解套机会,而非加仓点。</li>
+      <li><b class="hl">中期：等企稳信号。</b>若回踩 14.3 一线缩量止跌、且主力转回流入,凭「PE23+盈利打底」可分批低吸;价差转弱或跌破支撑则证伪退出。</li>
+    </ul>
+    <div class="lvl">
+      <div class="chip res"><div class="k">压力位</div><div class="v">15.6 / 16.3</div></div>
+      <div class="chip sup"><div class="k">关键支撑</div><div class="v">14.30</div></div>
+      <div class="chip stop"><div class="k">止损线</div><div class="v">跌破14.30离场</div></div>
+    </div>
+  </section>
+
+  <footer>
+    数据基于东方财富实时行情/资金流(截至 2026-06-02 收盘)的客观梳理,<b>非投资建议,市场有风险</b>。<br>
+    主力净额为东财日度口径;估值为动态 PE。<br>
+    <span class="small">阿波罗框架 · 生成于 2026-06-02</span>
+  </footer>
+
+</div>
+</body>
+</html>
