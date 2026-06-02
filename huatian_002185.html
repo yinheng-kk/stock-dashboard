@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>华天科技 002185 · 阿波罗个股分析</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#293040;
+    --gold:#e8b84b; --gold2:#f5d27a; --txt:#e6edf3; --sub:#9aa7b8; --muted:#6b7689;
+    --up:#ff5b5b; --down:#2ecc71; --warn:#ffb454; --good:#5ad1a0; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; font-size:15px; padding:0 0 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{
+    text-align:center;padding:38px 16px 26px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent);
+  }
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{
+    display:flex;justify-content:center;gap:26px;flex-wrap:wrap;
+    margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);max-width:600px;margin-left:auto;margin-right:auto;
+  }
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .up{color:var(--up)}
+  .neg{color:var(--down)}
+  .caveat{
+    margin:22px 0;padding:14px 16px;border-radius:10px;
+    background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);
+    font-size:13px;color:#ffd9a3;
+  }
+  .caveat b{color:var(--warn)}
+  section.card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:16px 0;
+  }
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{
+    min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px;
+  }
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  b.hl{color:var(--gold2)}
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  td.l,th.l{text-align:left}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:19px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 个 股 分 析</div>
+  <h1>华天科技<span class="code">002185</span></h1>
+  <div class="meta">截至 2026-06-02 收盘 ｜ 半导体封测 ｜ 深市主板 ｜ 总股本 33.2亿 ｜ 总市值 ≈609亿 ｜ 封测三巨头之一</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">最新价(6-02收)</div><div class="val neg">¥18.33 <span style="font-size:13px">-0.54%</span></div></div>
+    <div class="item"><div class="lbl">阶段顶(5-28)</div><div class="val">¥21.49</div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--bad);font-size:16px">高估值·天量出货</div></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="caveat">
+    <b>⚠ 一句话定性：</b>封测真龙头(与长电、通富并称三巨头)、<b>赛道硬</b>,但当前 <b>PE 动态高达 175 倍、净利仅 0.87 亿</b>,估值极度透支;且 5-27 起<b>主力连续 5 日天量净流出累计约 −52.8亿</b>,21.49 见顶后回落。<b>基本面好≠现价不贵,这是「好公司+坏价格+主力派发」的组合,坚决不追高。</b>
+  </div>
+
+  <!-- ① 量价 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量价走势</div><div class="sec-tag">翻倍式拉升后见顶</div></div>
+    <ul>
+      <li>4-24 的 12.45 一路上行,<b class="hl">5-26 涨停 18.67 → 5-27 20.15 → 5-28 巨量冲到 21.49(阶段顶)</b>,一个多月 <b class="hl">最大涨幅 +73%</b></li>
+      <li>5-28 单日成交超百亿、量 924万手;<b class="x">5-29 高开杀跌至 19.34</b>,顶部放量滞涨信号明确</li>
+      <li>6-01 18.43 → 6-02 18.33,<b class="hl">连续回落、换手仍高达 16.70%</b>,顶部巨量换手=派发特征</li>
+    </ul>
+  </section>
+
+  <!-- ② 资金流向 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">拉高后天量出货</div></div>
+    <table>
+      <thead><tr><th class="l">日期</th><th>主力净额</th><th>主力净占比</th><th>股价</th></tr></thead>
+      <tbody>
+        <tr><td class="l">5-26</td><td class="pos" style="color:var(--up)">+7.46亿</td><td>+6.63%</td><td>18.67 涨停</td></tr>
+        <tr><td class="l">5-27</td><td class="x">−25.07亿</td><td>−10.25%</td><td>20.15(价涨钱出)</td></tr>
+        <tr><td class="l">5-28</td><td class="x">−6.90亿</td><td>−3.56%</td><td>21.49 见顶</td></tr>
+        <tr><td class="l">5-29</td><td class="x">−11.11亿</td><td>−6.83%</td><td>19.34 杀跌</td></tr>
+        <tr><td class="l">6-01</td><td class="x">−7.30亿</td><td>−5.65%</td><td>18.43</td></tr>
+        <tr><td class="l">6-02</td><td class="x">−2.44亿</td><td>−2.41%</td><td>18.33</td></tr>
+      </tbody>
+    </table>
+    <p>关键信号:<b class="hl">5-27 股价还在涨(20.15),主力却净流出 25 亿</b>——这是教科书级「价涨量出、拉高派发」。<b class="x">5 日合计主力净流出约 −52.8亿</b>,全靠高换手散户接盘,上方堆积巨量套牢筹码。</p>
+  </section>
+
+  <!-- ③ 公司/行业定位 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">公司 / 行业定位</div><div class="sec-tag">封测三巨头·赛道硬</div></div>
+    <ul>
+      <li>国内集成电路封装测试龙头,与<b class="hl">长电科技、通富微电并称封测三巨头</b>,客户覆盖存储/射频/功率/先进封装</li>
+      <li>题材逻辑硬:<b class="hl">AI 算力 → 先进封装(Chiplet/2.5D/3D)+ 国产替代</b>,长期赛道景气向上</li>
+      <li>但赛道好 ≠ 当前盈利好:封测是<b class="hl">薄利重资产</b>行业,业绩弹性慢于股价情绪</li>
+    </ul>
+  </section>
+
+  <!-- ④ 估值与盈利 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">估值与盈利</div><div class="sec-tag">PE175·极度透支</div></div>
+    <table>
+      <thead><tr><th>总市值</th><th>PE(动)</th><th>PB</th><th>净利(最新)</th><th>换手率</th><th>成交额</th></tr></thead>
+      <tbody>
+        <tr class="self"><td>≈609亿</td><td><b class="x">175.5</b></td><td>3.41</td><td>≈0.87亿</td><td>16.70%</td><td><b class="hl">100.96亿</b></td></tr>
+      </tbody>
+    </table>
+    <p><b class="x">PE 动态 175 倍是核心风险点</b>:609 亿市值对应净利仅约 0.87 亿,估值把未来很多年的先进封装预期都提前透支了。这意味着<b class="hl">现价对业绩落地极度敏感</b>——一旦景气兑现不及预期或情绪退潮,杀估值空间巨大。</p>
+  </section>
+
+  <!-- ⑤ 技术面 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">技术面</div><div class="sec-tag">顶部放量·均线走平</div></div>
+    <ul>
+      <li>21.49 为明确头部,现价 18.33 已回落约 <b class="x">-15%</b>,跌破 MA5,短期转弱</li>
+      <li>顶部连续 3 日巨量(900万~1200万手)= 派发量能特征,反弹受 19.3/20.2 压制</li>
+      <li>下方支撑:17.5(今日低)→ 16.97(5-25 起涨平台),失守看 15.9 缺口</li>
+    </ul>
+  </section>
+
+  <!-- 矛盾逻辑链 -->
+  <section class="card logic">
+    <div class="sec-h"><div class="sec-t">⚖ 矛盾逻辑链</div></div>
+    <table>
+      <thead><tr><th class="l good-col">利好 / 支撑</th><th class="l bad-col">利空 / 风险</th></tr></thead>
+      <tbody>
+        <tr><td class="l">封测三巨头,先进封装+国产替代赛道硬</td><td class="l">PE动175倍,净利仅0.87亿,估值极度透支</td></tr>
+        <tr><td class="l">AI算力长期带动先进封装景气</td><td class="l">5-27价涨钱出,5日主力净流出≈-52.8亿派发</td></tr>
+        <tr><td class="l">市值大、流动性好,机构关注度高</td><td class="l">5-28见顶21.49,顶部巨量换手套牢盘压顶</td></tr>
+        <tr><td class="l">回调后若景气兑现仍有中长期价值</td><td class="l">高估值对业绩极敏感,退潮杀估值空间大</td></tr>
+      </tbody>
+    </table>
+    <div class="takeaway"><b>本质矛盾：</b>好赛道、好公司(长期)↔ 坏价格(PE175透支)+ 主力天量派发(短期)。这是典型「基本面给信仰、资金面给警告」的高位股。</div>
+  </section>
+
+  <!-- 操作策略 -->
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-t">🎯 操作策略（现价 ¥18.33）</div></div>
+    <ul>
+      <li><b class="hl">短期：坚决不追高。</b>主力刚天量派发、顶部套牢盘巨大,任何反弹优先减仓,不在高位接盘。</li>
+      <li><b class="hl">中长期：等杀估值+回踩再谈。</b>175 倍 PE 需要时间消化,真要参与赛道,应等回踩主升起点(16.97 一带)甚至更深、且资金止血后,轻仓博反弹,不重仓不长持高位。</li>
+    </ul>
+    <div class="lvl">
+      <div class="chip res"><div class="k">压力位</div><div class="v">19.3 / 20.2</div></div>
+      <div class="chip sup"><div class="k">关键支撑</div><div class="v">17.5 / 16.97</div></div>
+      <div class="chip stop"><div class="k">止损线</div><div class="v">跌破16.97离场</div></div>
+    </div>
+  </section>
+
+  <footer>
+    数据基于东方财富实时行情/资金流(截至 2026-06-02 收盘)的客观梳理,<b>非投资建议,市场有风险</b>。<br>
+    主力净额为东财日度口径;PE 为动态口径,封测行业盈利波动较大。<br>
+    <span class="small">阿波罗框架 · 生成于 2026-06-02</span>
+  </footer>
+
+</div>
+</body>
+</html>
