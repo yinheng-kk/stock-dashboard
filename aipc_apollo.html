@@ -1,0 +1,316 @@
+<!DOCTYPE html><html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AIPC概念 · 阿波罗四维精选10股</title>
+<style>
+:root{--bg:#0d1117;--panel:#161b22;--panel2:#1c2230;--line:#293040;--gold:#e8b84b;--gold2:#f5d27a;--txt:#e6edf3;--sub:#9aa7b8;--muted:#6b7689;--up:#ff5b5b;--down:#2ecc71;--warn:#ffb454;--good:#5ad1a0;--bad:#ff6b6b;}
+*{box-sizing:border-box;margin:0;padding:0}
+body{background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);color:var(--txt);font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;line-height:1.7;font-size:15px;padding:0 0 60px}
+.wrap{max-width:960px;margin:0 auto;padding:0 14px}
+header.hero{text-align:center;padding:38px 16px 26px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(232,184,75,.06),transparent)}
+.brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+h1{font-size:25px;font-weight:700;letter-spacing:.03em}
+h1 .code{color:var(--gold);font-size:16px;font-weight:500;margin-left:8px}
+.meta{color:var(--sub);font-size:13px;margin-top:12px}
+.statbar{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);max-width:620px;margin-left:auto;margin-right:auto}
+.statbar .item{text-align:center} .statbar .lbl{font-size:11px;color:var(--muted)} .statbar .val{font-size:20px;font-weight:700;margin-top:2px;color:var(--gold2)}
+.caveat{margin:22px 14px;padding:14px 16px;border-radius:10px;background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);font-size:12.5px;color:#ffd9a3;max-width:960px;margin-left:auto;margin-right:auto}
+.caveat b{color:var(--warn)}
+section.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px;margin:16px 0}
+.sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+.sec-n{min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px}
+.sec-t{font-size:17px;font-weight:700}
+section.card p{color:var(--txt);margin:6px 0}
+.dim{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+.dim .d{flex:1;min-width:140px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:10px 12px}
+.dim .d .k{color:var(--gold);font-weight:700;font-size:13px} .dim .d .v{color:var(--sub);font-size:12.5px;margin-top:3px}
+.tablewrap{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;margin:8px 0;font-size:12.5px;min-width:760px}
+th,td{padding:9px 7px;text-align:center;border-bottom:1px solid var(--line)}
+th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05);position:sticky;top:0}
+td.l,th.l{text-align:left} .small{font-size:11px;color:var(--muted)}
+.pos{color:var(--up)} .negc{color:var(--down)} .muted{color:var(--muted)} .sub{color:var(--sub)}
+.ok{color:var(--good)} .x{color:var(--bad)}
+.vh{color:var(--up);font-weight:700} .vm{color:var(--gold2);font-weight:600}
+.tdesc{color:var(--sub);font-size:13px;margin-bottom:6px;border-left:3px solid var(--gold);padding-left:10px}
+.stock{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px 14px;margin:12px 0;border-left:4px solid var(--gold)}
+.tier-b .stock,.stock.tier-b{border-left-color:#ff8c42} .stock.tier-c{border-left-color:#5ad1a0} .stock.tier-d{border-left-color:#6b7689}
+.st-h{display:flex;align-items:baseline;gap:10px;flex-wrap:wrap}
+.st-name{font-size:16px;font-weight:700} .st-code{color:var(--gold);font-size:12px;margin-left:6px;font-weight:500}
+.st-role{color:var(--muted);font-size:12px;margin-left:auto}
+.verdict{color:var(--gold2);font-size:13.5px;margin:6px 0 4px;font-weight:600}
+.stock ul{list-style:none;margin:4px 0} .stock li{padding:2px 0 2px 15px;position:relative;color:var(--sub);font-size:13px}
+.stock li::before{content:"▪";position:absolute;left:0;color:var(--gold)} .stock li b{color:var(--txt)}
+.levels{display:flex;gap:18px;margin:8px 0 4px;font-size:12.5px;color:var(--muted)} .levels b{color:var(--gold2)}
+.note{font-size:12.5px;color:#cdd6e3;background:rgba(232,184,75,.05);border-radius:8px;padding:7px 10px;margin-top:6px}
+.takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04);font-size:13.5px}
+footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+</style></head><body>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 四 维 选 股</div>
+  <h1>AIPC 概念精选<span class="code">BK1164 · 10股横向对比</span></h1>
+  <div class="meta">数据截至 2026-06-01 收盘 ｜ 维度：量比 · 资金 · 筹码 · 技术 ｜ 全板块 46 只成分股</div>
+  <div class="statbar">
+    <div class="item"><div class="lbl">板块成分</div><div class="val">46</div></div>
+    <div class="item"><div class="lbl">当日上涨</div><div class="val">29</div></div>
+    <div class="item"><div class="lbl">涨停/近涨停</div><div class="val">12</div></div>
+    <div class="item"><div class="lbl">多头排列</div><div class="val">15</div></div>
+  </div>
+</header>
+<div class="caveat"><b>免责声明：</b>本看板基于 2026-06-01 收盘公开数据(东方财富)程序化测算，量比/资金/筹码/技术为量化口径，<b>筹码分布为三角分布+换手衰减模型估算值，非交易所真实数据</b>。次日盘中价格已变动，仅供研究参考，<b>不构成任何投资建议</b>，据此操作风险自负。</div>
+<div class="wrap">
+
+<section class="card">
+  <div class="sec-h"><div class="sec-n">★</div><div class="sec-t">什么是 AIPC，为什么是现在</div></div>
+  <p>AIPC（AI Personal Computer）指内置 NPU 算力、可本地运行大模型的新一代个人电脑。随着端侧大模型落地与 Windows/国产OS 的 AI 重构，2025–2026 进入<b>换机周期起点</b>，产业链从整机 ODM、PCB/载板、连接器、散热结构件到存储、主控芯片、端侧软件全面受益。本看板从东财 AIPC 板块(BK1164) 46 只成分股中，按四维量化优选并分梯队点评 10 只代表标的。</p>
+</section>
+
+<section class="card">
+  <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">四维选股逻辑</div></div>
+  <div class="dim">
+    <div class="d"><div class="k">量比 · 情绪</div><div class="v">当日量能/前5日均量。&gt;1.5 放量、&gt;3 为天量，反映资金关注度突变</div></div>
+    <div class="d"><div class="k">资金 · 主力</div><div class="v">主力净流入(超大+大单)。5日累计为正＝资金真实进场，为负＝派发出逃</div></div>
+    <div class="d"><div class="k">筹码 · 成本</div><div class="v">获利盘比例 + 90%成本集中度。集中度低＝锁仓好；获利盘过高＝抛压重</div></div>
+    <div class="d"><div class="k">技术 · 趋势</div><div class="v">均线多头排列、RSI 强弱、价格相对成本位置，判断趋势与过热</div></div>
+  </div>
+  <div class="takeaway">逻辑链：放量(量比)吸引眼球 → 主力净流入验证真伪 → 筹码结构看抛压与安全垫 → 技术面定买卖点。四维共振者优选，背离者规避。</div>
+</section>
+
+<section class="card">
+  <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">10股四维横向对比</div></div>
+  <div class="tablewrap"><table>
+    <tr><th class="l">个股</th><th>现价/涨幅</th><th>量比</th><th>换手</th><th>成交额</th><th>5日涨幅</th><th>RSI</th><th>均线</th><th>主力5日净</th><th>获利盘</th><th>集中度90%</th><th>市值</th></tr>
+    <tr>
+      <td class="l"><b>华勤技术</b><br><span class="small">603296</span></td>
+      <td>117.04<br><span class="pos">+10.0%</span></td>
+      <td><span class="">1.46</span></td>
+      <td>4.35%</td>
+      <td>28.58亿</td>
+      <td><span class="pos">+4.73%</span></td>
+      <td>58.6</td>
+      <td><span class="sub">站上20</span></td>
+      <td><span class="pos">+5.85亿</span></td>
+      <td>95.61%</td>
+      <td>15.44</td>
+      <td>1295.0亿</td>
+    </tr><tr>
+      <td class="l"><b>蓝思科技</b><br><span class="small">300433</span></td>
+      <td>41.83<br><span class="pos">+3.28%</span></td>
+      <td><span class="">1.1</span></td>
+      <td>4.34%</td>
+      <td>90.15亿</td>
+      <td><span class="pos">+5.85%</span></td>
+      <td>79.8</td>
+      <td><span class="ok">多头</span></td>
+      <td><span class="pos">+5.13亿</span></td>
+      <td>98.17%</td>
+      <td>22.02</td>
+      <td>2208.1亿</td>
+    </tr><tr>
+      <td class="l"><b>生益电子</b><br><span class="small">688183</span></td>
+      <td>123.0<br><span class="negc">-10.9%</span></td>
+      <td><span class="">0.61</span></td>
+      <td>4.29%</td>
+      <td>45.87亿</td>
+      <td><span class="pos">+11.74%</span></td>
+      <td>61.8</td>
+      <td><span class="ok">多头</span></td>
+      <td><span class="pos">+13.69亿</span></td>
+      <td>72.1%</td>
+      <td>24.98</td>
+      <td>1023.1亿</td>
+    </tr><tr>
+      <td class="l"><b>雷神科技</b><br><span class="small">920190</span></td>
+      <td>31.33<br><span class="pos">+30.0%</span></td>
+      <td><span class="vh">7.26</span></td>
+      <td>20.71%</td>
+      <td>6.34亿</td>
+      <td><span class="pos">+41.83%</span></td>
+      <td>74.1</td>
+      <td><span class="sub">站上20</span></td>
+      <td><span class="pos">+3.44亿</span></td>
+      <td>97.8%</td>
+      <td>17.48</td>
+      <td>31.3亿</td>
+    </tr><tr>
+      <td class="l"><b>信音电子</b><br><span class="small">301329</span></td>
+      <td>31.38<br><span class="pos">+20.0%</span></td>
+      <td><span class="vh">4.38</span></td>
+      <td>44.84%</td>
+      <td>8.05亿</td>
+      <td><span class="pos">+17.35%</span></td>
+      <td>70.4</td>
+      <td><span class="ok">多头</span></td>
+      <td><span class="pos">+0.34亿</span></td>
+      <td>100.0%</td>
+      <td>13.28</td>
+      <td>53.4亿</td>
+    </tr><tr>
+      <td class="l"><b>崇达技术</b><br><span class="small">002815</span></td>
+      <td>16.58<br><span class="pos">+0.48%</span></td>
+      <td><span class="">1.14</span></td>
+      <td>10.97%</td>
+      <td>14.39亿</td>
+      <td><span class="negc">-1.43%</span></td>
+      <td>54.4</td>
+      <td><span class="ok">多头</span></td>
+      <td><span class="pos">+0.09亿</span></td>
+      <td>60.75%</td>
+      <td>9.57</td>
+      <td>204.6亿</td>
+    </tr><tr>
+      <td class="l"><b>中科创达</b><br><span class="small">300496</span></td>
+      <td>65.76<br><span class="pos">+4.08%</span></td>
+      <td><span class="">0.9</span></td>
+      <td>7.48%</td>
+      <td>18.35亿</td>
+      <td><span class="negc">-8.49%</span></td>
+      <td>50.1</td>
+      <td><span class="x">空头</span></td>
+      <td><span class="negc">-6.6亿</span></td>
+      <td>27.52%</td>
+      <td>9.89</td>
+      <td>302.3亿</td>
+    </tr><tr>
+      <td class="l"><b>鹏鼎控股</b><br><span class="small">002938</span></td>
+      <td>103.34<br><span class="negc">-1.59%</span></td>
+      <td><span class="">0.94</span></td>
+      <td>2.55%</td>
+      <td>62.91亿</td>
+      <td><span class="negc">-9.6%</span></td>
+      <td>68.9</td>
+      <td><span class="ok">多头</span></td>
+      <td><span class="negc">-19.85亿</span></td>
+      <td>83.13%</td>
+      <td>39.19</td>
+      <td>2395.5亿</td>
+    </tr><tr>
+      <td class="l"><b>佰维存储</b><br><span class="small">688525</span></td>
+      <td>305.0<br><span class="negc">-6.83%</span></td>
+      <td><span class="">0.86</span></td>
+      <td>7.2%</td>
+      <td>107.79亿</td>
+      <td><span class="negc">-4.92%</span></td>
+      <td>48.9</td>
+      <td><span class="ok">多头</span></td>
+      <td><span class="negc">-12.31亿</span></td>
+      <td>24.31%</td>
+      <td>15.57</td>
+      <td>1436.1亿</td>
+    </tr><tr>
+      <td class="l"><b>博杰股份</b><br><span class="small">002975</span></td>
+      <td>135.07<br><span class="negc">-6.4%</span></td>
+      <td><span class="">1.25</span></td>
+      <td>16.22%</td>
+      <td>31.7亿</td>
+      <td><span class="pos">+1.02%</span></td>
+      <td>64.0</td>
+      <td><span class="ok">多头</span></td>
+      <td><span class="negc">-1.54亿</span></td>
+      <td>67.14%</td>
+      <td>26.69</td>
+      <td>281.1亿</td>
+    </tr>
+  </table></div>
+  <p class="small">注：A股红涨绿跌。量比金/红＝放量；主力净红正(流入)绿负(流出)；集中度数值越小筹码越集中。</p>
+</section>
+
+<section class="card tiercard">
+      <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">一线 · 资金共振首选</div></div>
+      <p class="tdesc">强龙头 + 主力净流入 + 技术健康，攻守兼备的核心仓</p>
+      <div class="stock tier-a">
+          <div class="st-h"><span class="st-name">华勤技术<span class="st-code">603296</span></span>
+            <span class="st-role">AIPC整机ODM龙头(联想/荣耀代工)</span></div>
+          <div class="verdict">基本面+资金最干净的中军首选</div>
+          <ul><li>涨停放量但量比仅1.46，<b>非情绪驱动而是承接盘扎实</b></li><li>主力5日净流入<b>+5.85亿</b>，真金白银且持续</li><li>RSI58.6不过热，获利盘95.6%但筹码集中度15.4%(健康)</li></ul>
+          <div class="levels"><span>支撑 <b>103(主力成本)</b></span><span>压力 <b>前高124</b></span></div>
+          <div class="note">回踩103不破可持有，仓位可重</div>
+        </div><div class="stock tier-a">
+          <div class="st-h"><span class="st-name">蓝思科技<span class="st-code">300433</span></span>
+            <span class="st-role">结构件/盖板龙头·AIPC金属玻璃外壳</span></div>
+          <div class="verdict">大白马放量上攻，唯短线RSI偏热</div>
+          <ul><li>成交额90亿居榜首，<b>主力5日+5.13亿</b>承接</li><li>多头排列(MA5>10>20)，趋势完好</li><li><b>RSI79.8已进过热区</b>，获利盘98%，谨防获利回吐</li></ul>
+          <div class="levels"><span>支撑 <b>34.5(成本线)/38.5(MA20)</b></span><span>压力 <b>45</b></span></div>
+          <div class="note">高位放量需防冲高回落，回踩MA20再上车更稳</div>
+        </div><div class="stock tier-a">
+          <div class="st-h"><span class="st-name">生益电子<span class="st-code">688183</span></span>
+            <span class="st-role">高速PCB/载板·AI服务器+AIPC主板</span></div>
+          <div class="verdict">资金最猛但波动最大，重剑无锋</div>
+          <ul><li><b>主力5日净流入+13.69亿，全场第一</b></li><li>但当日-10.9%大幅震荡，5日仍+11.7%</li><li>获利72%、集中度25%偏分散→<b>分歧大、换手剧烈</b></li></ul>
+          <div class="levels"><span>支撑 <b>110(成本)</b></span><span>压力 <b>135</b></span></div>
+          <div class="note">高波动品种轻仓参与，跌破110止损</div>
+        </div>
+    </section><section class="card tiercard">
+      <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">二线 · 强势妖股(高弹高险)</div></div>
+      <p class="tdesc">放天量涨停、博弈资金主导，弹性极大但无安全垫，严设止损轻仓</p>
+      <div class="stock tier-b">
+          <div class="st-h"><span class="st-name">雷神科技<span class="st-code">920190</span></span>
+            <span class="st-role">北交所·AIPC游戏本整机</span></div>
+          <div class="verdict">量比榜首的微盘妖股，弹性王亦风险王</div>
+          <ul><li><b>量比7.26放天量</b>，5日暴涨+41.8%连续涨停</li><li>主力5日+3.44亿但<b>市值仅31亿，微盘易被资金操纵</b></li><li>获利盘97.8%几乎全员浮盈→<b>随时兑现，无套牢支撑</b></li></ul>
+          <div class="levels"><span>支撑 <b>26.2(成本/生命线)</b></span><span>压力 <b>—(无压力裸奔)</b></span></div>
+          <div class="note">纯博弈，破26.2无条件离场，仓位≤5%</div>
+        </div><div class="stock tier-b">
+          <div class="st-h"><span class="st-name">信音电子<span class="st-code">301329</span></span>
+            <span class="st-role">连接器·AIPC内部互连</span></div>
+          <div class="verdict">超高换手的博弈票，资金快进快出</div>
+          <ul><li><b>换手率44.8%</b>，一日换走近半流通盘→纯筹码博弈</li><li>涨停+20%但主力净流入仅+0.34亿(<b>对倒嫌疑</b>)</li><li>获利100%(全员浮盈)，次日live已回落-4%</li></ul>
+          <div class="levels"><span>支撑 <b>27.6(成本)</b></span><span>压力 <b>33</b></span></div>
+          <div class="note">妖性强、持续性存疑，止损27.6，不追高</div>
+        </div>
+    </section><section class="card tiercard">
+      <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">三线 · 低吸 / 筹码观察</div></div>
+      <p class="tdesc">筹码锁定或错杀低位，左侧潜伏，等放量突破确认</p>
+      <div class="stock tier-c">
+          <div class="st-h"><span class="st-name">崇达技术<span class="st-code">002815</span></span>
+            <span class="st-role">PCB·HDI/载板</span></div>
+          <div class="verdict">筹码高度锁定的潜伏型，等待启动</div>
+          <ul><li><b>90%成本集中度仅9.57%——全场筹码最集中</b>，锁仓充分</li><li>获利盘60.75%(套牢盘约39%)，浮盈压力小</li><li>主力5日+0.09亿基本持平，量比1.14横盘蓄势</li></ul>
+          <div class="levels"><span>支撑 <b>16.0(成本)</b></span><span>压力 <b>18</b></span></div>
+          <div class="note">低位筹码集中是蓄势信号，放量突破18可跟进</div>
+        </div><div class="stock tier-c">
+          <div class="st-h"><span class="st-name">中科创达<span class="st-code">300496</span></span>
+            <span class="st-role">端侧AI软件/操作系统·AIPC软件核心</span></div>
+          <div class="verdict">软件错杀位，基本面想象空间大但资金弱</div>
+          <ul><li>AIPC唯一纯软件标的，<b>端侧大模型落地核心受益</b></li><li>主力5日-6.6亿流出，5日-8.5%，<b>获利仅27.5%(套牢72%)</b></li><li>现价65.8跌破成本68.2，次日live已反弹+2.6%</li></ul>
+          <div class="levels"><span>支撑 <b>62(前低)</b></span><span>压力 <b>68.2(成本)/72</b></span></div>
+          <div class="note">左侧品种，站回68.2成本线再确认，分批低吸</div>
+        </div>
+    </section><section class="card tiercard">
+      <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">四线 · 资金离场(暂规避)</div></div>
+      <p class="tdesc">主力大幅净流出或高位套牢沉重，等资金回流再议</p>
+      <div class="stock tier-d">
+          <div class="st-h"><span class="st-name">鹏鼎控股<span class="st-code">002938</span></span>
+            <span class="st-role">全球PCB龙头</span></div>
+          <div class="verdict">龙头但主力大幅撤离，需等资金回流</div>
+          <ul><li><b>主力5日净流出-19.85亿，全场最弱</b></li><li>5日-9.6%回调，获利83%但高位获利盘正出逃</li><li>成本71.7、现103，<b>获利空间巨大→抛压沉重</b></li></ul>
+          <div class="levels"><span>支撑 <b>95</b></span><span>压力 <b>110</b></span></div>
+          <div class="note">资金未回流前不碰，观察主力转净流入再说</div>
+        </div><div class="stock tier-d">
+          <div class="st-h"><span class="st-name">佰维存储<span class="st-code">688525</span></span>
+            <span class="st-role">存储模组·AIPC内存/SSD</span></div>
+          <div class="verdict">存储涨价逻辑在，但短期套牢+资金双杀</div>
+          <ul><li>主力5日净流出-12.31亿</li><li><b>获利盘仅24.3%——75%筹码套牢</b>，高位接盘者众</li><li>305高价股波动剧烈，现价贴近成本306博弈</li></ul>
+          <div class="levels"><span>支撑 <b>280</b></span><span>压力 <b>306(成本)</b></span></div>
+          <div class="note">重套牢区压力大，等放量站稳306再议</div>
+        </div><div class="stock tier-d">
+          <div class="st-h"><span class="st-name">博杰股份<span class="st-code">002975</span></span>
+            <span class="st-role">自动化测试设备</span></div>
+          <div class="verdict">设备后周期，当前资金技术双弱</div>
+          <ul><li>主力5日净流出-1.54亿，当日-6.4%</li><li>获利67%、集中度26.7%筹码分散</li><li>量比1.25无放量，设备端景气滞后于整机</li></ul>
+          <div class="levels"><span>支撑 <b>120(成本)</b></span><span>压力 <b>145</b></span></div>
+          <div class="note">后周期标的，等整机放量传导，暂观望</div>
+        </div>
+    </section>
+
+<section class="card">
+  <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">操作纪律</div></div>
+  <ul style="list-style:none">
+    <li style="padding:4px 0 4px 16px;position:relative"><span style="position:absolute;left:0;color:var(--gold)">▪</span><b>仓位</b>：一线中军可作底仓(中重仓)，二线妖股≤5%试仓，四线规避；总仓位顺大盘。</li>
+    <li style="padding:4px 0 4px 16px;position:relative"><span style="position:absolute;left:0;color:var(--gold)">▪</span><b>止损</b>：一律以个股「主力成本线/支撑位」为铁律，破位无条件离场，尤其妖股不恋战。</li>
+    <li style="padding:4px 0 4px 16px;position:relative"><span style="position:absolute;left:0;color:var(--gold)">▪</span><b>止盈</b>：RSI&gt;80(蓝思)、获利盘&gt;95%(雷神/信音)为过热区，分批兑现不贪。</li>
+    <li style="padding:4px 0 4px 16px;position:relative"><span style="position:absolute;left:0;color:var(--gold)">▪</span><b>验证</b>：四线资金流出股需待「主力转净流入+放量」信号确认再介入，不抄飞刀。</li>
+  </ul>
+</section>
+
+<footer>阿波罗投研 · AIPC 四维量化看板 ｜ 数据源：东方财富(程序化测算) ｜ 截至 2026-06-01 收盘<br>本页仅供研究参考，不构成投资建议</footer>
+</div></body></html>
