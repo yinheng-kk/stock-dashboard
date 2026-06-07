@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>恒立液压 601100 · 阿波罗个股分析</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#293040;
+    --gold:#e8b84b; --gold2:#f5d27a; --txt:#e6edf3; --sub:#9aa7b8; --muted:#6b7689;
+    --up:#ff5b5b; --down:#2ecc71; --warn:#ffb454; --good:#5ad1a0; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; font-size:15px; padding:0 0 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{
+    text-align:center;padding:38px 16px 26px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent);
+  }
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{
+    display:flex;justify-content:center;gap:26px;flex-wrap:wrap;
+    margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);max-width:560px;margin-left:auto;margin-right:auto;
+  }
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .up{color:var(--up)} /* A股红涨绿跌 */
+  .neg{color:var(--down)}
+  .caveat{
+    margin:22px 0;padding:14px 16px;border-radius:10px;
+    background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);
+    font-size:13px;color:#ffd9a3;
+  }
+  .caveat b{color:var(--warn)}
+  section.card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:16px 0;
+  }
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{
+    min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px;
+  }
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  b.hl{color:var(--gold2)}
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  td.l,th.l{text-align:left}
+  tr.self td{background:rgba(232,184,75,.09);font-weight:600}
+  .pos{color:var(--up)} .negc{color:var(--down)}
+  .compare th:first-child,.compare td:first-child{text-align:left}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:19px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 个 股 深 度</div>
+  <h1>恒立液压<span class="code">601100</span></h1>
+  <div class="meta">截至 2026-06-05 收盘 ｜ 工程机械液压核心件 / 通用设备 ｜ 总股本 ≈13.4亿 ｜ 总市值 ≈1572亿</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">最新收盘(6-05)</div><div class="val up">¥117.20 <span style="font-size:13px">+2.63%</span></div></div>
+    <div class="item"><div class="lbl">日内区间</div><div class="val" style="font-size:16px">111.45 ~ 120.50</div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--warn);font-size:16px">高估值龙头·回踩再议</div></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="caveat">
+    <b>⚠ 数据口径先说清：</b>
+    ① 行情=腾讯实时(6-05收)；财务=新浪指标(截至 2025-12-31 年报)，均已核非零；
+    ② <b>主力资金流/北向</b>本期接口未取，下文资金面以量价+龙头属性定性，不强行编数；
+    ③ 同业 PE/PB 中<b>恒立为真实测算</b>(现价÷年报EPS/BVPS)，三一、艾迪为市场公开近似值，仅作量级对比。
+  </div>
+
+  <!-- ① 量能/股价位置 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能 / 股价位置</div><div class="sec-tag">放量上攻</div></div>
+    <p>6-05 收 <b class="hl">117.20（+2.63%）</b>，全天 111.45→120.50 大幅震荡后收高，成交额 <b class="hl">14.5亿</b>，量能温和放大。股价处于近一年<b class="hl">高位区</b>，120.5 为阶段新高附近，上方无明显套牢压制，但短线涨幅已大，追高性价比低。</p>
+  </section>
+
+  <!-- ② 资金流向 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">定性</div></div>
+    <ul>
+      <li>主力净流入：<span class="x">本期接口未取，不强行定量</span>（下次补东财直连口径）</li>
+      <li>定性：作为千亿级机构重仓白马，资金属性偏<b class="hl">配置型长线</b>，波动主要由景气预期与机器人题材驱动，非游资快进快出。</li>
+    </ul>
+  </section>
+
+  <!-- ③ 同业对比 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">同业横向对比</div><div class="sec-tag">工程机械·液压链</div></div>
+    <p class="small">数据：腾讯实时价(6-05) + 估值近似。恒立=液压核心件龙头；三一=主机龙头；艾迪=液压件/破碎锤同行。</p>
+    <table class="compare">
+      <thead>
+        <tr><th class="l">公司</th><th>现价</th><th>涨跌</th><th>PE-TTM</th><th>PB</th><th>市值(亿)</th><th>赛道角色</th></tr>
+      </thead>
+      <tbody>
+        <tr class="self"><td class="l">恒立液压<br><span class="small">601100</span></td><td>117.20</td><td class="pos">+2.63%</td><td>≈57</td><td>≈9.1</td><td>≈1572</td><td>液压件龙头</td></tr>
+        <tr><td class="l">三一重工<br><span class="small">600031</span></td><td>18.65</td><td class="pos">+2.81%</td><td>约23</td><td>约2.3</td><td>≈1582</td><td>主机龙头</td></tr>
+        <tr><td class="l">艾迪精密<br><span class="small">603638</span></td><td>23.16</td><td class="pos">+5.85%</td><td>约32</td><td>约2.6</td><td>≈150</td><td>液压件/破碎锤</td></tr>
+      </tbody>
+    </table>
+    <div class="takeaway">同为千亿级，恒立 PE 是三一的 <b>2.5 倍</b>、PB 近 <b>4 倍</b>——市场把恒立当"高 ROE 成长股"，把三一当"周期主机股"。溢价能否持续，全看下文的成长兑现。</div>
+  </section>
+
+  <!-- ④ 基本面/财务 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">基本面 / 财务质地</div><div class="sec-tag">2025年报</div></div>
+    <ul>
+      <li>盈利能力：ROE <b class="hl">15.82%</b>、销售毛利率 <b class="hl">40.58%</b>、净利率 <b class="hl">25.04%</b>——制造业里极高水平，护城河扎实。</li>
+      <li>财务健康：资产负债率仅 <b class="hl">19.99%</b>，几乎零有息负债，每股净资产 12.89 元，账上现金充裕。</li>
+      <li>成长性：2025 营收增速 <b class="hl">+16.5%</b>，但净利增速 <b class="hl">+9.0%</b>——<span class="x">利润增速慢于收入</span>，毛利率较 2021 高点(43.8%)略降，盈利能力边际承压。</li>
+    </ul>
+  </section>
+
+  <!-- ⑤ 周期景气 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">周期景气 / 产业链</div><div class="sec-tag">触底回升</div></div>
+    <p>分季看，2025 单季净利增速 <b class="hl">逐季回升</b>：Q1 +2.7% → H1 +11.0% → Q3 +16.6%；营收增速 2.6%→7.0%→12.3% 同步加速。印证<b class="hl">工程机械周期在 2024 见底、2025 进入复苏</b>。挖机内需企稳 + 出口高增 + 电动化液压新增量，是基本面的核心支撑。</p>
+  </section>
+
+  <!-- ⑥ 估值 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑥</div><div class="sec-t">估值</div><div class="sec-tag">高位</div></div>
+    <ul>
+      <li>PE-TTM <b class="hl">≈57 倍</b>（117.20 ÷ 年报 EPS 2.0433）、PB <b class="hl">≈9.1 倍</b>（÷ BVPS 12.89）。</li>
+      <li>横向：远高于三一(约23倍)、行业均值，处于<b class="hl">绝对高估值带</b>。</li>
+      <li>纵向：PB 9 倍接近公司历史估值上沿——市场已部分price-in"机器人丝杠第二曲线"预期。</li>
+    </ul>
+  </section>
+
+  <!-- ⑦ 第二曲线 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑦</div><div class="sec-t">题材 / 第二曲线</div><div class="sec-tag">人形机器人</div></div>
+    <p>恒立切入<b class="hl">行星滚柱丝杠</b>——人形机器人线性执行器的核心部件，凭借精密液压的加工与材料积累卡位。这是当前高估值的<b class="hl">最大想象空间</b>，但目前仍处<b class="x">送样/小批量、尚未规模放量</b>阶段，属预期驱动，需密切跟踪订单兑现。</p>
+  </section>
+
+  <!-- ⑧ 矛盾链 -->
+  <section class="card logic">
+    <div class="sec-h"><div class="sec-n">⑧</div><div class="sec-t">矛盾链</div><div class="sec-tag">多空对撞</div></div>
+    <table>
+      <thead><tr><th>看多逻辑</th><th>看空/风险</th></tr></thead>
+      <tbody>
+        <tr><td class="good-col">周期触底回升，2025 营收净利逐季加速</td><td class="bad-col">PE57/PB9 高估值，对三一溢价 2.5~4 倍</td></tr>
+        <tr><td class="good-col">ROE15.8%、毛利40%、负债率20%，质地顶级</td><td class="bad-col">净利增速(9%)慢于收入(16.5%)，盈利边际承压</td></tr>
+        <tr><td class="good-col">油缸全球份额第一，国产替代+全球化</td><td class="bad-col">机器人丝杠仍未放量，第二曲线是预期非现实</td></tr>
+        <tr><td class="good-col">人形机器人丝杠打开成长天花板</td><td class="bad-col">周期股给成长估值，证伪则戴维斯双杀</td></tr>
+      </tbody>
+    </table>
+    <div class="takeaway"><b>核心矛盾</b>：市场用"全球替代+机器人成长股"逻辑，给一家本质是周期制造龙头的公司 57 倍估值。基本面无可挑剔，分歧全在<b>估值与预期</b>——丝杠放量证实则继续戴维斯双击，不及预期则高估值反噬。</div>
+  </section>
+
+  <!-- ⑨ 操作策略 -->
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-n">⑨</div><div class="sec-t">操作策略</div><div class="sec-tag">仅供参考·非荐股</div></div>
+    <p>定位<b class="hl">高估值优质龙头</b>：基本面可长期跟踪，但当前价位已透支较多机器人预期，<b class="x">不宜追高</b>。</p>
+    <div class="lvl">
+      <div class="chip res"><div class="k">短期压力</div><div class="v">120.5 / 125</div></div>
+      <div class="chip sup"><div class="k">回踩支撑</div><div class="v">111 / 105</div></div>
+      <div class="chip stop"><div class="k">防御止损</div><div class="v">跌破 105</div></div>
+    </div>
+    <ul style="margin-top:12px">
+      <li>持有者：守 111，破位减仓；上方 120-125 高抛降仓位。</li>
+      <li>空仓者：不追高，等回踩 <b class="hl">111~105</b> 区间分批，跌破 105 离场重看。</li>
+      <li>关键变量：<b class="hl">机器人丝杠订单兑现</b> + 工程机械销量数据，证实则容忍高估值，证伪则估值消化。</li>
+    </ul>
+  </section>
+
+  <footer>
+    阿波罗个股深度 · 数据源 腾讯行情(实时) + 新浪财务指标(2025年报) · 截至 2026-06-05<br>
+    本报告基于公开数据，PE/PB 含估算成分，<b>仅供研究参考，不构成任何投资建议</b>。市场有风险，决策需独立判断。
+  </footer>
+
+</div>
+</body>
+</html>
