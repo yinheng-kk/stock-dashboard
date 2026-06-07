@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>汇川技术 300124 · 天机阁个股分析</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#293040;
+    --gold:#e8b84b; --gold2:#f5d27a; --txt:#e6edf3; --sub:#9aa7b8; --muted:#6b7689;
+    --up:#ff5b5b; --down:#2ecc71; --warn:#ffb454; --good:#5ad1a0; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; font-size:15px; padding:0 0 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{
+    text-align:center;padding:38px 16px 26px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent);
+  }
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{
+    display:flex;justify-content:center;gap:26px;flex-wrap:wrap;
+    margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);max-width:560px;margin-left:auto;margin-right:auto;
+  }
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .down{color:var(--up)} /* A股红涨绿跌 */
+  .neg{color:var(--down)}
+  .caveat{
+    margin:22px 0;padding:14px 16px;border-radius:10px;
+    background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);
+    font-size:13px;color:#ffd9a3;
+  }
+  .caveat b{color:var(--warn)}
+  section.card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:16px 0;
+  }
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{
+    min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px;
+  }
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  b.hl{color:var(--gold2)}
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  td.l,th.l{text-align:left}
+  tr.self td{background:rgba(232,184,75,.09);font-weight:600}
+  .pos{color:var(--up)} .negc{color:var(--down)}
+  .compare th:first-child,.compare td:first-child{text-align:left}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:19px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="brand">天 机 阁 · 个 股 分 析</div>
+  <h1>汇川技术<span class="code">300124</span></h1>
+  <div class="meta">截至 2026-06-05 收盘 ｜ 工控伺服 / 新能源车电驱 / 机器人 ｜ 总股本 27.08亿 ｜ 总市值 ≈2030亿</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">最新价(6-05收)</div><div class="val">¥75.08 <span class="down" style="font-size:13px">+1.25%</span></div></div>
+    <div class="item"><div class="lbl">平均成本</div><div class="val">¥73.34</div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--warn);font-size:16px">平台白马·调整消化</div></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="caveat">
+    <b>⚠ 数据口径先说清：</b>
+    ① 行情/资金/筹码/股东数均取自<b>东方财富实时接口</b>，截至 2026-06-05 收盘（6-06/07 为周末）；
+    ② 北向<b>日度</b>数据自 2024-08 冻结，下文用十大股东「香港中央结算」<b>季度口径</b>替代；
+    ③ 估值 PE 两个口径并存：同业表用东财 TTM(50.1)，⑦估值段用 akshare TTM(42.9，带历史分位)，差异源自 TTM 计算窗口，已分别标注；
+    ④ K线技术指标基于后复权价计算，价位/支撑压力一律换算回<b>真实可交易价(¥75.08 基准)</b>。
+  </div>
+
+  <!-- ① 量能 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能</div><div class="sec-tag">缩量回调</div></div>
+    <p>近5日均量 / 近20日均量 = <b class="hl">0.89（缩量）</b>。5-26 冲到阶段高点 80.38 后，5-27~5-29 三天放量下杀（单日跌幅 -3.5%/-1.5%/-3.9%），随后缩量在 73~75 窄幅震荡。典型<b class="hl">放量见顶 → 缩量消化</b>，杀跌动能在衰减，但也<b class="hl">未见放量企稳信号</b>，属高位整理而非反转向上。</p>
+  </section>
+
+  <!-- ② 资金流向 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">主力净流出 · 北向季度增持</div></div>
+    <ul>
+      <li>主力净流入：<b class="hl">近5日累计 −2.10亿</b>（6-05 单日 −0.45亿，主力净占比 −1.14%）<span class="x"> ❌ 资金面偏弱</span></li>
+      <li>近月节奏：5-07 曾单日净流入 +4.20亿（配合 +6.35% 大涨），但 5-12 起转为持续净流出，5-27~6-04 连续 7 个交易日多数净流出</li>
+      <li>北向日度自 2024-08 冻结；<b class="hl">季报口径「香港中央结算」+5.52% 增持</b>（详见⑤）</li>
+    </ul>
+    <div class="takeaway">短线主力在<b class="hl">高位派发/换手</b>（5日净流出 2.1亿），与缩量回调互相印证；但季度级别北向（陆股通）仍在增持，<b class="hl">长钱与短钱方向相反</b>。</div>
+  </section>
+
+  <!-- ③ 板块/同业对比 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">板块 / 同业对比</div><div class="sec-tag">工控·伺服·运控·减速</div></div>
+    <p class="small">数据：东方财富实时（截至6-05收盘）。同业取工控自动化/伺服运控/减速器可比标的；PE 为东财 TTM 口径。</p>
+    <table class="compare">
+      <thead>
+        <tr>
+          <th class="l">公司</th><th>现价</th><th>涨跌</th><th>PE</th><th>PB</th>
+          <th>换手</th><th>总市值<br>(亿)</th><th>5日主力<br>(亿)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="self">
+          <td class="l">汇川技术 300124<br><span class="small">工控伺服平台龙头</span></td><td>75.08</td><td class="pos">+1.25%</td><td>50.1</td><td>5.80</td>
+          <td>2.2%</td><td><b>2033</b></td><td class="negc">−0.45</td>
+        </tr>
+        <tr>
+          <td class="l">埃斯顿 002747<br><span class="small">工业机器人本体龙头</span></td><td>31.02</td><td class="pos">+5.19%</td><td>76.7</td><td>9.27</td>
+          <td>12.3%</td><td>300</td><td class="pos">+1.49</td>
+        </tr>
+        <tr>
+          <td class="l">双环传动 002472<br><span class="small">RV减速器/齿轮</span></td><td>42.86</td><td class="pos">+3.55%</td><td><b style="color:var(--good)">32.1</b></td><td>3.53</td>
+          <td>7.5%</td><td>364</td><td class="pos">+0.63</td>
+        </tr>
+        <tr>
+          <td class="l">雷赛智能 002979<br><span class="small">运动控制</span></td><td>55.69</td><td class="pos">+4.76%</td><td>60.8</td><td>9.36</td>
+          <td>10.2%</td><td>175</td><td class="pos">+0.55</td>
+        </tr>
+        <tr>
+          <td class="l">鸣志电器 603728<br><span class="small">步进/伺服电机</span></td><td>65.82</td><td class="pos">+3.62%</td><td class="x">498.9</td><td>9.27</td>
+          <td>4.6%</td><td>276</td><td class="pos">+0.11</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="takeaway">
+      <b>横向解读：</b>① <b class="hl">汇川是赛道里唯一的两千亿级平台龙头</b>，体量是第二名（双环 364亿）的 5 倍以上，<b class="hl">PE 50.1 在同业里居中偏低</b>（鸣志 499 倍、埃斯顿 76 倍均更贵，仅双环 32 倍更便宜）；
+      ② 但<b class="hl">今天的资金/弹性都不在汇川</b>——埃斯顿(+5.2%)、雷赛(+4.8%)、双环(+3.6%)涨幅与主力流入均强于汇川，汇川换手仅 2.2%、主力小幅流出，是典型「大象搭台、小票唱戏」的板块结构；
+      ③ <b style="color:var(--gold)">结论：</b>汇川是机器人/工控板块的<b class="hl">β锚和估值压舱石</b>，胜在确定性与平台地位，<b class="hl">弹性进攻性弱于减速器/本体等细分弹性票</b>。要稳用汇川，要弹性看双环/埃斯顿。
+    </div>
+  </section>
+
+  <!-- ④ 股东户数 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">股东户数</div><div class="sec-tag">4月追高见顶 · 5月持续集中</div></div>
+    <ul>
+      <li>4-10：17.25万　→　<b class="hl">4-20：18.91万（+9.66%，散户追高见顶）</b></li>
+      <li>4-30：18.48万　→　5-08：17.45万（−5.5%）</li>
+      <li>5-20：16.03万（−8.1%）　→　<b class="hl">5-29：15.21万（−5.1%）</b></li>
+    </ul>
+    <p>从 4-20 峰值 18.9万户到 5-29 的 15.2万户，<b class="hl">户数减少约 19.6%，筹码持续向大户集中</b>；同期户均持股市值从 95万 升到 <b class="hl">132万</b>。与东岳「散户追高接盘」相反，<b class="ok">汇川是 4 月一波追高后、5 月散户离场 + 大户承接</b>，筹码结构在转好。</p>
+  </section>
+
+  <!-- ⑤ 十大股东 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">十大股东</div><div class="sec-tag">陆股通增持 · 控股稳定</div></div>
+    <ul>
+      <li><span class="ok">✅ 香港中央结算（陆股通）<b>18.63%</b>，季度 +5.52%（增持 2638万股）—— 第一大股东，外资在加仓</span></li>
+      <li>控股 深圳市汇川投资 <b>17.21%</b>（不变，稳定）+ 创始团队刘国伟2.87%/李俊田2.80%/唐柱学2.24% 等自然人股东</li>
+      <li><span class="ok">✅ 赵锦荣 +25.05% 增持</span>；<span class="x">唐柱学 −2.30% 小幅减持</span></li>
+    </ul>
+    <p>前十大里<b class="hl">外资陆股通是最大单一股东且季度大幅增持</b>，控股平台与创始团队持股稳定，<b class="ok">机构/外资基本盘稳固</b>，与短线主力派发形成时间维度上的分歧。</p>
+  </section>
+
+  <!-- ⑥ 财务 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑥</div><div class="sec-t">财务</div><div class="sec-tag">2025稳健 · 2026Q1增收不增利（核心）</div></div>
+    <ul>
+      <li><b class="hl">2025 全年</b>：EPS 1.91，营收增速 <b class="hl">+21.8%</b>、净利增速 <b class="hl">+19.0%</b>、扣非净利 <b class="hl">49.5亿</b>、加权ROE <b class="hl">16.3%</b>、销售净利率 11.5% —— 平台型白马的稳健成长</li>
+      <li><b class="x">2026 Q1：净利同比 −23.87%</b>，但营收仍 <b class="hl">+12.98%</b>，销售净利率从去年同期 14.96% 降到 <b class="x">10.08%</b></li>
+    </ul>
+    <p>要害是 <b class="hl">2026Q1 出现「增收不增利」</b>：收入还在两位数增长，利润却同比下滑近 1/4，净利率压缩 ~5 个百分点。指向<b class="hl">价格战/毛利承压 + 费用前置</b>（通用自动化下游需求平淡、新能源车电驱价格内卷）。<b class="hl">机器人是远期期权、尚未贡献利润，当期盈利由通用自动化与新能源车电驱决定</b>——而这两块当前都在承压。这是汇川眼下最需要盯的基本面裂缝。</p>
+  </section>
+
+  <!-- ⑦ 估值 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑦</div><div class="sec-t">估值</div><div class="sec-tag">PE高位 vs PB低位（背离）</div></div>
+    <ul>
+      <li>PE-TTM <b class="hl">42.9</b>（akshare口径）：全历史分位 56%，<b class="x">近3年分位 94.1%（偏高）</b>，历史区间 22~109 倍</li>
+      <li>PB <b class="hl">5.59</b>：<b class="ok">全历史分位仅 8.0%、近3年分位 18.4%（偏低）</b></li>
+    </ul>
+    <p>一个有意思的<b class="hl">估值背离</b>：PE 处近3年高位（因 2026Q1 盈利下滑拖累 TTM），PB 却处历史地板。原因是<b class="hl">净资产增长极快</b>——每股净资产从 2024 中的 9.71 元涨到 2026Q1 的 14.10 元，把 PB 不断摊薄。<br>含义：<b class="hl">从 PB 看汇川不贵（资产端便宜），从 PE 看不便宜（盈利端走弱）</b>。市场愿意给的溢价，押的是机器人/人形带来的二次成长曲线；若 2026 盈利持续下滑，PE 会进一步抬高，<b class="hl">高估值的安全垫只剩 PB 与平台地位</b>。</p>
+  </section>
+
+  <!-- ⑧ 机器人主线 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑧</div><div class="sec-t">机器人主线逻辑</div><div class="sec-tag">远期期权 vs 当期兑现</div></div>
+    <p><b class="hl">为什么是「机器人龙头」：</b>汇川在伺服系统、控制器、精密电机上是国产工控平台龙头，这些正是<b class="hl">人形/工业机器人的核心运控与执行部件</b>，技术与客户卡位强，是机器人产业链「卖铲人」逻辑里最硬的平台标的。</p>
+    <p><b style="color:var(--warn)">⚠ 但要分清预期与当期：</b>机器人（尤其人形）对汇川目前<b class="hl">是估值想象空间、不是利润来源</b>。当期收入与利润主要由通用自动化、新能源车电驱两块贡献，而这两块 2026Q1 都在承压（见⑥）。所以汇川的股价是<b class="hl">「主题β（机器人预期）+ 基本面α（工控周期）」的叠加</b>——主题热时跟涨、主题退潮时由基本面定价。这也是为何今天弹性不如纯减速器/本体小票。</p>
+  </section>
+
+  <!-- ⑨ 技术指标 + 筹码 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑨</div><div class="sec-t">技术指标 / 筹码</div><div class="sec-tag">短期调整中</div></div>
+    <ul>
+      <li>RSI14 <b class="hl">45.1</b>（中性偏弱，破50）</li>
+      <li>MACD <b style="color:var(--down)">死叉</b>（DIF &lt; DEA，绿柱），短期趋势走弱</li>
+      <li>均线：价格在 60日线上方、20日线下方 —— 中期未破、短期调整</li>
+      <li>筹码：当前获利盘 <b class="hl">54%</b>，平均成本 <b class="hl">73.34</b>；90% 筹码区间 <b class="hl">64.89~79.77</b>（集中度 10.3%，较集中），70% 筹码 67.03~77.95</li>
+    </ul>
+    <p>技术面短期偏弱（死叉+缩量），但<b class="ok">现价 75 站在平均成本 73.3 上方、获利盘过半</b>，且 90% 筹码下沿 65 一带有支撑，属高位整理消化获利盘，<b class="hl">未破中期趋势</b>。</p>
+  </section>
+
+  <!-- 矛盾逻辑链 -->
+  <section class="card logic">
+    <div class="sec-h"><div class="sec-t">⚖ 矛盾逻辑链 —— 一只「确定性溢价 vs 当期降速」的平台白马</div></div>
+    <table>
+      <thead><tr><th class="l good-col">利好 / 支撑</th><th class="l bad-col">利空 / 风险</th></tr></thead>
+      <tbody>
+        <tr><td class="l">两千亿平台龙头，工控伺服+机器人核心部件卡位强</td><td class="l">2026Q1 增收不增利，净利 −23.9%、净利率压缩到 10%</td></tr>
+        <tr><td class="l">陆股通季度 +5.52% 增持，外资为第一大股东</td><td class="l">近5日主力净流出 2.1亿，短线在高位派发</td></tr>
+        <tr><td class="l">5月散户离场、筹码向大户集中（户数 −19.6%）</td><td class="l">通用自动化+新能源车电驱当期均承压，价格内卷</td></tr>
+        <tr><td class="l">PB 仅历史 8% 分位（资产端便宜），净资产高增长</td><td class="l">PE-TTM 近3年 94% 分位（盈利端走弱抬高 PE）</td></tr>
+        <tr><td class="l">现价站上均成本、获利盘过半、中期趋势未破</td><td class="l">MACD 死叉 + 缩量，短期技术偏弱</td></tr>
+        <tr><td class="l">机器人/人形提供二次成长曲线想象空间</td><td class="l">机器人当期不贡献利润，主题退潮时弹性弱于小票</td></tr>
+      </tbody>
+    </table>
+    <div class="takeaway"><b>本质矛盾：</b>平台龙头的确定性溢价与外资长钱增持（看多）↔ 当期盈利降速 + 短线主力派发 + 技术走弱（看空）。它是板块的<b class="hl">压舱石而非冲锋枪</b>——赢在稳，弱在当期增速与进攻性。</div>
+  </section>
+
+  <!-- 操作策略 -->
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-t">🎯 操作策略（基准价 ¥75.08）</div></div>
+    <ul>
+      <li><b class="hl">短期（1-4周）：中性偏谨慎，不追高。</b>MACD 死叉 + 主力流出 + Q1 降速，正在 73~78 高位消化，等放量企稳再谈。</li>
+      <li><b class="hl">中期（1-2季）：胜负手在盈利能否止跌。</b>盯 2026 中报净利率能否守住 10%+ 并环比回升：守住 → 平台α重新确立，PB 低位提供向上弹性；继续下滑 → 增收不增利证实，需警惕 PE 被动抬升的杀估值风险。</li>
+      <li><b class="hl">仓位定位：</b>作为机器人/工控板块的底仓配置（稳），博弹性另配减速器/本体小票（攻）。</li>
+    </ul>
+    <div class="lvl">
+      <div class="chip res"><div class="k">压力位</div><div class="v">78 / 80</div></div>
+      <div class="chip sup"><div class="k">关键支撑</div><div class="v">73.3 / 67</div></div>
+      <div class="chip stop"><div class="k">止损参考</div><div class="v">跌破67离场</div></div>
+    </div>
+  </section>
+
+  <footer>
+    以上基于公开行情 / 财报 / 资金筹码数据的客观梳理，<b>非投资建议，市场有风险</b>。<br>
+    数据缺口（北向日度自2024-08冻结）已如实标注；同业对比为东财实时口径，财务为定期报告口径，估值截至 2026-06-05。<br>
+    <span class="small">天机阁框架 · 阿波罗 · 生成于 2026-06-07</span>
+  </footer>
+
+</div>
+</body>
+</html>
