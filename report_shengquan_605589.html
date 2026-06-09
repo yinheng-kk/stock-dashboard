@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>圣泉集团 605589 · 阿波罗个股分析</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#293040;
+    --gold:#e8b84b; --gold2:#f5d27a; --txt:#e6edf3; --sub:#9aa7b8; --muted:#6b7689;
+    --up:#ff5b5b; --down:#2ecc71; --warn:#ffb454; --good:#5ad1a0; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; font-size:15px; padding:0 0 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{
+    text-align:center;padding:38px 16px 26px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent);
+  }
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{
+    display:flex;justify-content:center;gap:26px;flex-wrap:wrap;
+    margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);max-width:560px;margin-left:auto;margin-right:auto;
+  }
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .down{color:var(--up)} /* A股红涨绿跌 */
+  .neg{color:var(--down)}
+  .caveat{
+    margin:22px 0;padding:14px 16px;border-radius:10px;
+    background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);
+    font-size:13px;color:#ffd9a3;
+  }
+  .caveat b{color:var(--warn)}
+  section.card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:16px 0;
+  }
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{
+    min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px;
+  }
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  b.hl{color:var(--gold2)}
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  td.l,th.l{text-align:left}
+  tr.self td{background:rgba(232,184,75,.09);font-weight:600}
+  .pos{color:var(--up)} .negc{color:var(--down)}
+  .compare th:first-child,.compare td:first-child{text-align:left}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:19px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 个 股 分 析</div>
+  <h1>圣泉集团<span class="code">605589</span></h1>
+  <div class="meta">截至 2026-06-09 收盘 ｜ 合成树脂 / AI电子材料 / 电池材料 / 生物质 ｜ 总股本 ≈8.46亿 ｜ 总市值 ≈462亿</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">基准价(6-09收·真实价)</div><div class="val down">¥54.64</div></div>
+    <div class="item"><div class="lbl">今日涨幅(一字板)</div><div class="val down">+10.01%</div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--warn);font-size:16px">高位题材·不追</div></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="caveat">
+    <b>⚠ 数据口径先说清：</b>
+    ① 今日<b>一字涨停（开=高=低=收 54.64）</b>，封板成交仅 4.12 亿、换手 0.89%，盘口难成交；
+    ② K线历史为复权价（6-09 显示 58.56），真实可交易价为 <b>54.64</b>，下文价位/均线均按真实价换算；
+    ③ 北向日度自 2024-08 冻结，改用十大股东「香港中央结算」季度口径替代；主力净流入为东财口径。
+  </div>
+
+  <!-- ① 量能 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能</div><div class="sec-tag">一字封板·缩量定格</div></div>
+    <p>今日开盘即<b class="hl">一字涨停</b>封死，全天成交仅 4.12 亿、换手 0.89%（封单锁仓）。回看：6-02 涨停时放出 71 万手巨量，6-03 见阶段高量后逐步缩量，6-05/6-08 回调缩量。近5日均量/近20日均量 = <b class="hl">0.91（略缩）</b>。今日是<b class="hl">消息+板块共振驱动的一字板</b>，非放量主升，量能未给出二次确认。</p>
+  </section>
+
+  <!-- ② 资金流向 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">高位派发·今日封板抢筹</div></div>
+    <ul>
+      <li>今日 6-09：主力净流入 <span class="ok">+1.38亿</span>（净占比 33.5%，但一字板总量仅 4.12 亿，绝对额小，超大单 +1.73亿）</li>
+      <li><b style="color:var(--warn)">近5日主力净流出 −4.92亿</b>：6-02 涨停拉升日主力 +3.01亿 → 6-03~6-08 连续 4 日净流出累计约 −5.6亿（典型<b class="hl">高位派发</b>）</li>
+      <li>北向（香港中央结算）季度口径 <span class="ok">+6.93%</span> 小幅增持（详见⑤）</li>
+    </ul>
+    <p>资金面是<b class="hl">分裂</b>的：中线主力近一周在高位出货，今日靠消息一字封板让散户难买入 —— 警惕<b class="hl">诱多</b>，须看次日能否放量续封。</p>
+  </section>
+
+  <!-- ③ 板块/同业对比 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">板块 / 同业对比</div><div class="sec-tag">AI电子树脂 + 电池负极材料</div></div>
+    <p class="small">数据：实时价(6-09) + 东财估值 + 新浪 2026Q1 财务 + 东财近5日主力净额。同业取「电子树脂(覆铜板上游)」与「电池负极材料(硅碳/硬碳/多孔碳)」双引擎可比标的。</p>
+    <table class="compare">
+      <thead>
+        <tr>
+          <th class="l">公司</th><th>现价</th><th>今日<br>涨幅</th><th>PE-TTM</th><th>PB</th>
+          <th>换手</th><th>流通<br>市值</th><th>PE近3年<br>分位</th><th>近5日<br>主力</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="self">
+          <td class="l">圣泉集团 605589</td><td>54.64</td><td class="pos">+10.0%</td><td>47.3</td><td>4.24</td>
+          <td>0.89%</td><td>462亿</td><td><b style="color:var(--bad)">99.7%</b></td><td class="negc">−4.92亿</td>
+        </tr>
+        <tr>
+          <td class="l">东材科技 601208<br><span class="small">电子树脂/AI材料</span></td><td>59.62</td><td class="pos">+10.0%</td><td>158</td><td>9.89</td>
+          <td>9.37%</td><td>602亿</td><td style="color:var(--bad)">99.5%</td><td class="pos">+5.81亿</td>
+        </tr>
+        <tr>
+          <td class="l">宏昌电子 603002<br><span class="small">环氧树脂</span></td><td>16.59</td><td class="pos">+10.0%</td><td class="small">640(虚高)</td><td>5.44</td>
+          <td>6.68%</td><td>188亿</td><td style="color:var(--bad)">98.9%</td><td class="negc">−1.79亿</td>
+        </tr>
+        <tr>
+          <td class="l">璞泰来 603659<br><span class="small">锂电负极龙头</span></td><td>27.91</td><td class="pos">+3.6%</td><td>23.2</td><td>2.85</td>
+          <td>1.62%</td><td>598亿</td><td style="color:var(--good)">44.8%</td><td class="negc">−5.89亿</td>
+        </tr>
+        <tr>
+          <td class="l">中科电气 300035<br><span class="small">负极(硅碳/硬碳)</span></td><td>17.48</td><td class="pos">+6.4%</td><td>29.9</td><td>2.38</td>
+          <td>6.09%</td><td>103亿</td><td style="color:var(--good)">40.7%</td><td class="pos">+0.57亿</td>
+        </tr>
+        <tr>
+          <td class="l">元力股份 300174<br><span class="small">活性炭/多孔碳前驱</span></td><td>24.51</td><td class="pos">+4.9%</td><td>40.0</td><td>2.55</td>
+          <td>12.07%</td><td>89亿</td><td style="color:var(--bad)">98.9%</td><td class="negc">−2.18亿</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="takeaway">
+      <b>横向解读：</b>① <b class="hl">今日主升在「电子树脂」一线</b>——圣泉与东材、宏昌同步涨停，电池材料端（璞泰来 +3.6%/中科 +6.4%/元力 +4.9%）跟涨偏弱，说明今天是「AI高频高速树脂/覆铜板上游」板块行情，圣泉踩中主线；
+      ② <b class="hl">圣泉盈利质地在树脂三杰中最扎实</b>——东材 PE158、宏昌 PE640 是微利/亏损推高，圣泉 PE47、PB4.24 反而最低，但相对电池龙头璞泰来（PE23）仍贵一倍；
+      ③ <b class="hl">资金强度反差大</b>——东材近5日主力逆势 +5.81亿（真金白银抢），而圣泉 −4.92亿、宏昌 −1.79亿，圣泉今日靠一字板封量，主力中线在撤。
+      <br><b style="color:var(--gold)">结论：</b>圣泉是板块里「质地最好 + 估值已打满」的品种，今日是题材共振的高位封板，资金强度不及东材，<b class="hl">右侧追涨性价比偏低</b>。
+    </div>
+  </section>
+
+  <!-- ④ 股东户数 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">股东户数</div><div class="sec-tag">2025Q4散户涌入</div></div>
+    <ul>
+      <li>2025-09-30：3.11万户</li>
+      <li><b class="hl">2025-12-31：4.48万户（+44.3%）</b> ← 去年四季度行情中散户大量涌入</li>
+      <li>2026-03-31：4.04万户（−9.85%，略集中）</li>
+    </ul>
+    <p>结论：<b class="hl">筹码在 2025Q4 明显下沉到散户手中（户数暴增44%）</b>，Q1 仅小幅集中。叠加近期连续涨停，散户参与度高、换手活跃，<b class="hl">浮筹偏多</b>，回调时抛压不轻。</p>
+  </section>
+
+  <!-- ⑤ 十大股东 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">十大股东</div><div class="sec-tag">家族控股稳·机构季度加仓</div></div>
+    <ul>
+      <li>控股 <b>唐一林 16.60% + 唐地源 8.76%</b>（家族合计约25%，不变，稳固）+ 2025年员工持股计划 3.80%（绑定）</li>
+      <li><span class="ok">✅ 鹏华中证细分化工ETF +50.2%（被动指数大幅增持）</span></li>
+      <li><span class="ok">✅ 全国社保基金111组合 +8.36%、中信证券社保17052组合（新进）</span></li>
+      <li><span class="ok">✅ 香港中央结算（北向）+6.93%（季度小幅增持）</span></li>
+      <li><span class="x">个人股东 孟庆文 −4.11%（小幅减持）</span></li>
+    </ul>
+    <p>机构端（化工ETF + 社保 + 北向）<b class="hl">季度口径净加仓</b>，控股股东与员工持股稳固 —— 这是相对正面的中线背书，与短线主力派发形成对照。</p>
+  </section>
+
+  <!-- ⑥ 财务 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑥</div><div class="sec-t">财务</div><div class="sec-tag">质地稳健·但Q1增收不增利</div></div>
+    <ul>
+      <li>2025 全年：EPS <b class="hl">1.22 元</b>，净利同比 <span class="pos">+15.9%</span>，营收 +9.14%，加权 ROE 9.89%，毛利率 24.3%，<b class="ok">资产负债率仅 36%（财务健康、现金流稳）</b></li>
+      <li><b style="color:var(--warn)">2026Q1：EPS 0.219，净利同比 −14.3%，营收 +8.6%</b> —— 增收不增利，盈利端阶段性走弱</li>
+    </ul>
+    <p>圣泉是<b class="hl">全球合成树脂（酚醛）龙头</b>，基本面扎实、低负债，电子树脂/电池材料是成长引擎。但<b class="hl">Q1 净利转负增长</b>，与当前历史极值估值形成背离，需 H1/Q2 重新放量验证成长兑现。</p>
+  </section>
+
+  <!-- ⑦ 估值 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑦</div><div class="sec-t">估值</div><div class="sec-tag">PE/PB双双历史极值分位</div></div>
+    <ul>
+      <li>PE-TTM <b class="hl">47.3</b>，全历史分位 <b style="color:var(--bad)">99.8%</b>、近3年 <b style="color:var(--bad)">99.7%</b>（几乎触上市以来最高 47.34）</li>
+      <li>PB <b class="hl">4.24</b>，全历史分位 97.1%、近3年 99.7%（极高位）</li>
+      <li>按券商 2026E EPS ≈ 1.65~1.96 测算，<b class="hl">动态 PE ≈ 28~33</b>（仍不便宜）</li>
+    </ul>
+    <p>无论静态 TTM 还是机构动态预测，估值<b class="hl">都已站上历史极值区间</b>，把「AI电子材料 + 电池材料」高成长预期透支充分。估值端没有安全垫，<b class="hl">高度依赖成长持续兑现</b>。</p>
+  </section>
+
+  <!-- ⑧ 催化剂 / 产业链 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑧</div><div class="sec-t">催化剂 / 产业链</div><div class="sec-tag">AI算力 + 钠/锂电材料</div></div>
+    <ul>
+      <li><b class="hl">AI高频高速树脂（PPO/碳氢树脂）</b>：覆铜板/PCB 上游核心材料，受 AI 算力服务器需求拉动量价齐升，是今日板块（东材/宏昌共振涨停）主线催化</li>
+      <li><b class="hl">电池材料</b>：硅碳负极/硬碳负极/多孔碳前驱放量，绑定钠电+硅基负极双赛道，发可转债投建新能源电池材料项目</li>
+      <li><b class="hl">生物质精炼 + 全球酚醛树脂龙头</b>基本盘：现金流压舱石</li>
+    </ul>
+    <p>故事性强（AI + 钠/锂电 + 生物质三引擎），但这些预期已大幅反映在 99.7% 分位的估值里。<b class="hl">催化是题材驱动型</b>，需盯电子树脂订单/产能落地节奏。</p>
+  </section>
+
+  <!-- ⑨ 技术指标 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑨</div><div class="sec-t">技术指标</div><div class="sec-tag">多头排列·封板突破前高</div></div>
+    <ul>
+      <li>均线<b class="hl">多头排列</b>（真实价）：现价 54.64 &gt; MA5 ≈53.2 &gt; MA10 ≈50.9 &gt; MA20 ≈47.7</li>
+      <li>RSI14 <b class="hl">61.0</b>（偏强、未到超买）；MACD <b style="color:var(--up)">红柱金叉</b>（DIF 3.78 &gt; DEA 3.40）</li>
+      <li>形态：今日一字板<b class="hl">突破并站上 6-03 前高（收盘 54.65）</b>，盘中前高约 57；下方 6-08 平台 49.7</li>
+    </ul>
+    <p>技术形态偏强（封板突破前高、多头排列），但 RSI 已偏高、近一周主力净流出，<b class="hl">技术强势与资金派发背离</b>，谨防一字板后的高开诱多。</p>
+  </section>
+
+  <!-- 矛盾逻辑链 -->
+  <section class="card logic">
+    <div class="sec-h"><div class="sec-t">⚖ 矛盾逻辑链 —— 「好公司」遇上「贵价格」</div></div>
+    <table>
+      <thead><tr><th class="l good-col">利好</th><th class="l bad-col">利空 / 风险</th></tr></thead>
+      <tbody>
+        <tr><td class="l">全球酚醛树脂龙头，质地扎实、负债率仅36%</td><td class="l">PE-TTM 99.8%、PB 97% 双双历史极值分位，估值打满无安全垫</td></tr>
+        <tr><td class="l">AI高频高速树脂 + 电池材料(硅碳/硬碳)双成长引擎</td><td class="l">2026Q1 净利同比 −14.3%（增收不增利），与高估值背离</td></tr>
+        <tr><td class="l">机构季度加仓：化工ETF +50%、社保 +8.4%、北向 +6.9%</td><td class="l">近5日主力净流出 −4.92亿，6-03~6-08 连续派发</td></tr>
+        <tr><td class="l">研报全员买入/增持，2026E EPS 1.65~1.96</td><td class="l">2025Q4 股东户数暴增 +44%，散户拥挤、浮筹多</td></tr>
+        <tr><td class="l">今日板块共振（东材/宏昌同涨停），主线强</td><td class="l">资金强度不及东材(+5.81亿)，一字板靠封量、量难确认</td></tr>
+      </tbody>
+    </table>
+    <div class="takeaway"><b>本质矛盾：</b>基本面（龙头质地 + 三引擎成长）确实好 ↔ 价格（PE/PB 历史极值 + Q1 增收不增利 + 主力高位派发）已经贵。今日一字板是题材板块驱动的高位封板，强势在技术面，撤退在资金面。</div>
+  </section>
+
+  <!-- 操作策略 -->
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-t">🎯 操作策略（基准价 ¥54.64·真实价）</div></div>
+    <ul>
+      <li><b class="hl">不追一字板。</b>估值历史极值 + 近5日主力净流出 4.92亿，右侧追涨性价比差；次日须看竞价封单与是否放量续封，封不住易冲高回落。</li>
+      <li><b class="hl">持仓者：逢高减仓、留底仓看板块持续性。</b>兑现部分浮盈，跌破 6-08 平台 49.7（或放量失守 MA10 50.9）止盈离场。</li>
+      <li><b class="hl">空仓者：等回踩缩量企稳再低吸，别在高位接力。</b>回踩 MA10(≈51)/MA20(≈47.7) 缩量不破方考虑分批，破位则放弃。</li>
+      <li><b class="hl">中期胜负手在成长兑现</b>：盯 H1/Q2 净利能否重回正增长 + 电子树脂/电池材料订单产能落地，兑现则消化估值，证伪则向均线回归。</li>
+    </ul>
+    <div class="lvl">
+      <div class="chip res"><div class="k">压力位</div><div class="v">54.65 / 57</div></div>
+      <div class="chip sup"><div class="k">关键支撑</div><div class="v">49.7 / 47.7(MA20)</div></div>
+      <div class="chip stop"><div class="k">止盈/止损线</div><div class="v">放量跌破 49.7 离场</div></div>
+    </div>
+  </section>
+
+  <footer>
+    以上基于公开行情 / 公告 / 资金 / 研报数据的客观梳理，<b>非投资建议，市场有风险</b>。<br>
+    数据缺口（北向日度自2024-08冻结，改季度口径）已如实标注；K线为复权价、价位均按真实价 54.64 换算。<br>
+    <span class="small">阿波罗框架 · 生成于 2026-06-09</span>
+  </footer>
+
+</div>
+</body>
+</html>
