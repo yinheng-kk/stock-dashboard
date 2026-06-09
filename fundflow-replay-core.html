@@ -182,6 +182,11 @@ main { max-width: 1280px; margin: 0 auto; padding: 16px 12px 32px; }
   transition: background 0.4s ease-out;
 }
 .flow-row:first-child { border-top: 0; }
+.flow-row { cursor: pointer; }
+.flow-row:hover { background: rgba(96,165,250,0.06); }
+.flow-row.pinned { background: rgba(96,165,250,0.14); box-shadow: inset 2px 0 0 var(--replay-blue); }
+.flow-row.pinned .name { font-weight: 700; }
+.flow-row.pinned .name::before { content: '◉ '; color: var(--replay-blue); font-size: 10px; }
 .flow-row .rank { color: var(--text-muted); font-variant-numeric: tabular-nums; font-size: 11px; }
 .flow-row .name { color: var(--text-primary); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .flow-row .val { font-variant-numeric: tabular-nums; font-weight: 500; }
@@ -393,7 +398,7 @@ main > *:nth-child(4) { animation-delay: 0.24s; }
 
 <section class="chart-wrap" aria-label="分时净流入曲线 回放">
   <div class="chart-topbar">
-    <span>累计净流入（单位：亿元） · 26 个板块 · 回放</span>
+    <span>累计净流入（亿元） · <span id="progInfo" style="color:var(--replay-blue);font-variant-numeric:tabular-nums">全天回放</span></span>
     <span>回放时点 <span id="tNow" class="big">&mdash;</span></span>
   </div>
 
@@ -553,6 +558,13 @@ const NEG_COLORS=['#22c55e','#10b981','#14b8a6','#06b6d4','#0ea5e9','#3b82f6','#
 const IND_COLORS=['#facc15','#eab308','#ca8a04','#84cc16','#65a30d','#4d7c0f'];
 
 let chart=null, FULL=[], FULL_YR=null, maxIdx=0, playIdx=0, colorMap={}, chartBaseDone=false;
+let pinnedName=null;   // 联动高亮：被点选锁定的板块名
+
+function applyHighlight(){
+  if(!chart) return;
+  chart.dispatchAction({ type:'downplay' });
+  if(pinnedName) chart.dispatchAction({ type:'highlight', seriesName:pinnedName });
+}
 
 function initChart(){
   document.getElementById('chart').innerHTML='';
@@ -635,6 +647,18 @@ function renderAt(idx){
   const scrub = document.getElementById('scrub');
   scrub.value = playIdx;
   scrub.style.setProperty('--fill', (maxIdx? (playIdx/maxIdx*100):100)+'%');
+  // 进度显示：已播百分比 + 距收盘交易分钟数（轴上每点=1 交易分钟，已剔除午休）
+  const prog = document.getElementById('progInfo');
+  if(prog){
+    const pct = maxIdx ? Math.round(playIdx/maxIdx*100) : 100;
+    const rem = maxIdx - playIdx;
+    prog.textContent = rem<=0 ? '已播 100% · 收盘定格' : ('已播 '+pct+'% · 距收盘 '+rem+' 分钟');
+  }
+  // 联动高亮：行被 setOption/updateFlowPanel 重建后，复原选中态与图上高亮
+  if(pinnedName){
+    document.querySelectorAll('.flow-row[data-name="'+CSS.escape(pinnedName)+'"]').forEach(r=>r.classList.add('pinned'));
+  }
+  applyHighlight();
 }
 
 /* ── 播放引擎 ───────────────────────────── */
@@ -683,23 +707,55 @@ function lastDataIndex(sectors){
   const i=TIME_AXIS.indexOf(last);
   return i<0 ? TIME_AXIS.length-1 : i;
 }
+// fetch + 超时(默认 9s)：弱网下不再无限死等"正在加载"
+function fetchT(url, opts, ms){
+  ms = ms || 9000;
+  const ctrl = new AbortController();
+  const id = setTimeout(()=>ctrl.abort(), ms);
+  return fetch(url, Object.assign({ signal:ctrl.signal }, opts)).finally(()=>clearTimeout(id));
+}
+// 一次并行拉全部四个端点；仅主图(live)失败会 reject，快照三件套缺失降级为 null
+function fetchAll(){
+  return Promise.all([
+    fetchT(LIVE_API,     { cache:'no-store' }).then(r=>r.ok?r.json():Promise.reject('live '+r.status)),
+    fetchT(VANGUARD_API, { cache:'no-store' }).then(r=>r.json()).catch(()=>null),
+    fetchT(YIZIBAN_API,  { cache:'no-store' }).then(r=>r.json()).catch(()=>null),
+    fetchT(INDICES_API,  { cache:'no-store' }).then(r=>r.json()).catch(()=>null),
+  ]).then(([live,vg,yz,idx])=>({ live, vg, yz, idx }));
+}
+// sessionStorage 当日缓存：收盘后数据定格不变，同标签页二次打开秒开、不再全量重拉
+const CACHE_KEY='apollo-replay-v1';
+function readCache(){
+  try{
+    const raw=sessionStorage.getItem(CACHE_KEY); if(!raw) return null;
+    const c=JSON.parse(raw);
+    if(c.day !== new Date().toDateString()) return null;   // 跨日则作废重拉
+    return c.bundle;
+  }catch(e){ return null; }
+}
+function writeCache(bundle){
+  try{ sessionStorage.setItem(CACHE_KEY, JSON.stringify({ day:new Date().toDateString(), bundle })); }catch(e){}
+}
+
 async function loadReplay(){
   initChart();
-  // 并行拉：主图（含全天 points）+ 收盘快照三件套
-  const tasks = [
-    fetch(LIVE_API, { cache:'no-store' }).then(r=>r.ok?r.json():Promise.reject('live '+r.status)),
-    fetch(VANGUARD_API, { cache:'no-store' }).then(r=>r.json()).catch(()=>null),
-    fetch(YIZIBAN_API, { cache:'no-store' }).then(r=>r.json()).catch(()=>null),
-    fetch(INDICES_API, { cache:'no-store' }).then(r=>r.json()).catch(()=>null),
-  ];
-  let live, vg, yz, idx;
-  try { [live, vg, yz, idx] = await Promise.all(tasks); }
-  catch(e){
-    console.error('[replay] load fail', e);
-    document.getElementById('chart').innerHTML='<div class="placeholder">复盘数据加载失败：'+e+'</div>';
-    setPill('error');
-    return;
+  let bundle = readCache();
+  if(!bundle){
+    // 一次失败 → 退避 800ms 自动重试一次，仍失败才报错
+    try { bundle = await fetchAll(); }
+    catch(e){
+      console.warn('[replay] load fail, retry once', e);
+      try { await new Promise(r=>setTimeout(r,800)); bundle = await fetchAll(); }
+      catch(e2){
+        console.error('[replay] load fail (retried)', e2);
+        document.getElementById('chart').innerHTML='<div class="placeholder">复盘数据加载失败：'+e2+'</div>';
+        setPill('error');
+        return;
+      }
+    }
+    writeCache(bundle);
   }
+  const { live, vg, yz, idx } = bundle;
 
   const sectors = live.sectors || [];
   if(!sectors.length){
@@ -740,6 +796,26 @@ document.getElementById('speedBox').addEventListener('click', (e)=>{
   speed=parseInt(b.dataset.spd,10);
   document.querySelectorAll('.spd').forEach(x=>x.classList.toggle('active', x===b));
 });
+
+// 键盘：空格=播放/暂停，←/→=单步退/进一交易分钟
+document.addEventListener('keydown', (e)=>{
+  if(maxIdx===0) return;
+  if(e.code==='Space'){ e.preventDefault(); playing ? pause() : play(); }
+  else if(e.code==='ArrowLeft'){ e.preventDefault(); if(playing) pause(); renderAt(playIdx-1); }
+  else if(e.code==='ArrowRight'){ e.preventDefault(); if(playing) pause(); renderAt(playIdx+1); }
+});
+
+// TOP 榜点击：锁定/取消该板块在主图上的高亮（26 条线太密时快速锁一条）
+function onFlowClick(e){
+  const row=e.target.closest('.flow-row'); if(!row) return;
+  const name=row.dataset.name;
+  pinnedName = (pinnedName===name) ? null : name;
+  document.querySelectorAll('.flow-row.pinned').forEach(r=>r.classList.remove('pinned'));
+  if(pinnedName) document.querySelectorAll('.flow-row[data-name="'+CSS.escape(pinnedName)+'"]').forEach(r=>r.classList.add('pinned'));
+  applyHighlight();
+}
+document.getElementById('inflowList').addEventListener('click', onFlowClick);
+document.getElementById('outflowList').addEventListener('click', onFlowClick);
 
 loadReplay();
 </script>
