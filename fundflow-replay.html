@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>阿波策略 1/2 · 三指数 + 5x3 先锋 + 一字板 · 复盘</title>
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #0a0e1a; }
+  iframe { display: block; border: 0; width: 100%; height: 100vh; height: 100dvh; }
+</style>
+</head>
+<body>
+<!--
+  复盘看板正文运行在 sandbox（无 allow-same-origin）的 iframe 中，源为 opaque "null"，
+  stock-live API 的 CORS 白名单放行 null 源，因此复盘数据可正常拉取（与实时版同款架构）。
+-->
+<iframe src="./fundflow-replay-core.html"
+        sandbox="allow-scripts allow-popups"
+        referrerpolicy="no-referrer"
+        title="资金流复盘看板"></iframe>
+</body>
+</html>
