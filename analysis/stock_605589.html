@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>圣泉集团 605589 · 股票分析</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  :root{--bg:#0d1117;--panel:#161b22;--panel2:#1c2230;--line:#293040;
+    --gold:#e8b84b;--gold2:#f5d27a;--txt:#e6edf3;--sub:#9aa7b8;--muted:#6b7689;
+    --up:#ff5b5b;--down:#2ecc71;--warn:#ffb454;--good:#5ad1a0;--bad:#ff6b6b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7;font-size:15px;padding:0 0 60px}
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{text-align:center;padding:38px 16px 26px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent)}
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-top:18px;padding:14px;
+    border:1px solid var(--line);border-radius:12px;background:var(--panel);max-width:640px;margin-left:auto;margin-right:auto}
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .up{color:var(--up)} .dn{color:var(--down)}
+  .caveat{margin:22px 0;padding:14px 16px;border-radius:10px;background:rgba(255,180,84,.08);
+    border:1px solid rgba(255,180,84,.3);font-size:13px;color:#ffd9a3}
+  .caveat b{color:var(--warn)}
+  section.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:16px 0}
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px}
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  b.hl{color:var(--gold2)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:19px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .fusion{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel));border-color:rgba(232,184,75,.35)}
+  #kchart{width:100%;height:440px;margin-top:4px}
+  @media(max-width:560px){#kchart{height:360px}}
+  .lgd{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:8px 2px 2px}
+  .lgd i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+  .projbox{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;font-size:12.5px;line-height:1.85}
+  .projbox b{color:var(--gold2)}
+  .scen{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .scen div{flex:1;min-width:210px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:11px}
+  .scen h4{font-size:13px;margin-bottom:5px}
+  .s1{color:var(--up)} .s2{color:var(--gold2)} .s3{color:var(--down)}
+  .vp-tab{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0;overflow-x:auto;display:block}
+  .vp-tab th,.vp-tab td{padding:7px 5px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+  .vp-tab td.l{text-align:left}
+  .updn{color:var(--up)} .dndn{color:var(--down)}
+  .topbar{max-width:860px;margin:0 auto;padding:10px 16px 0}
+  .topbar a{color:var(--gold);font-size:12px;text-decoration:none}
+</style></head><body>
+<div class="topbar"><a href="/">‹ 返回股票分析首页</a></div>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 股 票 分 析</div>
+  <h1>圣泉集团<span class="code">605589</span></h1>
+  <div class="meta">截至 2026-06-09 收盘 ｜ 塑料 ｜ 生成 2026-06-09 23:01</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">现价(真实价)</div><div class="val up">¥54.64</div></div>
+    <div class="item"><div class="lbl">涨跌幅</div><div class="val up">+10.01%</div></div>
+    <div class="item"><div class="lbl">PE / PB</div><div class="val" style="font-size:16px">65.19 / 4.46</div></div>
+    <div class="item"><div class="lbl">换手 / 市值</div><div class="val" style="font-size:16px">0.89% / 462.5亿</div></div>
+    <div class="item"><div class="lbl">技术研判</div><div class="val" style="color:var(--warn);font-size:15px">强势偏高·追高谨慎</div></div>
+  </div>
+</header>
+<div class="wrap">
+  <div class="caveat"><b>⚠ 数据口径：</b>① K线已按复权因子 <b>1.0</b> 换算为<b>真实可交易价</b>（与下文价位同口径）；
+    ② 估值/换手/市值取东财实时快照，PE-TTM 为动态口径；
+    ③ 本页为<b>量化技术面 + 多路径推演</b>自动分析，<b>不含基本面深扒</b>，非投资建议。</div>
+
+  <section class="card fusion">
+    <div class="sec-h"><div class="sec-t">📈 预测性K线 · 多路径推演</div><div class="sec-tag">真实日K + bootstrap 5000 路径</div></div>
+    <div id="kchart"></div>
+    <div class="lgd">
+      <span><i style="background:#ff5b5b"></i>实体阳线</span>
+      <span><i style="background:#2ecc71"></i>实体阴线</span>
+      <span><i style="background:rgba(232,184,75,.55)"></i>预测蜡烛(中性p50)</span>
+      <span><i style="background:rgba(232,184,75,.20)"></i>概率带(p10~p90)</span>
+      <span><i style="background:#ff5b5b"></i>乐观p90</span>
+      <span><i style="background:#2ecc71"></i>谨慎p10</span>
+    </div>
+    <div class="projbox"><b>近一月手法量化（预测依据）：</b>日均振幅 <b>7.23%</b>、日收益波动σ <b>4.9%</b>、近25日 <b>阳16阴9</b>（均涨4.29% / 均跌-3.54%，区间-8.17%~10.01%）。<br><b>推演方法：</b>bootstrap 重采样该股近月真实日收益 5000 条路径，叠加「动量衰减 + 向 MA20(47.72) 均值回归」漂移，逐日取 10/50/90 分位 → 中性蜡烛取 p50、概率带 = p10~p90 不确定性锥（seed=42 可复现）。<br><b>未来8日中性收盘推演：</b>53.63 → 53.63 → 53.1 → 52.6 → 52.14 → 51.76 → 51.39 → 51.09。</div>
+    <div class="scen">
+      <div><h4 class="s1">▲ 乐观 p90</h4><span style="font-size:12.5px;color:var(--sub)">情绪延续 + 放量续攻，8日上沿冲 <b>59.55</b>（约 +9.0%）。</span></div>
+      <div><h4 class="s2">● 中性 p50（概率最高）</h4><span style="font-size:12.5px;color:var(--sub)">震荡消化，8日落 <b>51.09</b>（约 -6.5%）；预测蜡烛即此路径。</span></div>
+      <div><h4 class="s3">▼ 谨慎 p10</h4><span style="font-size:12.5px;color:var(--sub)">题材退潮/放量破位，下看 <b>43.66</b>（约 -20.1%）。</span></div>
+    </div>
+    <p class="small" style="margin-top:10px">蜡烛/概率带为基于该股近月<b>真实</b>K线的 bootstrap 多路径推演，<b>非真实成交、非投资建议</b>，越远越不可信。</p>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n" style="background:linear-gradient(135deg,#7aa2ff,#3a5bbf)">量</div><div class="sec-t">近6日量价节奏（自动）</div><div class="sec-tag">日级口径</div></div>
+    <table class="vp-tab">
+      <thead><tr><th class="l">日期</th><th>涨跌</th><th>日内(收-开)</th><th>最高</th><th>量(万手)</th><th>量比20</th><th>手法判读</th></tr></thead>
+      <tbody><tr><td class="l">06-02</td><td class="updn">+10.00%</td><td class="updn">+12.24%</td><td>54.12</td><td>71.0</td><td>1.26</td><td class="l">放量涨停</td></tr><tr><td class="l">06-03</td><td class="updn">+0.98%</td><td class="updn">+2.48%</td><td>56.95</td><td>85.0</td><td>1.5</td><td class="l">低开高走/盘中拉抬</td></tr><tr><td class="l">06-04</td><td class="dndn">-0.46%</td><td class="updn">+1.61%</td><td>55.82</td><td>62.5</td><td>1.11</td><td class="l">窄幅整理</td></tr><tr><td class="l">06-05</td><td class="dndn">-3.13%</td><td class="dndn">-1.40%</td><td>54.2</td><td>51.8</td><td>0.92</td><td class="l">震荡走弱</td></tr><tr><td class="l">06-08</td><td class="dndn">-5.75%</td><td class="dndn">-0.66%</td><td>53.39</td><td>49.8</td><td>0.88</td><td class="l">缩量回调</td></tr><tr style="background:rgba(232,184,75,.09)"><td class="l">06-09</td><td class="updn">+10.01%</td><td class="updn">+0.00%</td><td>54.64</td><td>7.5</td><td>0.13</td><td class="l">一字涨停(缩量锁仓封死)</td></tr></tbody>
+    </table>
+    <p class="small">⚠ 口径：分钟级分时（VWAP/站均价）受东财风控不稳定，本表为<b>真实日级量价</b>（东财日K）自动判读，非分钟分时。</p>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能</div></div>
+    <p>近5日均量 / 近20日均量 = <b class='hl'>0.91</b>（量能平稳）；最近一日成交 7.5 万手。</p>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">技术研判</div><div class="sec-tag">强势偏高·追高谨慎</div></div>
+    <p>现价 54.64 位于 MA20(47.72) 上方（偏离 +14.5%）、MA60(39.26) 上方；距 120 日高点 56.95 还有 -4.1%。MA5/10/20/60 = 53.21/50.95/47.72/39.26，短中期均线多头排列。</p>
+    <div class="takeaway">综合：现价距 MA20 +14.5%、距 120 日高 -4.1% → <b>强势偏高·追高谨慎</b>。</div>
+  </section>
+
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">关键价位（纯技术）</div></div>
+    <div class="lvl">
+      <div class="chip res"><div class="k">上方压力(前高/+5%)</div><div class="v">57.37</div></div>
+      <div class="chip sup"><div class="k">下方支撑(MA20/30日低)</div><div class="v">37.85</div></div>
+      <div class="chip stop"><div class="k">止盈/止损参考(MA20×0.985)</div><div class="v">47.0</div></div>
+    </div>
+    <p class="small" style="margin-top:10px">价位由 MA20/MA60/区间高低点自动测算，仅作技术参考，非投资建议。</p>
+  </section>
+
+  <footer>阿波罗 · 股票分析 ｜ 数据源：东方财富公开行情 ｜ 真实价口径 ｜ 推演为统计模拟非真实成交 ｜ 本页不构成投资建议</footer>
+</div>
+
+<script>
+var dates=["2025-11-24", "2025-11-25", "2025-11-26", "2025-11-27", "2025-11-28", "2025-12-01", "2025-12-02", "2025-12-03", "2025-12-04", "2025-12-05", "2025-12-08", "2025-12-09", "2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-25", "2025-12-26", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-19", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-25", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-19"],ohlc=[[26.21, 26.31, 25.99, 26.56], [26.54, 26.41, 26.31, 27.05], [26.34, 26.36, 26.13, 26.69], [26.3, 26.39, 26.25, 26.88], [26.4, 26.45, 26.22, 26.53], [26.62, 26.82, 26.41, 26.93], [26.78, 26.93, 26.62, 27.14], [27.1, 26.6, 26.49, 27.13], [26.59, 26.47, 26.03, 26.68], [26.33, 26.73, 26.18, 26.78], [26.75, 26.99, 26.75, 27.2], [27.0, 26.98, 26.86, 27.58], [26.85, 26.83, 26.35, 26.98], [26.84, 26.61, 26.6, 27.13], [26.6, 26.91, 26.31, 27.09], [26.86, 26.72, 26.52, 26.91], [26.76, 25.98, 25.63, 26.76], [25.88, 26.7, 25.67, 26.84], [26.56, 26.69, 26.5, 27.29], [26.96, 26.9, 26.84, 27.48], [26.99, 27.45, 26.89, 27.69], [27.43, 27.93, 27.4, 28.2], [28.25, 29.43, 28.05, 29.57], [29.29, 29.27, 28.91, 29.92], [29.26, 28.9, 28.6, 29.4], [29.0, 28.76, 28.4, 29.34], [28.62, 28.62, 28.34, 28.78], [28.65, 28.3, 28.28, 28.8], [28.49, 28.77, 28.18, 28.85], [28.64, 29.16, 28.64, 29.25], [29.55, 29.88, 29.45, 30.38], [29.88, 29.52, 29.38, 30.09], [29.48, 29.94, 29.23, 30.06], [30.14, 29.49, 29.31, 30.14], [29.5, 29.22, 28.95, 29.63], [29.2, 29.18, 28.92, 29.84], [29.07, 29.84, 29.0, 29.99], [30.13, 29.93, 29.56, 30.29], [29.97, 30.06, 29.93, 30.5], [30.1, 29.9, 29.36, 30.38], [29.7, 30.37, 29.65, 30.68], [30.67, 30.59, 30.0, 30.9], [30.64, 31.18, 30.4, 31.25], [31.35, 30.17, 30.13, 31.35], [30.15, 30.36, 29.37, 30.49], [30.37, 30.8, 30.19, 31.07], [30.71, 29.68, 29.5, 31.16], [29.55, 30.14, 28.91, 30.4], [29.91, 29.13, 29.1, 30.27], [29.55, 29.99, 29.3, 30.09], [29.84, 30.13, 29.59, 30.36], [29.99, 29.11, 29.08, 30.06], [28.91, 29.1, 28.67, 29.62], [29.51, 29.62, 29.42, 29.8], [29.6, 31.43, 29.6, 32.2], [31.4, 31.76, 31.3, 32.29], [32.12, 32.02, 31.45, 32.38], [31.86, 31.38, 31.31, 32.0], [31.9, 32.69, 31.68, 33.1], [32.7, 34.21, 32.46, 34.86], [34.0, 34.73, 33.65, 35.0], [34.15, 33.63, 33.35, 34.25], [33.5, 35.79, 33.41, 36.5], [36.4, 34.37, 34.3, 36.48], [34.08, 34.59, 34.06, 35.75], [35.6, 34.69, 34.39, 35.8], [34.5, 33.9, 33.46, 35.0], [33.02, 32.8, 31.73, 33.27], [33.19, 33.6, 33.15, 33.97], [33.58, 33.43, 33.31, 34.58], [33.21, 33.7, 32.57, 34.09], [33.4, 33.92, 33.22, 34.54], [33.92, 33.75, 32.23, 33.92], [33.42, 31.38, 31.0, 34.06], [31.54, 32.5, 31.35, 32.66], [32.01, 31.27, 31.21, 32.4], [31.48, 30.8, 30.77, 31.84], [30.01, 29.45, 29.2, 30.72], [29.98, 29.88, 28.92, 29.99], [30.1, 30.67, 30.03, 31.03], [30.57, 29.88, 29.72, 30.61], [29.45, 29.92, 29.32, 30.4], [29.0, 29.6, 28.99, 29.78], [29.66, 28.83, 28.83, 29.69], [29.4, 30.28, 29.2, 30.85], [30.03, 29.48, 29.31, 30.46], [29.79, 32.43, 29.66, 32.43], [34.6, 35.67, 34.38, 35.67], [36.0, 35.77, 34.02, 36.0], [35.69, 36.47, 35.34, 37.52], [36.75, 36.51, 36.28, 37.28], [36.2, 37.51, 36.2, 37.99], [37.45, 37.15, 36.9, 38.48], [37.1, 36.55, 36.4, 38.22], [36.89, 36.66, 35.9, 37.36], [36.33, 38.62, 36.33, 39.03], [38.27, 36.78, 36.51, 38.55], [36.6, 36.68, 35.71, 36.9], [36.6, 37.75, 36.48, 38.3], [38.19, 38.52, 36.98, 39.27], [38.15, 38.05, 37.77, 39.33], [37.0, 39.7, 36.03, 40.8], [40.13, 37.85, 37.65, 40.6], [37.75, 40.81, 37.24, 41.4], [40.59, 39.08, 38.86, 40.79], [39.7, 40.79, 39.32, 41.2], [40.15, 40.8, 39.1, 41.75], [40.07, 39.66, 39.45, 40.82], [39.95, 37.85, 37.3, 39.98], [38.2, 38.42, 36.89, 38.65], [37.91, 42.26, 37.7, 42.26], [43.5, 42.05, 41.54, 44.0], [43.25, 42.08, 41.65, 44.19], [41.5, 44.08, 41.37, 44.96], [44.08, 46.01, 42.38, 46.66], [45.17, 47.87, 44.8, 48.5], [47.99, 43.96, 43.96, 47.99], [44.7, 45.72, 43.66, 47.5], [46.99, 45.85, 43.98, 47.22], [45.21, 45.0, 42.9, 45.62], [46.71, 45.07, 44.68, 48.0], [44.02, 48.66, 43.51, 49.34], [48.78, 46.39, 46.08, 49.78], [47.0, 49.2, 47.0, 51.03], [48.22, 54.12, 48.21, 54.12], [53.33, 54.65, 53.2, 56.95], [53.54, 54.4, 52.43, 55.82], [53.45, 52.7, 50.05, 54.2], [50.0, 49.67, 49.15, 53.39], [54.64, 54.64, 54.64, 54.64], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"]],fcands=[["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], [54.64, 53.63, 51.69, 56.61], [53.63, 53.63, 51.69, 55.57], [53.63, 53.1, 51.18, 55.57], [53.1, 52.6, 50.7, 55.02], [52.6, 52.14, 50.26, 54.5], [52.14, 51.76, 49.89, 54.02], [51.76, 51.39, 49.53, 53.63], [51.39, 51.09, 49.24, 53.25]],vols=[[0, 97477.0, 1], [1, 150657.0, -1], [2, 109392.0, 1], [3, 90474.0, 1], [4, 74274.0, 1], [5, 123914.0, 1], [6, 110657.0, 1], [7, 110035.0, -1], [8, 80825.0, -1], [9, 76458.0, 1], [10, 116479.0, 1], [11, 119787.0, -1], [12, 92412.0, -1], [13, 91859.0, -1], [14, 122971.0, 1], [15, 101769.0, -1], [16, 161149.0, -1], [17, 151686.0, 1], [18, 123513.0, 1], [19, 111849.0, -1], [20, 148848.0, 1], [21, 201399.0, 1], [22, 367654.0, 1], [23, 268945.0, -1], [24, 180591.0, -1], [25, 184903.0, -1], [26, 144800.0, 1], [27, 137843.0, -1], [28, 166452.0, 1], [29, 212199.0, 1], [30, 311637.0, 1], [31, 200369.0, -1], [32, 242613.0, 1], [33, 221060.0, -1], [34, 212162.0, -1], [35, 210558.0, -1], [36, 197443.0, 1], [37, 164478.0, -1], [38, 165577.0, 1], [39, 149369.0, -1], [40, 223947.0, 1], [41, 190437.0, -1], [42, 224828.0, 1], [43, 187902.0, -1], [44, 157824.0, 1], [45, 177194.0, 1], [46, 192770.0, -1], [47, 193896.0, 1], [48, 170840.0, -1], [49, 157537.0, 1], [50, 130433.0, 1], [51, 140823.0, -1], [52, 91335.0, 1], [53, 90710.0, 1], [54, 400984.0, 1], [55, 249757.0, 1], [56, 202740.0, -1], [57, 127536.0, -1], [58, 238348.0, 1], [59, 378943.0, 1], [60, 292974.0, 1], [61, 226687.0, -1], [62, 415580.0, 1], [63, 342823.0, -1], [64, 260084.0, 1], [65, 215527.0, -1], [66, 211881.0, -1], [67, 302098.0, -1], [68, 153542.0, 1], [69, 192682.0, -1], [70, 220593.0, 1], [71, 246458.0, 1], [72, 258528.0, -1], [73, 266158.0, -1], [74, 188048.0, 1], [75, 152018.0, -1], [76, 156212.0, -1], [77, 234699.0, -1], [78, 135228.0, -1], [79, 126536.0, 1], [80, 94743.0, -1], [81, 93986.0, 1], [82, 100325.0, 1], [83, 119365.0, -1], [84, 181094.0, 1], [85, 125489.0, -1], [86, 342569.0, 1], [87, 398602.0, 1], [88, 702493.0, -1], [89, 600394.0, 1], [90, 415623.0, -1], [91, 407061.0, 1], [92, 451573.0, -1], [93, 350953.0, -1], [94, 285908.0, -1], [95, 477244.0, 1], [96, 443663.0, -1], [97, 336593.0, 1], [98, 372719.0, 1], [99, 543748.0, 1], [100, 343463.0, -1], [101, 819026.0, 1], [102, 494723.0, -1], [103, 676466.0, 1], [104, 471419.0, -1], [105, 548395.0, 1], [106, 530024.0, 1], [107, 368718.0, -1], [108, 544736.0, -1], [109, 398098.0, 1], [110, 533547.0, 1], [111, 631367.0, -1], [112, 511148.0, -1], [113, 555548.0, 1], [114, 591955.0, 1], [115, 533610.0, 1], [116, 533384.0, -1], [117, 529379.0, 1], [118, 543910.0, -1], [119, 542649.0, -1], [120, 539367.0, -1], [121, 639193.0, 1], [122, 533684.0, -1], [123, 805097.0, 1], [124, 710110.0, 1], [125, 849735.0, 1], [126, 625262.0, 1], [127, 518331.0, -1], [128, 498489.0, -1], [129, 75395.0, 1]];
+var ma5=[null, null, null, null, 26.38, 26.49, 26.59, 26.64, 26.65, 26.71, 26.74, 26.75, 26.8, 26.83, 26.86, 26.81, 26.61, 26.58, 26.6, 26.6, 26.74, 27.13, 27.68, 28.2, 28.6, 28.86, 29.0, 28.77, 28.67, 28.72, 28.95, 29.13, 29.45, 29.6, 29.61, 29.47, 29.53, 29.53, 29.65, 29.78, 30.02, 30.17, 30.42, 30.44, 30.53, 30.62, 30.44, 30.23, 30.02, 29.95, 29.81, 29.7, 29.49, 29.59, 29.88, 30.2, 30.79, 31.24, 31.86, 32.41, 33.01, 33.33, 34.21, 34.55, 34.62, 34.61, 34.67, 34.07, 33.92, 33.68, 33.49, 33.49, 33.68, 33.24, 33.05, 32.56, 31.94, 31.08, 30.78, 30.41, 30.14, 29.96, 29.99, 29.78, 29.7, 29.62, 30.12, 31.34, 32.73, 33.96, 35.37, 36.39, 36.68, 36.84, 36.88, 37.3, 37.15, 37.06, 37.3, 37.67, 37.56, 38.14, 38.37, 38.99, 39.1, 39.65, 39.87, 40.23, 39.64, 39.5, 39.8, 40.05, 40.53, 41.78, 43.3, 44.42, 44.8, 45.53, 45.88, 45.68, 45.12, 46.06, 46.19, 46.86, 48.69, 50.6, 51.75, 53.01, 53.11, 53.21, null, null, null, null, null, null, null, null],ma20=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 26.64, 26.7, 26.77, 26.93, 27.07, 27.19, 27.29, 27.37, 27.46, 27.57, 27.7, 27.84, 27.97, 28.12, 28.27, 28.38, 28.5, 28.7, 28.86, 29.03, 29.18, 29.32, 29.46, 29.54, 29.59, 29.66, 29.76, 29.82, 29.91, 29.93, 29.97, 29.98, 29.96, 29.92, 29.93, 30.04, 30.16, 30.27, 30.35, 30.48, 30.69, 30.91, 31.06, 31.29, 31.5, 31.71, 31.91, 32.12, 32.25, 32.48, 32.65, 32.83, 33.07, 33.3, 33.39, 33.44, 33.42, 33.36, 33.26, 33.12, 32.94, 32.7, 32.51, 32.2, 31.93, 31.71, 31.45, 31.38, 31.52, 31.63, 31.78, 31.92, 32.1, 32.27, 32.53, 32.74, 33.11, 33.41, 33.77, 34.16, 34.55, 34.96, 35.45, 35.86, 36.46, 36.9, 37.47, 37.89, 38.09, 38.19, 38.29, 38.57, 38.8, 39.05, 39.42, 39.89, 40.35, 40.71, 41.17, 41.57, 41.89, 42.25, 42.69, 43.12, 43.54, 44.29, 44.98, 45.66, 46.32, 46.91, 47.72, null, null, null, null, null, null, null, null],ma60=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 28.84, 28.98, 29.1, 29.25, 29.39, 29.52, 29.65, 29.77, 29.87, 29.99, 30.1, 30.22, 30.33, 30.45, 30.53, 30.62, 30.7, 30.78, 30.82, 30.87, 30.94, 30.98, 31.01, 31.01, 31.01, 31.03, 31.04, 31.11, 31.23, 31.34, 31.47, 31.58, 31.71, 31.83, 31.95, 32.07, 32.23, 32.35, 32.46, 32.59, 32.73, 32.86, 33.01, 33.12, 33.3, 33.44, 33.61, 33.8, 33.95, 34.1, 34.24, 34.44, 34.66, 34.87, 35.11, 35.36, 35.63, 35.83, 36.06, 36.28, 36.46, 36.64, 36.89, 37.06, 37.31, 37.64, 37.97, 38.31, 38.64, 38.91, 39.26, null, null, null, null, null, null, null, null],optS=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 58.14, 58.12, 58.42, 58.97, 59.17, 59.33, 59.48, 59.55],cauS=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 51.33, 49.71, 48.16, 47.04, 46.06, 45.31, 44.48, 43.66];
+var bandLow=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 51.33, 49.71, 48.16, 47.04, 46.06, 45.31, 44.48, 43.66],bandUp=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 6.81, 8.41, 10.26, 11.93, 13.11, 14.02, 15.0, 15.89],nHist=130;
+var HI=56.95,M20=47.72,M60=39.26;
+var ch=echarts.init(document.getElementById('kchart'),'dark');
+ch.setOption({
+ backgroundColor:'transparent',
+ legend:{data:['日K','预测蜡烛','MA5','MA20','MA60','乐观p90','谨慎p10'],textStyle:{color:'#9aa7b8'},top:0,type:'scroll'},
+ tooltip:{trigger:'axis',axisPointer:{type:'cross'}},
+ axisPointer:{link:[{xAxisIndex:'all'}]},
+ grid:[{left:48,right:14,top:30,height:260},{left:48,right:14,top:310,height:64}],
+ xAxis:[
+  {type:'category',data:dates,boundaryGap:true,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#9aa7b8',fontSize:10},splitLine:{show:false},
+   markLine:{symbol:'none',silent:true,lineStyle:{color:'#e8b84b',type:'dashed',opacity:.55},data:[{xAxis:nHist-1,label:{formatter:'今日',color:'#e8b84b',fontSize:10}}]}},
+  {type:'category',gridIndex:1,data:dates,axisLabel:{show:false},axisLine:{lineStyle:{color:'#293040'}}}],
+ yAxis:[
+  {scale:true,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#9aa7b8'},splitLine:{lineStyle:{color:'#1b2230'}}},
+  {gridIndex:1,axisLabel:{show:false},axisLine:{show:false},splitLine:{show:false}}],
+ dataZoom:[{type:'inside',xAxisIndex:[0,1],start:50,end:100},{type:'slider',xAxisIndex:[0,1],bottom:2,height:15,start:50,end:100}],
+ series:[
+  {name:'谨慎下界',type:'line',data:bandLow,stack:'band',symbol:'none',lineStyle:{opacity:0},silent:true,z:1},
+  {name:'概率带',type:'line',data:bandUp,stack:'band',symbol:'none',lineStyle:{opacity:0},areaStyle:{color:'rgba(232,184,75,.18)'},silent:true,z:1},
+  {name:'日K',type:'candlestick',data:ohlc,itemStyle:{color:'#ff5b5b',color0:'#2ecc71',borderColor:'#ff5b5b',borderColor0:'#2ecc71'},
+   markLine:{symbol:'none',precision:2,data:[
+    {yAxis:HI,lineStyle:{color:'#ff5b5b',type:'dotted'},label:{formatter:'前高 '+HI,color:'#ff5b5b',fontSize:10}},
+    {yAxis:M20,lineStyle:{color:'#7aa2ff',type:'dotted'},label:{formatter:'MA20 '+M20,color:'#7aa2ff',fontSize:10}},
+    {yAxis:M60,lineStyle:{color:'#bc8cff',type:'dotted'},label:{formatter:'MA60 '+M60,color:'#bc8cff',fontSize:10}}]}},
+  {name:'预测蜡烛',type:'candlestick',data:fcands,barWidth:'60%',
+   itemStyle:{color:'rgba(255,91,91,.45)',color0:'rgba(46,204,113,.45)',borderColor:'rgba(255,91,91,.7)',borderColor0:'rgba(46,204,113,.7)'},z:3},
+  {name:'MA5',type:'line',data:ma5,smooth:true,symbol:'none',lineStyle:{width:1,color:'#e8b84b'}},
+  {name:'MA20',type:'line',data:ma20,smooth:true,symbol:'none',lineStyle:{width:1,color:'#7aa2ff'}},
+  {name:'MA60',type:'line',data:ma60,smooth:true,symbol:'none',lineStyle:{width:1.4,color:'#bc8cff'}},
+  {name:'乐观p90',type:'line',data:optS,smooth:true,symbol:'none',connectNulls:true,lineStyle:{width:1.5,type:'dashed',color:'#ff5b5b',opacity:.85}},
+  {name:'谨慎p10',type:'line',data:cauS,smooth:true,symbol:'none',connectNulls:true,lineStyle:{width:1.5,type:'dashed',color:'#2ecc71',opacity:.85}},
+  {name:'量',type:'bar',xAxisIndex:1,yAxisIndex:1,data:vols.map(function(v){return{value:v[1],itemStyle:{color:v[2]>0?'#ff5b5b':'#2ecc71'}}})}
+ ]
+});
+window.addEventListener('resize',function(){ch.resize()});
+</script>
+
+</body></html>
