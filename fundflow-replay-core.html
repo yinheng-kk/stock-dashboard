@@ -552,7 +552,7 @@ const POS_COLORS=['#ef4444','#f97316','#f59e0b','#eab308','#d97706','#b91c1c','#
 const NEG_COLORS=['#22c55e','#10b981','#14b8a6','#06b6d4','#0ea5e9','#3b82f6','#6366f1','#8b5cf6','#a855f7','#16a34a','#15803d','#134e4a','#164e63','#0f766e'];
 const IND_COLORS=['#facc15','#eab308','#ca8a04','#84cc16','#65a30d','#4d7c0f'];
 
-let chart=null, FULL=[], FULL_YR=null, maxIdx=0, playIdx=0, colorMap={};
+let chart=null, FULL=[], FULL_YR=null, maxIdx=0, playIdx=0, colorMap={}, chartBaseDone=false;
 
 function initChart(){
   document.getElementById('chart').innerHTML='';
@@ -577,8 +577,14 @@ function buildSeries(colored){
   }));
 }
 function renderChart(colored, yr){
+  // 回放/拖动：骨架已建好后，只合并更新序列数据(关过渡动画)→帧间瞬时定格，
+  // 由播放头逐帧推进自然形成连续生长，避免补间动画被下一帧打断造成的抖动
+  if(chartBaseDone){
+    chart.setOption({ series:buildSeries(colored) }, { notMerge:false, lazyUpdate:true });
+    return;
+  }
   const opt={
-    backgroundColor:'transparent', animation:true, animationDuration:250, animationDurationUpdate:200, animationEasingUpdate:'cubicOut',
+    backgroundColor:'transparent', animation:true, animationDuration:300, animationDurationUpdate:0, animationEasingUpdate:'linear',
     grid:{ left:48, right:150, top:20, bottom:30, containLabel:false },
     labelLayout:{ moveOverlap:'shiftY' },
     tooltip:{ trigger:'axis', backgroundColor:'rgba(15,20,38,0.96)', borderColor:'rgba(246,211,101,0.3)', textStyle:{ color:'#e8e0d0', fontSize:12 },
@@ -597,7 +603,8 @@ function renderChart(colored, yr){
       splitLine:{ lineStyle:{ color:'rgba(122,134,154,0.12)', type:'dashed' } }, axisTick:{ show:false } },
     series:buildSeries(colored),
   };
-  chart.setOption(opt,{ notMerge:false, replaceMerge:['series'] });
+  chart.setOption(opt);
+  chartBaseDone=true;
 }
 function updateFlowPanel(colored){
   const snapshot=colored.map(s=>({ name:s.name, color:s.color, v:s.points.length?s.points[s.points.length-1][1]:0 }));
@@ -632,7 +639,7 @@ function renderAt(idx){
 
 /* ── 播放引擎 ───────────────────────────── */
 let playing=false, playTimer=null, speed=1;
-const STEP_MS=90;
+const FRAME_MS=70;   // 固定重绘节奏(~14fps)；倍速靠每帧多推进 N 个分时点，而非缩短间隔，避免高速掉帧卡顿
 function setPill(state){
   const pill=document.getElementById('livePill'), txt=document.getElementById('liveText');
   if(state==='playing'){ pill.className='live-pill replay playing'; txt.textContent='回放中'; }
@@ -650,8 +657,8 @@ function play(){
 function step(){
   if(!playing) return;
   if(playIdx>=maxIdx){ pause(); return; }
-  renderAt(playIdx+1);
-  playTimer=setTimeout(step, STEP_MS/speed);
+  renderAt(Math.min(playIdx + speed, maxIdx));
+  playTimer=setTimeout(step, FRAME_MS);
 }
 function pause(){
   playing=false;
@@ -722,6 +729,7 @@ async function loadReplay(){
   // 初始：展示全天（播放头在末端）
   renderAt(maxIdx);
   pause();
+  document.getElementById('playBtn').textContent='▶ 播放';   // 首屏即引导从头回放
 }
 
 /* ── 控件绑定 ───────────────────────────── */
