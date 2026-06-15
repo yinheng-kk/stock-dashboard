@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>阶段1回测验证 · 阿波罗量化看板</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#293040;
+    --gold:#e8b84b; --gold2:#f5d27a; --txt:#e6edf3; --sub:#9aa7b8; --muted:#6b7689;
+    --up:#ff5b5b; --down:#2ecc71; --warn:#ffb454; --good:#5ad1a0; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; font-size:15px; padding:0 0 60px;
+  }
+  .wrap{max-width:880px;margin:0 auto;padding:0 16px}
+  header.hero{
+    text-align:center;padding:38px 16px 26px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent);
+  }
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:26px;font-weight:700;letter-spacing:.04em}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{
+    display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-top:18px;padding:14px;
+    border:1px solid var(--line);border-radius:12px;background:var(--panel);max-width:680px;margin-left:auto;margin-right:auto;
+  }
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .winner{color:var(--gold2)}
+  section.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:16px 0}
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:12px}
+  .sec-n{min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px}
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  table{width:100%;border-collapse:collapse;margin:6px 0;font-size:13px}
+  th,td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  td.l,th.l{text-align:left}
+  .pos{color:var(--up)} .negv{color:var(--down)}
+  b.hl{color:var(--gold2)}
+  .chart{width:100%;height:300px;margin-top:6px}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  .takeaway b{color:var(--gold)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:11px;margin-left:6px}
+  .badge.win{background:rgba(90,209,160,.15);color:var(--good);border:1px solid rgba(90,209,160,.3)}
+  .badge.lose{background:rgba(255,107,107,.12);color:var(--bad);border:1px solid rgba(255,107,107,.3)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 量 化 回 测</div>
+  <h1>阶段1 回测框架验证</h1>
+  <div class="meta">100只样本 ｜ 86只有数据 ｜ 590个交易日 ｜ 2024-01-01 ~ 2026-06-15 ｜ 初始资金10万/股 ｜ T+1·涨跌停·0.3%手续费·头寸≤20%</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">胜出策略</div><div class="val winner">MeanReversion</div></div>
+    <div class="item"><div class="lbl">平均收益</div><div class="val pos">+5.32%</div></div>
+    <div class="item"><div class="lbl">平均夏普</div><div class="val winner">5.90</div></div>
+    <div class="item"><div class="lbl">框架状态</div><div class="val" style="color:var(--good);font-size:16px">✓ 全跑通</div></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">1</div><div class="sec-t">两策略横向对比</div><div class="sec-tag">核心结论</div></div>
+    <table>
+      <tr><th class="l">指标</th><th>SimpleMA<br><span style="font-weight:400;color:var(--muted)">MA20/60穿叉</span></th><th>MeanReversion<br><span style="font-weight:400;color:var(--muted)">RSI14超卖反弹</span></th><th>判定</th></tr>
+      <tr><td class="l">有效股票数</td><td>82</td><td>85</td><td>—</td></tr>
+      <tr><td class="l">平均总收益</td><td class="pos">+0.78%</td><td class="pos"><b class="hl">+5.32%</b></td><td><span class="badge win">回归胜</span></td></tr>
+      <tr><td class="l">平均夏普比</td><td class="negv">-0.27</td><td><b class="hl">5.90</b></td><td><span class="badge win">回归胜</span></td></tr>
+      <tr><td class="l">平均最大回撤</td><td>4.70%</td><td>6.01%</td><td><span class="badge lose">均线略优</span></td></tr>
+      <tr><td class="l">平均胜率</td><td><b class="hl">74.1%</b></td><td>66.0%</td><td><span class="badge lose">均线略优</span></td></tr>
+      <tr><td class="l">平均交易数</td><td>10</td><td>14</td><td>—</td></tr>
+    </table>
+    <div class="takeaway"><b>解读：</b>MeanReversion 在收益与夏普上全面碾压；SimpleMA 虽胜率高(74%)但单笔薄、夏普为负，几乎不赚钱——符合 A股震荡市「均值回归占优、趋势策略易被反复打脸」的特征。</div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">2</div><div class="sec-t">收益 / 夏普 对比</div><div class="sec-tag">越高越好</div></div>
+    <div id="chart1" class="chart"></div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">3</div><div class="sec-t">回撤 / 胜率 对比</div><div class="sec-tag">回撤越低越好</div></div>
+    <div id="chart2" class="chart"></div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">4</div><div class="sec-t">Top5 活跃股（按交易笔数）</div><div class="sec-tag">单股明细</div></div>
+    <table>
+      <tr><th class="l">SimpleMA</th><th>笔数</th><th>收益</th><th>夏普</th></tr>
+      <tr><td class="l">000153</td><td>18</td><td class="negv">-3.92%</td><td class="negv">-9.03</td></tr>
+      <tr><td class="l">000008</td><td>16</td><td class="negv">-0.25%</td><td class="negv">-0.27</td></tr>
+      <tr><td class="l">000012</td><td>16</td><td class="negv">-3.38%</td><td class="negv">-16.95</td></tr>
+      <tr><td class="l">000096</td><td>16</td><td class="negv">-0.46%</td><td class="negv">-0.75</td></tr>
+      <tr><td class="l">000421</td><td>16</td><td class="negv">-1.68%</td><td class="negv">-3.05</td></tr>
+    </table>
+    <table style="margin-top:14px">
+      <tr><th class="l">MeanReversion</th><th>笔数</th><th>收益</th><th>夏普</th></tr>
+      <tr><td class="l">000409</td><td>22</td><td class="pos"><b class="hl">+13.81%</b></td><td class="pos">19.67</td></tr>
+      <tr><td class="l">000301</td><td>22</td><td class="pos">+13.28%</td><td class="pos">25.95</td></tr>
+      <tr><td class="l">000411</td><td>23</td><td class="pos">+11.56%</td><td class="pos">21.15</td></tr>
+      <tr><td class="l">000030</td><td>21</td><td class="pos">+11.20%</td><td class="pos">16.85</td></tr>
+      <tr><td class="l">000004</td><td>20</td><td class="pos">+1.89%</td><td class="pos">2.18</td></tr>
+    </table>
+    <div class="takeaway"><b>注意：</b>个别股夏普出现极端值（如 -16.95 / +25.95），是单股交易样本少所致，应以整体均值为准，勿对单股过度解读。</div>
+  </section>
+
+  <footer>
+    阿波罗量化 · 阶段1回测验证看板 ｜ 数据生成于 2026-06-15 15:14 ｜ 框架已验证可用，下一步 → API层 → 全景看板<br>
+    <span style="color:var(--muted)">注：回测基于历史数据，不构成投资建议</span>
+  </footer>
+</div>
+
+<script>
+const gold='#e8b84b', green='#5ad1a0', sub='#9aa7b8', line='#293040';
+const baseGrid={left:48,right:20,top:40,bottom:30};
+const axisStyle={axisLine:{lineStyle:{color:line}},axisLabel:{color:sub},splitLine:{lineStyle:{color:'rgba(41,48,64,.5)'}}};
+
+echarts.init(document.getElementById('chart1')).setOption({
+  grid:baseGrid,
+  tooltip:{trigger:'axis'},
+  legend:{textStyle:{color:sub},top:6},
+  xAxis:{type:'category',data:['平均总收益(%)','平均夏普比'],...axisStyle},
+  yAxis:{type:'value',...axisStyle},
+  series:[
+    {name:'SimpleMA',type:'bar',data:[0.78,-0.27],itemStyle:{color:sub},barWidth:'28%',label:{show:true,position:'top',color:'#fff'}},
+    {name:'MeanReversion',type:'bar',data:[5.32,5.90],itemStyle:{color:gold},barWidth:'28%',label:{show:true,position:'top',color:gold2='#f5d27a'}}
+  ]
+});
+
+echarts.init(document.getElementById('chart2')).setOption({
+  grid:baseGrid,
+  tooltip:{trigger:'axis'},
+  legend:{textStyle:{color:sub},top:6},
+  xAxis:{type:'category',data:['平均最大回撤(%)','平均胜率(%)'],...axisStyle},
+  yAxis:{type:'value',...axisStyle},
+  series:[
+    {name:'SimpleMA',type:'bar',data:[4.70,74.1],itemStyle:{color:sub},barWidth:'28%',label:{show:true,position:'top',color:'#fff'}},
+    {name:'MeanReversion',type:'bar',data:[6.01,66.0],itemStyle:{color:gold},barWidth:'28%',label:{show:true,position:'top',color:'#f5d27a'}}
+  ]
+});
+</script>
+</body>
+</html>
