@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
+<html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>华天科技 002185 · 阿波罗个股分析</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
@@ -38,6 +36,7 @@
   .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
   .down{color:var(--up)} /* A股红涨绿跌 */
   .neg{color:var(--down)}
+  .flat{color:var(--sub)}
   .caveat{
     margin:22px 0;padding:14px 16px;border-radius:10px;
     background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);
@@ -79,159 +78,66 @@
   footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
   .small{font-size:12px;color:var(--muted)}
   #kline{width:100%;height:430px}
-</style>
-</head>
-<body>
+</style></head><body>
 <header class="hero">
   <div class="brand">阿 波 罗 · 个 股 分 析</div>
   <h1>华天科技<span class="code">002185</span></h1>
-  <div class="meta">截至 2026-06-12 收盘 ｜ 半导体封测（封测三巨头之一）｜ 总股本 33.2亿 ｜ 总市值 ≈536亿</div>
+  <div class="meta">截至 2026-06-18 收盘 ｜ 半导体封装测试（国内封测第三） ｜ 总市值 ≈652亿</div>
   <div class="pricebar">
-    <div class="item"><div class="lbl">现价(6-12收)</div><div class="val down">¥16.15 <span style="font-size:13px">-3.58%</span></div></div>
-    <div class="item"><div class="lbl">距5-28顶21.94</div><div class="val neg">-26%</div></div>
-    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--bad);font-size:16px">高位派发·破位回避</div></div>
+    <div class="item"><div class="lbl">现价(6-18收)</div><div class="val down">¥19.61 <span style="font-size:13px">+2.94%</span></div></div>
+    <div class="item"><div class="lbl">距120日高21.47</div><div class="val neg">-9%</div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--warn);font-size:16px">高位巨量·主力派发</div></div>
   </div>
 </header>
-
 <div class="wrap">
+  <div class="caveat"><b>⚠ 数据口径：</b>实时行情/资金流取东财直连（trust_env=False 绕本机代理），基准为 <b>2026-06-18 收盘</b>（最近交易日）；K线为前复权日线（fqt=1）。6-18 成交额<b>巨量 92.39亿</b>、换手 14.18%，为高位天量；6-17 主力净流入 +5.4亿后 6-18 反手 -2.37亿派发。PE 187 偏高，PB 3.65。 本报告只出可计算事实+量价资金研判，不构成投资建议。</div>
 
-  <div class="caveat">
-    <b>⚠ 数据口径：</b>
-    实时行情/资金流取东财直连（trust_env=False 绕本机代理），基准为 <b>2026-06-12 收盘</b>；
-    K线为前复权日线（fqt=1），价位与盘口一致。本报告只出可计算事实+量价资金研判，不含财务深扒。
-  </div>
-
-  <!-- 动态K线 -->
   <section class="card">
-    <div class="sec-h"><div class="sec-n">K</div><div class="sec-t">动态K线 · 日线+MA+主力资金</div><div class="sec-tag">近45个交易日</div></div>
+    <div class="sec-h"><div class="sec-n">K</div><div class="sec-t">动态K线 · 日线+MA+主力资金</div><div class="sec-tag">近48个交易日</div></div>
     <div id="kline"></div>
-    <p class="small">蜡烛=日K前复权；线=MA5/20/60；下栏柱=单日主力净额（亿，红进绿出）。5-28放量见顶 21.94 后逐级破位，价已跌穿 MA5/10/20，仅靠 <b class="hl">MA60≈14.4</b> 托底。</p>
+    <p class="small">蜡烛=日K前复权；线=MA5/20/60；下栏柱=单日主力净额（亿，红进绿出）。自低位 13.72 反弹 +43% 至 19.61，<b class="hl">逼近 120日高点 21.47</b>；6-18 放出 92亿天量、换手 14%，高位资金分歧剧烈。</p>
   </section>
 
-  <!-- ① 量能 -->
-  <section class="card">
-    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能</div><div class="sec-tag">天量见顶后缩量阴跌</div></div>
-    <p>5-27/28 爆量（1210万、924万手）冲到 21.94 历史级高点，此后量能逐级萎缩、价格阴跌。今日量比 <b class="hl">1.09</b>、换手 <b class="hl">7.67%</b>，放量收 -3.58% 长阴破位——<b class="hl">缩量反弹、放量下杀，资金借反弹离场</b>。</p>
-  </section>
+  <section class="card"><div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能</div><div class="sec-tag">高位天量·换手14%分歧剧烈</div></div><p>6-18 成交额 <b class="hl">92.39亿</b>、换手 <b class="hl">14.18%</b>，是绝对的高位天量。低位反弹至前高附近后放出如此巨量，意味着<b class="hl">多空分歧极大</b>：要么放量突破打开空间，要么放量滞涨成顶部。天量后的次日走势是关键验证点。</p></section>
+<section class="card"><div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">6-17大进6-18反手派发</div></div><ul><li>近5日主力净额（6/12→6/18）：<span class="negc">-4.39</span> / +1.85 / +0.34 / <span class="x" style="color:var(--up)">+5.40</span> / <span class="negc">-2.37</span> 亿</li><li>节奏：6-17 主力<b class="hl">大幅净流入 +5.40亿</b>拉升→6-18 天量却<b class="hl">反手净流出 -2.37亿</b>，典型「<b class="hl">拉高出货/高位换手</b>」苗头</li><li>提示：股价 6-18 仍涨 2.94%，但主力在天量中净流出，是价涨资金背离的派发信号，需高度警惕</li></ul></section>
+<section class="card"><div class="sec-h"><div class="sec-n">③</div><div class="sec-t">同业横向对比 · 半导体封测</div><div class="sec-tag">6-18收盘</div></div><table class="compare"><thead><tr><th class="l">名称</th><th>现价</th><th>今日</th><th>PE(TTM)</th><th>PB</th><th>换手</th><th>总市值(亿)</th></tr></thead><tbody><tr class="self"><td class="l">华天科技 002185</td><td>19.61</td><td class="pos">+2.94%</td><td>187.74</td><td>3.65</td><td>14.18%</td><td>651.72</td></tr>
+<tr><td class="l">长电科技 600584</td><td>83.03</td><td class="pos">+1.55%</td><td>127.96</td><td>5.2</td><td>13.08%</td><td>1485.75</td></tr>
+<tr><td class="l">通富微电 002156</td><td>68.27</td><td class="pos">+1.56%</td><td>78.71</td><td>6.67</td><td>10.76%</td><td>1036.06</td></tr>
+<tr><td class="l">甬矽电子 688362</td><td>72.5</td><td class="pos">+4.47%</td><td>307.51</td><td>8.68</td><td>8.3%</td><td>327.28</td></tr>
+<tr><td class="l">晶方科技 603005</td><td>45.71</td><td class="negc">-0.89%</td><td>113.89</td><td>6.4</td><td>11.53%</td><td>298.11</td></tr></tbody></table><div class="takeaway">相对位置：华天 PB 3.65 是可比组<b class="hl">最低</b>（长电 5.2、通富 6.67、甬矽 8.68、晶方 6.4），PE 187 居中。今日板块整体上行（甬矽 +4.47%、长电 +1.55%），华天 +2.94% 跟涨。华天市值 652亿、是国内封测第三（长电/通富之后），AI 算力+先进封装是核心题材，但当前位置已price-in较多预期。</div></section>
+<section class="card"><div class="sec-h"><div class="sec-n">④</div><div class="sec-t">估值</div><div class="sec-tag">PE187/PB3.65·封测周期股</div></div><ul><li>PE-TTM <b class="hl">187.7</b>：封测是强周期行业，当前 PE 偏高反映行业景气复苏+先进封装（Chiplet/HBM配套）预期</li><li>PB <b class="hl">3.65</b>：可比组最低，重资产封测厂的资产端相对便宜，但封测毛利薄、盈利弹性受产能利用率主导</li><li>逻辑：博弈 AI 算力驱动的先进封装需求+国产替代，题材好但周期股高位需提防景气与股价错配</li></ul></section>
+<section class="card"><div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">技术研判</div><div class="sec-tag">逼近前高·天量待变</div></div><ul><li>均线：价 19.61 站上全部均线，多头排列，趋势向上</li><li>形态：13.72 低位→反弹 +43%→6-18 天量逼近 <b class="hl">120日高点 21.47/21.94</b>，进入前高压力+套牢区</li><li>关口：上方 <b class="hl">21.47~21.94</b> 前高压力带；下方 18（MA区）第一支撑，跌破看 16.5。天量后若次日缩量回落＝滞涨见顶，放量续创新高＝突破</li></ul></section>
+<section class="card"><div class="sec-h"><div class="sec-n">⚔</div><div class="sec-t">矛盾链</div><div class="sec-tag">多空对峙</div></div><table class="logic"><thead><tr><th>支撑面（多）</th><th>风险面（空）</th></tr></thead><tbody><tr><td class="good-col">国内封测第三+AI先进封装题材，站上全部均线</td><td class="bad-col">6-18 天量92亿换手14%，主力反手净流出-2.37亿</td></tr><tr><td class="good-col">PB 3.65 组内最低，资产端便宜</td><td class="bad-col">PE 187 周期股高位，景气与估值需匹配</td></tr><tr><td class="good-col">板块整体上行，资金关注度高</td><td class="bad-col">逼近前高 21.47 套牢区，高位放量分歧大</td></tr></tbody></table></section>
+<section class="card strategy"><div class="sec-h"><div class="sec-n">★</div><div class="sec-t">操作策略</div><div class="sec-tag">基于6-18数据</div></div><div class="lvl"><div class="chip res"><div class="k">上方反压</div><div class="v">21.47~21.94（前高）</div></div><div class="chip sup"><div class="k">第一支撑</div><div class="v">18（均线）</div></div><div class="chip stop"><div class="k">破位看</div><div class="v">跌破看16.5</div></div></div><ul style="margin-top:12px"><li><b class="hl">定性</b>：低位反弹43%至前高附近，6-18 放出 92亿天量但<b class="hl">主力反手净流出 -2.37亿</b>，「拉高换手/派发」苗头明显，属<b class="hl">强势但风险积聚</b>的高位状态</li><li><b class="hl">持有者</b>：天量+主力流出是警示，临近前高 21.47 是减仓窗口；跟踪天量次日——缩量回落则兑现，放量破前高则可续持</li><li><b class="hl">空仓者</b>：高位天量+资金背离，不宜追高；等回踩 18 缩量企稳+主力转正，或放量有效突破 21.94 再右侧介入</li><li><b class="hl">转空条件</b>：跌破 18（MA区）且主力持续净流出，确认顶部</li></ul><div class="takeaway">一句话：<b class="hl">华天是国内封测第三、AI先进封装题材标的，从低位反弹 43% 至 19.61、逼近前高 21.47。但 6-18 放出 92亿天量、换手 14%，且 6-17 主力 +5.4亿大进后 6-18 反手 -2.37亿派发，呈高位拉高出货苗头。持有者前高减仓、跟踪天量次日；空仓者勿追高位天量，等回踩企稳或放量突破前高。</b></div></section>
 
-  <!-- ② 资金流向 -->
-  <section class="card">
-    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">连续多周天量净流出</div></div>
-    <ul>
-      <li>近5日主力净额（6/05→6/11）：<span class="x">-8.85 / -4.37 / +0.16 / -2.92 / -1.16 亿 ＝ 累计 -17.14亿</span></li>
-      <li>自 5-27 见顶日起，主力几乎单边净流出（仅 6/09 微正 +0.16亿），属<b class="hl">典型拉高出货、高换手散户接盘</b></li>
-      <li>对比 5-26 顶部前还有 +7.46亿大幅流入 → 主力已走完「进-出」一个完整派发周期</li>
-    </ul>
-  </section>
-
-  <!-- ③ 同业横向对比 -->
-  <section class="card">
-    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">同业横向对比 · 封测/先进封装</div><div class="sec-tag">6-12收盘</div></div>
-    <table class="compare">
-      <thead><tr><th class="l">名称</th><th>现价</th><th>今日</th><th>PE(动)</th><th>PB</th><th>换手</th><th>总市值(亿)</th></tr></thead>
-      <tbody>
-        <tr><td class="l">长电科技 600584</td><td>69.50</td><td class="negc">-3.41%</td><td>107.1</td><td>4.32</td><td>8.85%</td><td>1243.6</td></tr>
-        <tr><td class="l">通富微电 002156</td><td>57.84</td><td class="negc">-3.74%</td><td>66.7</td><td>5.65</td><td>7.50%</td><td>877.8</td></tr>
-        <tr class="self"><td class="l">华天科技 002185</td><td>16.15</td><td class="negc">-3.58%</td><td>154.6</td><td>3.00</td><td>7.67%</td><td>535.7</td></tr>
-        <tr><td class="l">甬矽电子 688362</td><td>58.21</td><td class="negc">-9.03%</td><td>224.5</td><td>6.42</td><td>9.93%</td><td>238.9</td></tr>
-        <tr><td class="l">晶方科技 603005</td><td>41.58</td><td class="negc">-5.74%</td><td>103.6</td><td>5.82</td><td>10.81%</td><td>271.2</td></tr>
-      </tbody>
-    </table>
-    <div class="takeaway">相对位置：华天 <b class="hl">PE 154.6 偏贵</b>（仅低于甬矽 224），但 <b class="hl">PB 3.0 为可比组最低</b>——盈利端透支、资产端相对便宜。今日封测<b class="hl">全板块齐杀</b>（甬矽 -9%、晶方 -5.7%），是<b class="hl">系统性退潮</b>而非华天个股利空。</div>
-  </section>
-
-  <!-- ④ 估值 -->
-  <section class="card">
-    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">估值</div><div class="sec-tag">盈利透支 · 资产托底</div></div>
-    <ul>
-      <li>PE(动) <b class="hl">154.6</b>：净利仅微利级别，PE 高度依赖「先进封装/AI 算力/国产替代」预期，<span class="x">盈利兑现前极易杀估值</span></li>
-      <li>PB <b class="hl">3.0</b>：可比组最低，重资产封测厂的账面价值给了一定安全垫，深跌后是资产派的关注区</li>
-      <li>结论：<b class="hl">贵在当下盈利、不贵在长期资产</b>——这正是它「跌不动也涨不动、全看板块情绪」的根因</li>
-    </ul>
-  </section>
-
-  <!-- ⑤ 技术研判 -->
-  <section class="card">
-    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">技术研判</div><div class="sec-tag">空头排列·破位</div></div>
-    <ul>
-      <li>均线：MA5 16.88 / MA10 17.76 / MA20 17.52 / MA60 14.38；价 16.15 <b class="hl">跌穿全部短中均线，仅在 MA60 上方</b>，短中期空头排列</li>
-      <li>形态：5-28 顶 21.94 → 逐级下台阶（19→18→17→16），<b class="hl">下降通道未破</b>，每次反弹高点递减</li>
-      <li>关键位：上方 MA10/MA20 密集压力 <b class="hl">17.5~17.8</b>；下方 MA60 <b class="hl">14.38</b> 是多空生命线，破则打开向 5-25 平台 13.6 的空间</li>
-    </ul>
-  </section>
-
-  <!-- 矛盾链 -->
-  <section class="card">
-    <div class="sec-h"><div class="sec-n">⚔</div><div class="sec-t">矛盾链</div><div class="sec-tag">多空对峙</div></div>
-    <table class="logic">
-      <thead><tr><th>支撑面（多）</th><th>风险面（空）</th></tr></thead>
-      <tbody>
-        <tr><td class="good-col">封测三巨头之一，AI/HBM/先进封装国产替代长逻辑</td><td class="bad-col">PE 154 透支盈利，净利仅微利，估值靠题材撑</td></tr>
-        <tr><td class="good-col">PB 3.0 可比组最低，重资产账面有安全垫</td><td class="bad-col">自 5-27 起连续多周天量净流出，近5日 -17亿派发</td></tr>
-        <tr><td class="good-col">已自高点回撤 26%，MA60 14.4 提供首道支撑</td><td class="bad-col">价破 MA5/10/20 空头排列，反弹高点递减</td></tr>
-        <tr><td class="good-col">—</td><td class="bad-col">今日封测全板块齐杀，系统性退潮压制反弹力度</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- 操作策略 -->
-  <section class="card strategy">
-    <div class="sec-h"><div class="sec-n">★</div><div class="sec-t">操作策略</div><div class="sec-tag">左侧不抄·反弹不追</div></div>
-    <div class="lvl">
-      <div class="chip res"><div class="k">上方压力</div><div class="v">17.5~17.8</div></div>
-      <div class="chip sup"><div class="k">关键支撑(MA60)</div><div class="v">14.38</div></div>
-      <div class="chip stop"><div class="k">破位止损</div><div class="v">14.0</div></div>
-    </div>
-    <ul style="margin-top:12px">
-      <li><b class="hl">持有者</b>：高位派发+破位下行，反弹到 17.5 压力区是减仓窗口，别幻想再创新高</li>
-      <li><b class="hl">空仓者</b>：左侧不抄底——主力还在出、板块在退潮，没有「缩量企稳+主力回流」信号前不参与</li>
-      <li><b class="hl">投机超跌反弹</b>：只能轻仓、且必须把铁止损放在 MA60 <b class="hl">14.4</b>，破了无条件离场</li>
-      <li>重新转多的<b class="hl">前提条件</b>：站稳 17.5 上方 + 单日主力转净流入 + 封测板块情绪回暖，三者缺一不追</li>
-    </ul>
-    <div class="takeaway">一句话：<b class="hl">封测龙头之一不假，但当前是「高位天量出货 + 破位 + 板块退潮」三重压制，PE154 没有盈利兑现兜底。回避为上，要碰只做轻仓超跌反弹并死守 14.4 止损。</b></div>
-  </section>
-
-  <footer>
-    阿波罗个股分析 · 数据源 东方财富直连 · 基准 2026-06-12 收盘<br>
-    本报告基于公开行情数据的量价/资金/估值研判，不构成投资建议；市场有风险，决策需自担。
-  </footer>
+  <footer>阿波罗个股分析 · 数据源 东方财富直连 · 基准 2026-06-18 收盘<br>
+  本报告基于公开行情数据的量价/资金/估值研判，不构成投资建议；市场有风险，决策需自担。</footer>
 </div>
-
 <script>
-const raw = [["2026-04-08",11.78,12.14,11.77,12.14,1071398],["2026-04-09",11.98,12.11,11.9,12.32,1154029],["2026-04-10",12.3,12.22,12.21,12.46,885623],["2026-04-13",12.11,12.34,12.07,12.51,849257],["2026-04-14",12.5,12.67,12.47,12.7,1146908],["2026-04-15",12.72,12.44,12.36,12.78,995415],["2026-04-16",12.43,12.52,12.34,12.53,701884],["2026-04-17",12.48,12.72,12.44,12.83,1085455],["2026-04-20",12.76,12.74,12.65,12.88,907766],["2026-04-21",12.68,12.53,12.32,12.71,923714],["2026-04-22",12.48,12.79,12.44,12.82,969589],["2026-04-23",12.86,12.45,12.37,12.9,922515],["2026-04-24",12.39,12.43,12.39,12.75,846338],["2026-04-27",12.63,12.87,12.57,12.95,1457131],["2026-04-28",12.85,12.63,12.44,12.87,1155628],["2026-04-29",12.63,12.75,12.55,12.89,1107505],["2026-04-30",12.84,13.09,12.75,13.14,1947739],["2026-05-06",13.66,13.6,13.56,14.04,2808847],["2026-05-07",13.83,13.92,13.51,13.96,2193162],["2026-05-08",13.68,13.72,13.43,13.83,1844710],["2026-05-11",13.99,14.72,13.99,14.73,3194996],["2026-05-12",14.78,14.41,14.29,14.78,2235514],["2026-05-13",14.06,14.61,13.89,14.73,2493725],["2026-05-14",14.65,14.24,14.23,14.86,2086658],["2026-05-15",14.26,14.28,13.87,14.75,2548285],["2026-05-18",14.28,14.67,14.2,15.03,2937841],["2026-05-19",14.48,15.28,14.21,15.42,3419095],["2026-05-20",15.13,15.86,15.03,16.76,5000696],["2026-05-21",15.98,15.17,15.06,16.44,4601791],["2026-05-22",15.41,15.41,14.66,15.5,3422512],["2026-05-25",15.98,16.95,15.89,16.95,2912413],["2026-05-26",18.65,18.65,18.14,18.65,6039309],["2026-05-27",19.73,20.13,19.38,20.52,12106516],["2026-05-28",20.13,21.47,20.13,21.94,9237325],["2026-05-29",21.05,19.32,19.32,21.48,8017977],["2026-06-01",19.63,18.41,18.24,20.25,6747937],["2026-06-02",18.23,18.31,17.49,18.63,5548409],["2026-06-03",18.46,19.14,18.34,20.08,6694448],["2026-06-04",18.64,19.24,18.53,19.48,4313199],["2026-06-05",18.96,18.06,17.87,19.14,4088680],["2026-06-08",16.9,16.78,16.53,17.53,3311611],["2026-06-09",17.37,17.62,16.79,17.71,2746348],["2026-06-10",17.31,17.11,16.85,17.76,2379071],["2026-06-11",17.06,16.75,16.52,17.2,2140488],["2026-06-12",17.35,16.15,16.07,17.53,2549706]];
-const flowMap = {"2026-05-29":-11.11,"2026-06-01":-7.3,"2026-06-02":-2.44,"2026-06-03":-7.46,"2026-06-04":-5.0,"2026-06-05":-8.85,"2026-06-08":-4.37,"2026-06-09":0.16,"2026-06-10":-2.92,"2026-06-11":-1.16};
+const raw = [["2026-04-09", 11.98, 12.11, 11.9, 12.32, 1154029.0], ["2026-04-10", 12.3, 12.22, 12.21, 12.46, 885623.0], ["2026-04-13", 12.11, 12.34, 12.07, 12.51, 849257.0], ["2026-04-14", 12.5, 12.67, 12.47, 12.7, 1146908.0], ["2026-04-15", 12.72, 12.44, 12.36, 12.78, 995415.0], ["2026-04-16", 12.43, 12.52, 12.34, 12.53, 701884.0], ["2026-04-17", 12.48, 12.72, 12.44, 12.83, 1085455.0], ["2026-04-20", 12.76, 12.74, 12.65, 12.88, 907766.0], ["2026-04-21", 12.68, 12.53, 12.32, 12.71, 923714.0], ["2026-04-22", 12.48, 12.79, 12.44, 12.82, 969589.0], ["2026-04-23", 12.86, 12.45, 12.37, 12.9, 922515.0], ["2026-04-24", 12.39, 12.43, 12.39, 12.75, 846338.0], ["2026-04-27", 12.63, 12.87, 12.57, 12.95, 1457131.0], ["2026-04-28", 12.85, 12.63, 12.44, 12.87, 1155628.0], ["2026-04-29", 12.63, 12.75, 12.55, 12.89, 1107505.0], ["2026-04-30", 12.84, 13.09, 12.75, 13.14, 1947739.0], ["2026-05-06", 13.66, 13.6, 13.56, 14.04, 2808847.0], ["2026-05-07", 13.83, 13.92, 13.51, 13.96, 2193162.0], ["2026-05-08", 13.68, 13.72, 13.43, 13.83, 1844710.0], ["2026-05-11", 13.99, 14.72, 13.99, 14.73, 3194996.0], ["2026-05-12", 14.78, 14.41, 14.29, 14.78, 2235514.0], ["2026-05-13", 14.06, 14.61, 13.89, 14.73, 2493725.0], ["2026-05-14", 14.65, 14.24, 14.23, 14.86, 2086658.0], ["2026-05-15", 14.26, 14.28, 13.87, 14.75, 2548285.0], ["2026-05-18", 14.28, 14.67, 14.2, 15.03, 2937841.0], ["2026-05-19", 14.48, 15.28, 14.21, 15.42, 3419095.0], ["2026-05-20", 15.13, 15.86, 15.03, 16.76, 5000696.0], ["2026-05-21", 15.98, 15.17, 15.06, 16.44, 4601791.0], ["2026-05-22", 15.41, 15.41, 14.66, 15.5, 3422512.0], ["2026-05-25", 15.98, 16.95, 15.89, 16.95, 2912413.0], ["2026-05-26", 18.65, 18.65, 18.14, 18.65, 6039309.0], ["2026-05-27", 19.73, 20.13, 19.38, 20.52, 12106516.0], ["2026-05-28", 20.13, 21.47, 20.13, 21.94, 9237325.0], ["2026-05-29", 21.05, 19.32, 19.32, 21.48, 8017977.0], ["2026-06-01", 19.63, 18.41, 18.24, 20.25, 6747937.0], ["2026-06-02", 18.23, 18.31, 17.49, 18.63, 5548409.0], ["2026-06-03", 18.46, 19.14, 18.34, 20.08, 6694448.0], ["2026-06-04", 18.64, 19.24, 18.53, 19.48, 4313199.0], ["2026-06-05", 18.96, 18.06, 17.87, 19.14, 4088680.0], ["2026-06-08", 16.9, 16.78, 16.53, 17.53, 3311611.0], ["2026-06-09", 17.37, 17.62, 16.79, 17.71, 2746348.0], ["2026-06-10", 17.31, 17.11, 16.85, 17.76, 2379071.0], ["2026-06-11", 17.06, 16.75, 16.52, 17.2, 2140488.0], ["2026-06-12", 17.35, 16.06, 16.01, 17.53, 3032927.0], ["2026-06-15", 16.38, 17.13, 16.07, 17.14, 2950442.0], ["2026-06-16", 17.3, 17.82, 17.2, 18.05, 3443888.0], ["2026-06-17", 17.5, 19.05, 17.45, 19.19, 5197749.0], ["2026-06-18", 19.3, 19.61, 19.05, 19.94, 4711825.0]];
+const flowMap = {"2026-06-05": -8.85, "2026-06-08": -4.37, "2026-06-09": 0.16, "2026-06-10": -2.92, "2026-06-11": -1.16, "2026-06-12": -4.39, "2026-06-15": 1.85, "2026-06-16": 0.34, "2026-06-17": 5.4, "2026-06-18": -2.37};
 const dates = raw.map(r=>r[0].slice(5));
 const candle = raw.map(r=>[r[1],r[2],r[3],r[4]]);
 const vol = raw.map(r=>r[5]/10000);
 function MA(n){const c=raw.map(r=>r[2]);const o=[];for(let i=0;i<c.length;i++){if(i<n-1){o.push('-');continue;}let s=0;for(let j=0;j<n;j++)s+=c[i-j];o.push(+(s/n).toFixed(2));}return o;}
 const flow = raw.map(r=>(r[0] in flowMap)?flowMap[r[0]]:null);
 const chart = echarts.init(document.getElementById('kline'));
-chart.setOption({
-  backgroundColor:'transparent', animation:false,
-  legend:{data:['日K','MA5','MA20','MA60'],top:0,textStyle:{color:'#9aa7b8'}},
-  tooltip:{trigger:'axis',axisPointer:{type:'cross'},backgroundColor:'#161b22',borderColor:'#293040',textStyle:{color:'#e6edf3'}},
-  axisPointer:{link:[{xAxisIndex:'all'}]},
-  grid:[{left:48,right:16,top:30,height:230},{left:48,right:16,top:285,height:60},{left:48,right:16,top:360,height:55}],
-  xAxis:[
-    {type:'category',data:dates,gridIndex:0,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{show:false},boundaryGap:true},
-    {type:'category',data:dates,gridIndex:1,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{show:false}},
-    {type:'category',data:dates,gridIndex:2,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#6b7689',fontSize:10,interval:5}}
-  ],
-  yAxis:[
-    {scale:true,gridIndex:0,splitLine:{lineStyle:{color:'#1c2230'}},axisLabel:{color:'#9aa7b8'}},
-    {scale:true,gridIndex:1,splitLine:{show:false},axisLabel:{color:'#6b7689',fontSize:10},name:'量(万手)',nameTextStyle:{color:'#6b7689',fontSize:9}},
-    {scale:true,gridIndex:2,splitLine:{lineStyle:{color:'#1c2230'}},axisLabel:{color:'#6b7689',fontSize:10},name:'主力(亿)',nameTextStyle:{color:'#6b7689',fontSize:9}}
-  ],
-  series:[
-    {name:'日K',type:'candlestick',data:candle,itemStyle:{color:'#ff5b5b',color0:'#2ecc71',borderColor:'#ff5b5b',borderColor0:'#2ecc71'}},
-    {name:'MA5',type:'line',data:MA(5),smooth:true,symbol:'none',lineStyle:{width:1,color:'#f5d27a'}},
-    {name:'MA20',type:'line',data:MA(20),smooth:true,symbol:'none',lineStyle:{width:1,color:'#5ab0ff'}},
-    {name:'MA60',type:'line',data:MA(60),smooth:true,symbol:'none',lineStyle:{width:1.4,color:'#c77dff'}},
-    {name:'量',type:'bar',xAxisIndex:1,yAxisIndex:1,data:vol.map((v,i)=>({value:v,itemStyle:{color:candle[i][1]>=candle[i][0]?'rgba(255,91,91,.55)':'rgba(46,204,113,.55)'}}))},
-    {name:'主力净额',type:'bar',xAxisIndex:2,yAxisIndex:2,data:flow.map(v=>v===null?'-':({value:v,itemStyle:{color:v>=0?'#ff5b5b':'#2ecc71'}}))}
-  ]
-});
+chart.setOption({backgroundColor:'transparent',animation:false,
+ legend:{data:['日K','MA5','MA20','MA60'],top:0,textStyle:{color:'#9aa7b8'}},
+ tooltip:{trigger:'axis',axisPointer:{type:'cross'},backgroundColor:'#161b22',borderColor:'#293040',textStyle:{color:'#e6edf3'}},
+ axisPointer:{link:[{xAxisIndex:'all'}]},
+ grid:[{left:48,right:16,top:30,height:230},{left:48,right:16,top:285,height:60},{left:48,right:16,top:360,height:55}],
+ xAxis:[{type:'category',data:dates,gridIndex:0,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{show:false},boundaryGap:true},
+  {type:'category',data:dates,gridIndex:1,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{show:false}},
+  {type:'category',data:dates,gridIndex:2,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#6b7689',fontSize:10,interval:5}}],
+ yAxis:[{scale:true,gridIndex:0,splitLine:{lineStyle:{color:'#1c2230'}},axisLabel:{color:'#9aa7b8'}},
+  {scale:true,gridIndex:1,splitLine:{show:false},axisLabel:{color:'#6b7689',fontSize:10},name:'量(万手)',nameTextStyle:{color:'#6b7689',fontSize:9}},
+  {scale:true,gridIndex:2,splitLine:{lineStyle:{color:'#1c2230'}},axisLabel:{color:'#6b7689',fontSize:10},name:'主力(亿)',nameTextStyle:{color:'#6b7689',fontSize:9}}],
+ series:[{name:'日K',type:'candlestick',data:candle,itemStyle:{color:'#ff5b5b',color0:'#2ecc71',borderColor:'#ff5b5b',borderColor0:'#2ecc71'}},
+  {name:'MA5',type:'line',data:MA(5),smooth:true,symbol:'none',lineStyle:{width:1,color:'#f5d27a'}},
+  {name:'MA20',type:'line',data:MA(20),smooth:true,symbol:'none',lineStyle:{width:1,color:'#5ab0ff'}},
+  {name:'MA60',type:'line',data:MA(60),smooth:true,symbol:'none',lineStyle:{width:1.4,color:'#c77dff'}},
+  {name:'量',type:'bar',xAxisIndex:1,yAxisIndex:1,data:vol.map((v,i)=>({value:v,itemStyle:{color:candle[i][1]>=candle[i][0]?'rgba(255,91,91,.55)':'rgba(46,204,113,.55)'}}))},
+  {name:'主力净额',type:'bar',xAxisIndex:2,yAxisIndex:2,data:flow.map(v=>v===null?'-':({value:v,itemStyle:{color:v>=0?'#ff5b5b':'#2ecc71'}}))}]});
 window.addEventListener('resize',()=>chart.resize());
-</script>
-</body>
-</html>
+</script></body></html>
