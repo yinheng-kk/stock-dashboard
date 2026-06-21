@@ -1,7 +1,5 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
-<head>
-<meta charset="UTF-8">
+<html lang="zh-CN"><head><meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>振华科技 000733 · 阿波罗个股分析</title>
 <script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
@@ -80,159 +78,66 @@
   footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
   .small{font-size:12px;color:var(--muted)}
   #kline{width:100%;height:430px}
-</style>
-</head>
-<body>
+</style></head><body>
 <header class="hero">
   <div class="brand">阿 波 罗 · 个 股 分 析</div>
   <h1>振华科技<span class="code">000733</span></h1>
-  <div class="meta">截至 2026-06-12 收盘 ｜ 军工电子（中国电子旗下元器件平台）｜ 总市值 ≈264亿</div>
+  <div class="meta">截至 2026-06-18 收盘 ｜ 军工电子（中国电子旗下元器件平台） ｜ 总市值 ≈331亿</div>
   <div class="pricebar">
-    <div class="item"><div class="lbl">现价(6-12收)</div><div class="val neg">¥47.59 <span style="font-size:13px">-4.34%</span></div></div>
-    <div class="item"><div class="lbl">距6-04顶61.77</div><div class="val neg">-23%</div></div>
-    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--bad);font-size:16px">破MA60·下跌未止</div></div>
+    <div class="item"><div class="lbl">现价(6-18收)</div><div class="val down">¥59.79 <span style="font-size:13px">+2.86%</span></div></div>
+    <div class="item"><div class="lbl">距6-04前高61.77</div><div class="val neg">-3%</div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--warn);font-size:16px">V形修复·逼近前高</div></div>
   </div>
 </header>
-
 <div class="wrap">
+  <div class="caveat"><b>⚠ 数据口径：</b>实时行情/资金流取东财直连（trust_env=False 绕本机代理），基准为 <b>2026-06-18 收盘</b>（最近交易日）；K线为前复权日线（fqt=1）。⚠ <b>纠偏</b>：6-12 本栏判「破位下行宁等勿接」，此后军工电子板块回暖，股价 V形拉回 59.79（较 6-12 的 47.59 反弹 +26%），左侧判断被市场修正——以下按最新数据重判。PE 520 因净利基数极低已失真，估值锚看 PB 2.10。 本报告只出可计算事实+量价资金研判，不构成投资建议。</div>
 
-  <div class="caveat">
-    <b>⚠ 数据口径：</b>
-    实时行情/资金流取东财直连（trust_env=False 绕本机代理），基准为 <b>2026-06-12 收盘</b>；
-    K线为前复权日线（fqt=1）。<b>PE-TTM 414 因净利基数极低已失真，估值锚看 PB 1.67（可比组最低）</b>。本报告只出可计算事实+量价资金研判。
-  </div>
-
-  <!-- 动态K线 -->
   <section class="card">
-    <div class="sec-h"><div class="sec-n">K</div><div class="sec-t">动态K线 · 日线+MA+主力资金</div><div class="sec-tag">近45个交易日</div></div>
+    <div class="sec-h"><div class="sec-n">K</div><div class="sec-t">动态K线 · 日线+MA+主力资金</div><div class="sec-tag">近48个交易日</div></div>
     <div id="kline"></div>
-    <p class="small">蜡烛=日K前复权；线=MA5/20/60；下栏柱=单日主力净额（亿，红进绿出）。6-04 +10%涨停冲 61.77 见顶 → 6-05 长阴 -5.46% 派发 → 6-08 跌停 -10% → 反抽两日无力 → 今日<b class="hl">高开51.0直接砸到47.59（-4.34%）</b>，收盘<b class="hl">跌破 MA60（47.65）</b>。</p>
+    <p class="small">蜡烛=日K前复权；线=MA5/20/60；下栏柱=单日主力净额（亿，红进绿出）。6-08 跌停探 50 后企稳→连续反弹，<b class="hl">V形拉回 59.79，逼近 6-04 前高 61.77</b>；但反弹过程中主力净额并不强（见下），量价存背离。</p>
   </section>
 
-  <!-- ① 量能 -->
-  <section class="card">
-    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能</div><div class="sec-tag">高位放量派发→阴跌不缩量</div></div>
-    <p>6-04/6-05 顶部两日合计成交超 150 万手（70日天量区），是教科书式<b class="hl">放量见顶</b>；此后每根阴线量能仍维持 37~57 万手，<b class="hl">下跌不缩量＝筹码仍在持续出逃</b>。今日量比 0.82、成交额 18.27 亿，高开诱多后全天单边下杀，承接极弱。</p>
-  </section>
+  <section class="card"><div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能</div><div class="sec-tag">反弹放量·逼近前高需验证</div></div><p>6-18 成交额 27.66亿、换手 8.39%，反弹以来量能维持高位。从 6-08 跌停（50）到 6-18（59.79）一波快速修复，量能配合尚可；但临近 6-04 前高 61.77 的<b class="hl">套牢密集区</b>，能否放量有效突破是关键——放量过则打开空间，滞涨则成双顶。</p></section>
+<section class="card"><div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">反弹中主力净额偏弱·量价背离</div></div><ul><li>近5日主力净额（6/12→6/18）：<span class="negc">-2.55</span> / +2.87 / <span class="negc">-2.63</span> / <span class="negc">-1.24</span> / +0.06 亿 ＝ <b class="hl">累计约 -3.5亿</b></li><li>背离信号：股价 V形反弹 +26%，但同期<b class="hl">主力净额累计仍为流出</b>，说明这波拉升<b class="hl">散户/游资推动为主，主力未同步增仓</b></li><li>提示：价涨而主力不配合的反弹，持续性存疑，尤其到前高位置更需警惕主力借反弹派发</li></ul></section>
+<section class="card"><div class="sec-h"><div class="sec-n">③</div><div class="sec-t">同业横向对比 · 军工电子</div><div class="sec-tag">6-18收盘</div></div><table class="compare"><thead><tr><th class="l">名称</th><th>现价</th><th>今日</th><th>PE(TTM)</th><th>PB</th><th>换手</th><th>总市值(亿)</th></tr></thead><tbody><tr class="self"><td class="l">振华科技 000733</td><td>59.79</td><td class="pos">+2.86%</td><td>520.73</td><td>2.1</td><td>8.39%</td><td>331.34</td></tr>
+<tr><td class="l">火炬电子 603678</td><td>67.75</td><td class="negc">-2.81%</td><td>203.09</td><td>5.27</td><td>9.94%</td><td>322.2</td></tr>
+<tr><td class="l">鸿远电子 603267</td><td>76.37</td><td class="pos">+1.83%</td><td>45.8</td><td>3.96</td><td>8.97%</td><td>176.48</td></tr>
+<tr><td class="l">宏达电子 300726</td><td>85.41</td><td class="pos">+0.33%</td><td>93.61</td><td>7.34</td><td>15.05%</td><td>351.75</td></tr>
+<tr><td class="l">紫光国微 002049</td><td>80.39</td><td class="pos">+0.49%</td><td>51.08</td><td>4.91</td><td>4.63%</td><td>683.02</td></tr></tbody></table><div class="takeaway">相对位置：振华 PB 2.10 仍是可比组<b class="hl">最低</b>（同行 3.96~7.34），资产端最便宜的安全垫仍在；PE 520 因利润塌方失真不可比。今日板块分化（火炬 -2.81%、鸿远 +1.83%、宏达 +0.33%），振华 +2.86% 居前＝个股反弹强于板块，但这与主力净额偏弱矛盾，更像题材资金轮动而非基本面驱动。</div></section>
+<section class="card"><div class="sec-h"><div class="sec-n">④</div><div class="sec-t">估值</div><div class="sec-tag">PE失真·PB2.1资产底</div></div><ul><li>PE-TTM <span class="x">520</span>：军品定价改革+需求扰动致净利基数极低，PE 失去参考意义，<b class="hl">不能据此判贵贱</b></li><li>PB <b class="hl">2.10</b>：可比组最低，中国电子旗下被动元器件平台资产家底最厚，提供下行安全垫</li><li>逻辑：股价博弈「军工订单复苏+利润弹性修复」预期，这波 V形正是修复预期的再定价，但需基本面后续兑现</li></ul></section>
+<section class="card"><div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">技术研判</div><div class="sec-tag">V形拉回·前高61.77是关</div></div><ul><li>均线：价 59.79 已收复并站上全部均线，短期均线金叉向上，技术形态由弱转强</li><li>形态：6-04 冲 61.77 见顶→6-08 跌停 50→V形反弹回 59.79，<b class="hl">逼近前高，构成潜在双顶颈线区 60~61.8</b></li><li>关口：上方 <b class="hl">61.77（前高）</b> 是决定性压力，放量过则新高、滞涨则双顶回落；下方支撑 55（MA区）、回踩看 50（6-08低）</li></ul></section>
+<section class="card"><div class="sec-h"><div class="sec-n">⚔</div><div class="sec-t">矛盾链</div><div class="sec-tag">多空对峙</div></div><table class="logic"><thead><tr><th>支撑面（多）</th><th>风险面（空）</th></tr></thead><tbody><tr><td class="good-col">V形快速修复+26%，收复全部均线，形态转强</td><td class="bad-col">反弹中主力净额累计-3.5亿，量价背离</td></tr><tr><td class="good-col">PB 2.10 组内最低，资产底厚，军工景气预期</td><td class="bad-col">PE 520 利润塌方，估值靠预期支撑</td></tr><tr><td class="good-col">个股反弹强于板块，资金关注度高</td><td class="bad-col">逼近前高 61.77，潜在双顶+套牢抛压</td></tr></tbody></table></section>
+<section class="card strategy"><div class="sec-h"><div class="sec-n">★</div><div class="sec-t">操作策略</div><div class="sec-tag">基于6-18数据</div></div><div class="lvl"><div class="chip res"><div class="k">上方反压</div><div class="v">61.77（前高/双顶颈线）</div></div><div class="chip sup"><div class="k">第一支撑</div><div class="v">55（均线）</div></div><div class="chip stop"><div class="k">破位看</div><div class="v">回踩看50</div></div></div><ul style="margin-top:12px"><li><b class="hl">定性</b>：从 6-08 跌停 V形修复至前高，形态转强，但<b class="hl">主力资金未配合（5日累计净流出）</b>，是价涨量价背离的反弹，到前高位置风险收益比转差</li><li><b class="hl">持有者</b>：临近 61.77 前高，若放量突破可看新高、续持；若<b class="hl">冲高滞涨/缩量+主力继续流出</b>，警惕双顶，前高附近是减仓窗口</li><li><b class="hl">空仓者</b>：前高下方不宜追，等两种确认之一——①放量有效突破 61.77 且主力转净流入（右侧追强）②回踩 55/50 缩量企稳+资金转正（左侧低吸）</li><li><b class="hl">纠偏说明</b>：6-12 的破位判断被板块回暖证伪，教训＝左侧「破位」结论需结合板块β，不能只看个股技术</li></ul><div class="takeaway">一句话：<b class="hl">振华是 PB 2.10 资产底最厚的军工电子平台，从 6-08 跌停 V形修复至 59.79、逼近 6-04 前高 61.77，形态转强。但这波 +26% 反弹中主力净额 5 日累计仍 -3.5亿，量价背离，更像题材资金推动。临近前高，持有者跟踪能否放量破 61.77、否则前高减仓；空仓者勿追，等突破确认或回踩企稳。（6-12 破位判断已被板块回暖证伪，本次纠偏）</b></div></section>
 
-  <!-- ② 资金流向 -->
-  <section class="card">
-    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">顶部脉冲进→连续净流出</div></div>
-    <ul>
-      <li>6-04 主力净流入 <b class="hl">+7.49亿</b>（拉涨停吸筹/对倒做顶）→ 6-05 立即 <span class="x">-4.43亿</span> 反手派发</li>
-      <li>近5日主力净额（6/05→6/11）：<span class="x">-4.43 / -2.72 / +0.09 / -1.02 / -1.62 亿 ＝ 累计 -9.70亿</span></li>
-      <li>节奏解读：6-04 的大进与 6-05 起的连续大出形成完整「<b class="hl">脉冲做顶→台阶式派发</b>」结构，期间仅 6-09 一日微弱回流，主力撤退意图明确</li>
-    </ul>
-  </section>
-
-  <!-- ③ 同业横向对比 -->
-  <section class="card">
-    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">同业横向对比 · 军工电子</div><div class="sec-tag">6-12收盘</div></div>
-    <table class="compare">
-      <thead><tr><th class="l">名称</th><th>现价</th><th>今日</th><th>PE(TTM)</th><th>PB</th><th>换手</th><th>总市值(亿)</th></tr></thead>
-      <tbody>
-        <tr class="self"><td class="l">振华科技 000733</td><td>47.59</td><td class="negc">-4.34%</td><td style="color:var(--bad)">414(失真)</td><td>1.67</td><td>6.72%</td><td>263.7</td></tr>
-        <tr><td class="l">火炬电子 603678</td><td>57.73</td><td class="negc">-6.75%</td><td>173.1</td><td>4.49</td><td>10.61%</td><td>274.5</td></tr>
-        <tr><td class="l">鸿远电子 603267</td><td>62.48</td><td class="negc">-6.33%</td><td>37.5</td><td>3.24</td><td>7.99%</td><td>144.4</td></tr>
-        <tr><td class="l">宏达电子 300726</td><td>60.74</td><td class="negc">-5.68%</td><td>66.6</td><td>5.22</td><td>11.15%</td><td>250.2</td></tr>
-        <tr><td class="l">紫光国微 002049</td><td>71.40</td><td class="flat">-0.03%</td><td>45.4</td><td>4.36</td><td>2.66%</td><td>606.6</td></tr>
-      </tbody>
-    </table>
-    <div class="takeaway">相对位置：今日军工电子<b class="hl">再度全板块齐杀</b>（火炬 -6.75%、鸿远 -6.33%、宏达 -5.68%），振华 -4.34% 跌幅居中＝<b class="hl">系统性退潮而非个股利空</b>。振华 PB 1.67 是可比组最低（资产端最便宜），但 PE 414 暴露盈利已塌方——「便宜的资产 + 塌方的利润」，板块杀估值时它没有豁免权。</div>
-  </section>
-
-  <!-- ④ 估值 -->
-  <section class="card">
-    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">估值</div><div class="sec-tag">PE失真 · PB资产底</div></div>
-    <ul>
-      <li>PE-TTM <span class="x">414.5</span>：军品定价改革+需求下行致净利基数极低，PE 已失去参考意义，<b class="hl">不能拿它判断贵贱</b></li>
-      <li>PB <b class="hl">1.67</b>：可比组最低（同行 3.2~5.2），中国电子旗下被动元器件平台的资产家底仍是最厚的安全垫</li>
-      <li>定价逻辑：股价博弈的是「军工订单复苏 + 利润弹性修复」预期；5月底至6-04 那波 +30% 正是炒预期，现在退潮就是预期的折价</li>
-    </ul>
-  </section>
-
-  <!-- ⑤ 技术研判 -->
-  <section class="card">
-    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">技术研判</div><div class="sec-tag">收盘破MA60·破位确认中</div></div>
-    <ul>
-      <li>均线：MA5 50.21 / MA10 52.53 / MA20 50.83 / MA60 47.65；价 47.59 <b class="hl">跌穿全部均线，含最后防线 MA60</b>（上次报告给的 47.7 企稳位今日告破）</li>
-      <li>形态：6-04 涨停冲 61.77 → 6-08 跌停 → 6-09/6-10 两日反抽 53.2 失败 → 逐级阴跌；今日高开 51 冲 51.5 即遭抛压全天单边杀，<b class="hl">典型的反弹出货</b></li>
-      <li>下方参照：4月平台密集区 <b class="hl">46~47</b> 是第一承接，再往下 44.6（5-18低）、<b class="hl">41.9（4-30 70日低点）</b>；上方 50~50.8（整数关+MA5/MA20）反压</li>
-    </ul>
-  </section>
-
-  <!-- 矛盾链 -->
-  <section class="card">
-    <div class="sec-h"><div class="sec-n">⚔</div><div class="sec-t">矛盾链</div><div class="sec-tag">多空对峙</div></div>
-    <table class="logic">
-      <thead><tr><th>支撑面（多）</th><th>风险面（空）</th></tr></thead>
-      <tbody>
-        <tr><td class="good-col">中国电子旗下军工被动元器件平台，PB 1.67 组内最低，资产底厚</td><td class="bad-col">PE 414 盈利塌方，利润修复时点不可证</td></tr>
-        <tr><td class="good-col">已回撤 23%，离 4月平台 46~47 仅一步，估值泡沫快速出清</td><td class="bad-col">6-04 +7.5亿脉冲做顶后连续派发，5日 -9.7亿，主力撤退未完</td></tr>
-        <tr><td class="good-col">板块齐杀属系统性退潮，非个股暴雷</td><td class="bad-col">今日收盘破 MA60 47.65，全均线失守，技术上破位</td></tr>
-        <tr><td class="good-col">—</td><td class="bad-col">下跌不缩量+反弹出货（今日高开诱多单边杀），承接极弱</td></tr>
-      </tbody>
-    </table>
-  </section>
-
-  <!-- 操作策略 -->
-  <section class="card strategy">
-    <div class="sec-h"><div class="sec-n">★</div><div class="sec-t">操作策略</div><div class="sec-tag">破位下行·宁等勿接</div></div>
-    <div class="lvl">
-      <div class="chip res"><div class="k">上方反压</div><div class="v">50~50.8</div></div>
-      <div class="chip sup"><div class="k">第一承接(4月平台)</div><div class="v">46~47</div></div>
-      <div class="chip stop"><div class="k">深跌看</div><div class="v">44.6 / 41.9</div></div>
-    </div>
-    <ul style="margin-top:12px">
-      <li><b class="hl">定性</b>：高位放量派发 + 破位下行 + 板块退潮三重压制仍在；今日破 MA60 后<b class="hl">「等47.7企稳」的左侧条件已失效</b>，重新等更低的确认</li>
-      <li><b class="hl">持有者</b>：反抽 50~50.8（整数关+均线反压）是最后的减仓窗口，别幻想 V 形修复——主力派发未完、下跌不缩量</li>
-      <li><b class="hl">空仓者</b>：左侧勿接飞刀。观察 46~47 平台能否<b class="hl">缩量企稳（成交额缩到10亿级）+主力净额转正</b>，两者齐了才有轻仓低吸价值；做不到就等 44.6 甚至 41.9</li>
-      <li><b class="hl">转多条件</b>：放量收复 50.8（MA20）且板块止跌，缺一不可</li>
-    </ul>
-    <div class="takeaway">一句话：<b class="hl">振华是 PB 1.67 资产底最厚的军工电子平台，但 6-04 脉冲做顶后主力连续派发 -9.7亿，今日反弹出货式大阴线收盘跌破 MA60，破位确认中。持有反抽 50~50.8 减仓，空仓等 46~47 缩量企稳+资金转正再谈低吸，破位股不接飞刀。</b></div>
-  </section>
-
-  <footer>
-    阿波罗个股分析 · 数据源 东方财富直连 · 基准 2026-06-12 收盘<br>
-    本报告基于公开行情数据的量价/资金/估值研判，不构成投资建议；市场有风险，决策需自担。
-  </footer>
+  <footer>阿波罗个股分析 · 数据源 东方财富直连 · 基准 2026-06-18 收盘<br>
+  本报告基于公开行情数据的量价/资金/估值研判，不构成投资建议；市场有风险，决策需自担。</footer>
 </div>
-
 <script>
-const raw = [["2026-04-08",45.16,46.14,45.03,46.19,120247],["2026-04-09",45.7,45.88,45.47,46.25,81660],["2026-04-10",46.1,46.28,46.1,46.78,80250],["2026-04-13",46.01,46.36,45.96,46.75,70134],["2026-04-14",46.98,46.96,46.54,47.17,80013],["2026-04-15",47.25,46.76,46.66,47.59,85233],["2026-04-16",46.9,46.97,46.5,47.13,78731],["2026-04-17",46.75,46.96,46.61,47.17,70417],["2026-04-20",46.96,47.54,46.92,47.63,90209],["2026-04-21",47.77,47.24,47.03,47.77,66846],["2026-04-22",47.0,47.69,46.88,47.73,81309],["2026-04-23",47.74,46.8,46.52,48.17,96332],["2026-04-24",46.9,46.82,46.58,47.4,78689],["2026-04-27",46.82,47.18,46.36,47.35,83018],["2026-04-28",47.2,46.83,46.38,47.62,100715],["2026-04-29",43.8,43.54,42.99,43.8,279362],["2026-04-30",43.1,42.61,41.88,43.5,235839],["2026-05-06",43.15,43.5,43.15,44.24,176880],["2026-05-07",43.66,43.69,43.09,43.86,123552],["2026-05-08",43.49,44.7,43.3,44.97,164108],["2026-05-11",46.03,46.51,45.88,47.18,224620],["2026-05-12",46.51,45.95,45.57,46.75,146317],["2026-05-13",45.7,46.87,45.64,47.1,133016],["2026-05-14",47.06,46.12,46.0,47.24,153830],["2026-05-15",46.08,44.87,44.62,46.86,147263],["2026-05-18",44.6,44.94,44.07,45.52,100079],["2026-05-19",44.75,46.91,44.29,46.95,190127],["2026-05-20",46.78,46.89,46.21,47.49,144726],["2026-05-21",46.94,45.72,45.67,48.09,182574],["2026-05-22",46.07,49.17,46.07,49.18,329668],["2026-05-25",51.36,52.08,51.33,53.5,468163],["2026-05-26",51.43,50.34,49.5,51.6,280442],["2026-05-27",50.34,50.34,49.91,53.0,336624],["2026-05-28",50.27,53.38,50.0,54.1,563400],["2026-05-29",54.05,51.49,50.7,54.91,484101],["2026-06-01",50.62,50.87,50.58,53.17,357523],["2026-06-02",50.9,54.1,49.8,54.49,543014],["2026-06-03",54.6,53.92,52.93,57.16,624260],["2026-06-04",53.82,59.31,53.31,59.31,768752],["2026-06-05",61.04,56.07,55.95,61.77,740644],["2026-06-08",53.0,50.46,50.46,54.5,573943],["2026-06-09",50.86,52.19,49.48,53.2,494725],["2026-06-10",51.05,51.08,49.98,53.12,362387],["2026-06-11",50.0,49.75,48.7,51.85,398489],["2026-06-12",51.0,47.59,47.56,51.5,372621]];
-const flowMap = {"2026-05-29":-0.3,"2026-06-01":-0.32,"2026-06-02":1.28,"2026-06-03":0.87,"2026-06-04":7.49,"2026-06-05":-4.43,"2026-06-08":-2.72,"2026-06-09":0.09,"2026-06-10":-1.02,"2026-06-11":-1.62};
+const raw = [["2026-04-09", 45.7, 45.88, 45.47, 46.25, 81660.0], ["2026-04-10", 46.1, 46.28, 46.1, 46.78, 80250.0], ["2026-04-13", 46.01, 46.36, 45.96, 46.75, 70134.0], ["2026-04-14", 46.98, 46.96, 46.54, 47.17, 80013.0], ["2026-04-15", 47.25, 46.76, 46.66, 47.59, 85233.0], ["2026-04-16", 46.9, 46.97, 46.5, 47.13, 78731.0], ["2026-04-17", 46.75, 46.96, 46.61, 47.17, 70417.0], ["2026-04-20", 46.96, 47.54, 46.92, 47.63, 90209.0], ["2026-04-21", 47.77, 47.24, 47.03, 47.77, 66846.0], ["2026-04-22", 47.0, 47.69, 46.88, 47.73, 81309.0], ["2026-04-23", 47.74, 46.8, 46.52, 48.17, 96332.0], ["2026-04-24", 46.9, 46.82, 46.58, 47.4, 78689.0], ["2026-04-27", 46.82, 47.18, 46.36, 47.35, 83018.0], ["2026-04-28", 47.2, 46.83, 46.38, 47.62, 100715.0], ["2026-04-29", 43.8, 43.54, 42.99, 43.8, 279362.0], ["2026-04-30", 43.1, 42.61, 41.88, 43.5, 235839.0], ["2026-05-06", 43.15, 43.5, 43.15, 44.24, 176880.0], ["2026-05-07", 43.66, 43.69, 43.09, 43.86, 123552.0], ["2026-05-08", 43.49, 44.7, 43.3, 44.97, 164108.0], ["2026-05-11", 46.03, 46.51, 45.88, 47.18, 224620.0], ["2026-05-12", 46.51, 45.95, 45.57, 46.75, 146317.0], ["2026-05-13", 45.7, 46.87, 45.64, 47.1, 133016.0], ["2026-05-14", 47.06, 46.12, 46.0, 47.24, 153830.0], ["2026-05-15", 46.08, 44.87, 44.62, 46.86, 147263.0], ["2026-05-18", 44.6, 44.94, 44.07, 45.52, 100079.0], ["2026-05-19", 44.75, 46.91, 44.29, 46.95, 190127.0], ["2026-05-20", 46.78, 46.89, 46.21, 47.49, 144726.0], ["2026-05-21", 46.94, 45.72, 45.67, 48.09, 182574.0], ["2026-05-22", 46.07, 49.17, 46.07, 49.18, 329668.0], ["2026-05-25", 51.36, 52.08, 51.33, 53.5, 468163.0], ["2026-05-26", 51.43, 50.34, 49.5, 51.6, 280442.0], ["2026-05-27", 50.34, 50.34, 49.91, 53.0, 336624.0], ["2026-05-28", 50.27, 53.38, 50.0, 54.1, 563400.0], ["2026-05-29", 54.05, 51.49, 50.7, 54.91, 484101.0], ["2026-06-01", 50.62, 50.87, 50.58, 53.17, 357523.0], ["2026-06-02", 50.9, 54.1, 49.8, 54.49, 543014.0], ["2026-06-03", 54.6, 53.92, 52.93, 57.16, 624260.0], ["2026-06-04", 53.82, 59.31, 53.31, 59.31, 768752.0], ["2026-06-05", 61.04, 56.07, 55.95, 61.77, 740644.0], ["2026-06-08", 53.0, 50.46, 50.46, 54.5, 573943.0], ["2026-06-09", 50.86, 52.19, 49.48, 53.2, 494725.0], ["2026-06-10", 51.05, 51.08, 49.98, 53.12, 362387.0], ["2026-06-11", 50.0, 49.75, 48.7, 51.85, 398489.0], ["2026-06-12", 51.0, 47.16, 47.12, 51.5, 427102.0], ["2026-06-15", 49.4, 51.88, 49.33, 51.88, 292592.0], ["2026-06-16", 53.79, 56.34, 53.4, 57.07, 895681.0], ["2026-06-17", 56.1, 58.13, 55.68, 58.85, 548628.0], ["2026-06-18", 58.65, 59.79, 57.85, 61.05, 464690.0]];
+const flowMap = {"2026-06-05": -4.43, "2026-06-08": -2.72, "2026-06-09": 0.09, "2026-06-10": -1.02, "2026-06-11": -1.62, "2026-06-12": -2.55, "2026-06-15": 2.87, "2026-06-16": -2.63, "2026-06-17": -1.24, "2026-06-18": 0.06};
 const dates = raw.map(r=>r[0].slice(5));
 const candle = raw.map(r=>[r[1],r[2],r[3],r[4]]);
 const vol = raw.map(r=>r[5]/10000);
 function MA(n){const c=raw.map(r=>r[2]);const o=[];for(let i=0;i<c.length;i++){if(i<n-1){o.push('-');continue;}let s=0;for(let j=0;j<n;j++)s+=c[i-j];o.push(+(s/n).toFixed(2));}return o;}
 const flow = raw.map(r=>(r[0] in flowMap)?flowMap[r[0]]:null);
 const chart = echarts.init(document.getElementById('kline'));
-chart.setOption({
-  backgroundColor:'transparent', animation:false,
-  legend:{data:['日K','MA5','MA20','MA60'],top:0,textStyle:{color:'#9aa7b8'}},
-  tooltip:{trigger:'axis',axisPointer:{type:'cross'},backgroundColor:'#161b22',borderColor:'#293040',textStyle:{color:'#e6edf3'}},
-  axisPointer:{link:[{xAxisIndex:'all'}]},
-  grid:[{left:48,right:16,top:30,height:230},{left:48,right:16,top:285,height:60},{left:48,right:16,top:360,height:55}],
-  xAxis:[
-    {type:'category',data:dates,gridIndex:0,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{show:false},boundaryGap:true},
-    {type:'category',data:dates,gridIndex:1,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{show:false}},
-    {type:'category',data:dates,gridIndex:2,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#6b7689',fontSize:10,interval:5}}
-  ],
-  yAxis:[
-    {scale:true,gridIndex:0,splitLine:{lineStyle:{color:'#1c2230'}},axisLabel:{color:'#9aa7b8'}},
-    {scale:true,gridIndex:1,splitLine:{show:false},axisLabel:{color:'#6b7689',fontSize:10},name:'量(万手)',nameTextStyle:{color:'#6b7689',fontSize:9}},
-    {scale:true,gridIndex:2,splitLine:{lineStyle:{color:'#1c2230'}},axisLabel:{color:'#6b7689',fontSize:10},name:'主力(亿)',nameTextStyle:{color:'#6b7689',fontSize:9}}
-  ],
-  series:[
-    {name:'日K',type:'candlestick',data:candle,itemStyle:{color:'#ff5b5b',color0:'#2ecc71',borderColor:'#ff5b5b',borderColor0:'#2ecc71'}},
-    {name:'MA5',type:'line',data:MA(5),smooth:true,symbol:'none',lineStyle:{width:1,color:'#f5d27a'}},
-    {name:'MA20',type:'line',data:MA(20),smooth:true,symbol:'none',lineStyle:{width:1,color:'#5ab0ff'}},
-    {name:'MA60',type:'line',data:MA(60),smooth:true,symbol:'none',lineStyle:{width:1.4,color:'#c77dff'}},
-    {name:'量',type:'bar',xAxisIndex:1,yAxisIndex:1,data:vol.map((v,i)=>({value:v,itemStyle:{color:candle[i][1]>=candle[i][0]?'rgba(255,91,91,.55)':'rgba(46,204,113,.55)'}}))},
-    {name:'主力净额',type:'bar',xAxisIndex:2,yAxisIndex:2,data:flow.map(v=>v===null?'-':({value:v,itemStyle:{color:v>=0?'#ff5b5b':'#2ecc71'}}))}
-  ]
-});
+chart.setOption({backgroundColor:'transparent',animation:false,
+ legend:{data:['日K','MA5','MA20','MA60'],top:0,textStyle:{color:'#9aa7b8'}},
+ tooltip:{trigger:'axis',axisPointer:{type:'cross'},backgroundColor:'#161b22',borderColor:'#293040',textStyle:{color:'#e6edf3'}},
+ axisPointer:{link:[{xAxisIndex:'all'}]},
+ grid:[{left:48,right:16,top:30,height:230},{left:48,right:16,top:285,height:60},{left:48,right:16,top:360,height:55}],
+ xAxis:[{type:'category',data:dates,gridIndex:0,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{show:false},boundaryGap:true},
+  {type:'category',data:dates,gridIndex:1,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{show:false}},
+  {type:'category',data:dates,gridIndex:2,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#6b7689',fontSize:10,interval:5}}],
+ yAxis:[{scale:true,gridIndex:0,splitLine:{lineStyle:{color:'#1c2230'}},axisLabel:{color:'#9aa7b8'}},
+  {scale:true,gridIndex:1,splitLine:{show:false},axisLabel:{color:'#6b7689',fontSize:10},name:'量(万手)',nameTextStyle:{color:'#6b7689',fontSize:9}},
+  {scale:true,gridIndex:2,splitLine:{lineStyle:{color:'#1c2230'}},axisLabel:{color:'#6b7689',fontSize:10},name:'主力(亿)',nameTextStyle:{color:'#6b7689',fontSize:9}}],
+ series:[{name:'日K',type:'candlestick',data:candle,itemStyle:{color:'#ff5b5b',color0:'#2ecc71',borderColor:'#ff5b5b',borderColor0:'#2ecc71'}},
+  {name:'MA5',type:'line',data:MA(5),smooth:true,symbol:'none',lineStyle:{width:1,color:'#f5d27a'}},
+  {name:'MA20',type:'line',data:MA(20),smooth:true,symbol:'none',lineStyle:{width:1,color:'#5ab0ff'}},
+  {name:'MA60',type:'line',data:MA(60),smooth:true,symbol:'none',lineStyle:{width:1.4,color:'#c77dff'}},
+  {name:'量',type:'bar',xAxisIndex:1,yAxisIndex:1,data:vol.map((v,i)=>({value:v,itemStyle:{color:candle[i][1]>=candle[i][0]?'rgba(255,91,91,.55)':'rgba(46,204,113,.55)'}}))},
+  {name:'主力净额',type:'bar',xAxisIndex:2,yAxisIndex:2,data:flow.map(v=>v===null?'-':({value:v,itemStyle:{color:v>=0?'#ff5b5b':'#2ecc71'}}))}]});
 window.addEventListener('resize',()=>chart.resize());
-</script>
-</body>
-</html>
+</script></body></html>
