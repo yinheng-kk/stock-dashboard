@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head><meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>埃斯顿 002747 · 阿波罗个股分析</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.4.3/dist/echarts.min.js"></script>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#293040;
+    --gold:#e8b84b; --gold2:#f5d27a; --txt:#e6edf3; --sub:#9aa7b8; --muted:#6b7689;
+    --up:#ff5b5b; --down:#2ecc71; --warn:#ffb454; --good:#5ad1a0; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; font-size:15px; padding:0 0 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{
+    text-align:center;padding:38px 16px 26px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent);
+  }
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{
+    display:flex;justify-content:center;gap:26px;flex-wrap:wrap;
+    margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);max-width:600px;margin-left:auto;margin-right:auto;
+  }
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .down{color:var(--up)} /* A股红涨绿跌 */
+  .neg{color:var(--down)}
+  .flat{color:var(--sub)}
+  .caveat{
+    margin:22px 0;padding:14px 16px;border-radius:10px;
+    background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);
+    font-size:13px;color:#ffd9a3;
+  }
+  .caveat b{color:var(--warn)}
+  section.card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:16px 0;
+  }
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{
+    min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px;
+  }
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  b.hl{color:var(--gold2)}
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  td.l,th.l{text-align:left}
+  tr.self td{background:rgba(232,184,75,.09);font-weight:600}
+  .pos{color:var(--up)} .negc{color:var(--down)}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:19px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+  #kline{width:100%;height:430px}
+</style></head><body>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 个 股 分 析</div>
+  <h1>埃斯顿<span class="code">002747</span></h1>
+  <div class="meta">截至 2026-06-18 收盘 ｜ 工业机器人/自动化（国产工业机器人龙头） ｜ 总市值 ≈353亿</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">现价(6-18收)</div><div class="val down">¥36.5 <span style="font-size:13px">+10.01%</span></div></div>
+    <div class="item"><div class="lbl">距30日低23.74</div><div class="val down">+54%</div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--good);font-size:16px">涨停突破·主力回流</div></div>
+  </div>
+</header>
+<div class="wrap">
+  <div class="caveat"><b>⚠ 数据口径：</b>实时行情/资金流取东财直连（trust_env=False 绕本机代理），基准为 <b>2026-06-18 收盘</b>（最近交易日）；K线为前复权日线（fqt=1）。6-18 收盘<b>涨停 +10.01%</b>，主力当日净流入 +4.25亿。PB 10.91 处机器人赛道高溢价区间。 本报告只出可计算事实+量价资金研判，不构成投资建议。</div>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">K</div><div class="sec-t">动态K线 · 日线+MA+主力资金</div><div class="sec-tag">近48个交易日</div></div>
+    <div id="kline"></div>
+    <p class="small">蜡烛=日K前复权；线=MA5/20/60；下栏柱=单日主力净额（亿，红进绿出）。自 5 月 30 日低位 23.74 起强势反弹，6-18 <b class="hl">放量涨停冲 36.5</b>，主力单日净流入 +4.25亿，量能 25.78亿创阶段新高，逼近 120 日高点 37.53/39.9。</p>
+  </section>
+
+  <section class="card"><div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能</div><div class="sec-tag">涨停放量·量价齐升</div></div><p>6-18 成交额 <b class="hl">25.78亿</b>、换手 9.32%，为反弹以来最大单日量能，配合涨停＝<b class="hl">放量突破</b>而非缩量滞涨。前期 23.7→36.5 一波 +54% 的上行中量能逐级抬升，资金跟随度高，属强势特征。</p></section>
+<section class="card"><div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">涨停日主力大幅回流</div></div><ul><li>近5日主力净额（6/12→6/18）：<span class="negc">-2.27</span> / +0.71 / +0.50 / <span class="negc">-2.07</span> / <span class="x" style="color:var(--up)">+4.25</span> 亿</li><li>节奏：前四日主力净额在 ±2亿间反复（震荡洗盘），6-18 <b class="hl">涨停日单日净流入 +4.25亿</b>＝突破当日资金集中进场，做多意愿明确</li><li>提示：涨停板的净流入含追涨盘，需看次日能否承接，单日大进不等于趋势确立</li></ul></section>
+<section class="card"><div class="sec-h"><div class="sec-n">③</div><div class="sec-t">同业横向对比 · 工业机器人</div><div class="sec-tag">6-18收盘</div></div><table class="compare"><thead><tr><th class="l">名称</th><th>现价</th><th>今日</th><th>PE(TTM)</th><th>PB</th><th>换手</th><th>总市值(亿)</th></tr></thead><tbody><tr class="self"><td class="l">埃斯顿 002747</td><td>36.5</td><td class="pos">+10.01%</td><td>90.26</td><td>10.91</td><td>9.32%</td><td>353.25</td></tr>
+<tr><td class="l">汇川技术 300124</td><td>71.18</td><td class="pos">+2.05%</td><td>47.54</td><td>5.5</td><td>1.62%</td><td>1927.27</td></tr>
+<tr><td class="l">双环传动 002472</td><td>43.78</td><td class="pos">+4.84%</td><td>32.74</td><td>3.61</td><td>7.14%</td><td>372.1</td></tr>
+<tr><td class="l">绿的谐波 688017</td><td>408.01</td><td class="pos">+6.92%</td><td>573.02</td><td>20.96</td><td>10.47%</td><td>748.01</td></tr>
+<tr><td class="l">拓斯达 300607</td><td>38.81</td><td class="pos">+3.33%</td><td>96.25</td><td>6.38</td><td>13.42%</td><td>185.11</td></tr></tbody></table><div class="takeaway">相对位置：埃斯顿 PB 10.91 在可比组中<b class="hl">仅次于绿的谐波（20.96）排第二高</b>，远高于汇川 5.5、双环 3.61——机器人赛道给纯标的的高估值溢价。今日板块普涨（绿的 +6.92%、双环 +4.84%），埃斯顿 <b class="hl">涨停领涨</b>＝人形机器人题材资金回流时的高弹性首选，但高 PB 也意味着回调时跌幅同样放大。</div></section>
+<section class="card"><div class="sec-h"><div class="sec-n">④</div><div class="sec-t">估值</div><div class="sec-tag">PE90/PB10.9·赛道高溢价</div></div><ul><li>PE-TTM <b class="hl">90.26</b>、PB <b class="hl">10.91</b>：均处历史与同业高位，定价已充分反映「人形机器人放量+工业自动化复苏」的成长预期</li><li>埃斯顿是国产工业机器人出货量龙头（六轴机器人国内份额领先），同时卡位人形机器人关节/本体——题材纯度高，是赛道β的高弹性载体</li><li>风险：高估值需要订单与业绩兑现支撑，一旦人形机器人催化降温，杀估值空间大</li></ul></section>
+<section class="card"><div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">技术研判</div><div class="sec-tag">涨停突破·逼近前高</div></div><ul><li>均线：价 36.5 站上全部均线（多头排列），MA5/20/60 自下而上发散，趋势向上</li><li>形态：23.74 双底→单边拉升→6-18 涨停，<b class="hl">逼近 120日高点 37.53（收）/39.9（价）</b>，进入前期套牢/获利了结密集区</li><li>关口：上方 37.5~39.9 是前高压力带，能否放量突破决定空间；下方 33~34（涨停前平台）为第一支撑，跌破则涨停缺口回补</li></ul></section>
+<section class="card"><div class="sec-h"><div class="sec-n">⚔</div><div class="sec-t">矛盾链</div><div class="sec-tag">多空对峙</div></div><table class="logic"><thead><tr><th>支撑面（多）</th><th>风险面（空）</th></tr></thead><tbody><tr><td class="good-col">放量涨停+主力净流入+4.25亿，突破强势</td><td class="bad-col">PB 10.91 赛道次高，估值透支需业绩兑现</td></tr><tr><td class="good-col">国产工业机器人龙头+人形机器人纯标的，题材弹性大</td><td class="bad-col">逼近前高 37.5~39.9 套牢密集区，上方抛压重</td></tr><tr><td class="good-col">站上全部均线多头排列，趋势向上</td><td class="bad-col">涨停含追涨盘，次日承接未验证</td></tr></tbody></table></section>
+<section class="card strategy"><div class="sec-h"><div class="sec-n">★</div><div class="sec-t">操作策略</div><div class="sec-tag">基于6-18数据</div></div><div class="lvl"><div class="chip res"><div class="k">上方反压</div><div class="v">37.5~39.9（前高）</div></div><div class="chip sup"><div class="k">第一支撑</div><div class="v">33~34（平台）</div></div><div class="chip stop"><div class="k">破位看</div><div class="v">跌破缺口看31</div></div></div><ul style="margin-top:12px"><li><b class="hl">定性</b>：低位54%反弹后放量涨停突破，主力回流，强势特征明确，但已进入前高套牢区+高估值区，属<b class="hl">强势但不便宜</b></li><li><b class="hl">持有者</b>：趋势未破可持有，跟踪 37.5~39.9 能否放量突破；若冲高遇前高放量滞涨/主力转流出，是减仓信号</li><li><b class="hl">空仓者</b>：涨停次日追高风险大，不宜盲目接力；回踩 33~34 平台不破且缩量企稳再考虑，或等放量站稳 39.9 突破前高后右侧介入</li><li><b class="hl">转空条件</b>：跌破涨停缺口（33附近）且主力净额转负</li></ul><div class="takeaway">一句话：<b class="hl">埃斯顿是国产工业机器人+人形机器人龙头，6-18 放量涨停 36.5、主力净流入 4.25亿，自低位反弹 54% 强势突破，站上全部均线多头排列。但 PB 10.91 赛道次高+逼近前高 37.5~39.9 套牢区，估值与抛压并存。持有跟踪前高突破，空仓勿追涨停板、回踩平台缩量企稳再谈。</b></div></section>
+
+  <footer>阿波罗个股分析 · 数据源 东方财富直连 · 基准 2026-06-18 收盘<br>
+  本报告基于公开行情数据的量价/资金/估值研判，不构成投资建议；市场有风险，决策需自担。</footer>
+</div>
+<script>
+const raw = [["2026-04-09", 20.27, 20.04, 20.01, 20.28, 93130.0], ["2026-04-10", 20.28, 20.47, 20.23, 20.72, 122892.0], ["2026-04-13", 20.35, 20.63, 20.28, 20.75, 107097.0], ["2026-04-14", 20.77, 20.91, 20.69, 20.93, 104135.0], ["2026-04-15", 21.12, 20.72, 20.69, 21.16, 98158.0], ["2026-04-16", 20.81, 20.97, 20.81, 21.02, 97517.0], ["2026-04-17", 21.0, 21.37, 20.81, 21.42, 150475.0], ["2026-04-20", 21.37, 21.43, 21.25, 21.58, 123882.0], ["2026-04-21", 21.35, 21.18, 20.97, 21.41, 109961.0], ["2026-04-22", 21.04, 21.18, 20.99, 21.24, 88920.0], ["2026-04-23", 21.25, 20.87, 20.8, 21.35, 100936.0], ["2026-04-24", 20.76, 20.62, 20.43, 20.95, 90304.0], ["2026-04-27", 20.6, 20.95, 20.54, 21.17, 96026.0], ["2026-04-28", 20.91, 20.38, 20.25, 20.92, 99554.0], ["2026-04-29", 20.34, 20.8, 20.27, 20.84, 101437.0], ["2026-04-30", 21.51, 21.87, 21.51, 22.09, 331035.0], ["2026-05-06", 22.31, 22.83, 22.28, 23.3, 379966.0], ["2026-05-07", 23.11, 23.46, 22.76, 23.47, 294079.0], ["2026-05-08", 23.25, 24.08, 23.12, 24.51, 449539.0], ["2026-05-11", 24.09, 24.23, 23.62, 24.41, 412443.0], ["2026-05-12", 24.19, 24.57, 24.03, 24.74, 352522.0], ["2026-05-13", 24.43, 24.2, 24.02, 24.51, 300117.0], ["2026-05-14", 24.18, 23.74, 23.72, 24.45, 286303.0], ["2026-05-15", 23.67, 25.43, 23.67, 26.11, 881468.0], ["2026-05-18", 25.43, 26.07, 25.15, 26.56, 742760.0], ["2026-05-19", 26.0, 26.86, 25.8, 26.96, 599551.0], ["2026-05-20", 26.6, 26.1, 26.0, 26.79, 492776.0], ["2026-05-21", 26.39, 28.7, 26.16, 28.71, 1117283.0], ["2026-05-22", 28.35, 29.07, 27.5, 29.33, 1216899.0], ["2026-05-25", 28.86, 28.61, 28.15, 30.5, 1023029.0], ["2026-05-26", 28.61, 30.03, 28.46, 30.45, 1197984.0], ["2026-05-27", 28.9, 28.43, 28.25, 30.18, 940358.0], ["2026-05-28", 28.2, 28.32, 27.32, 28.71, 844706.0], ["2026-05-29", 28.32, 27.72, 27.54, 29.87, 676894.0], ["2026-06-01", 27.55, 26.77, 26.75, 27.88, 540280.0], ["2026-06-02", 27.26, 26.96, 26.92, 28.17, 476597.0], ["2026-06-03", 26.98, 29.04, 26.54, 29.66, 1073894.0], ["2026-06-04", 28.5, 29.49, 28.38, 30.77, 915894.0], ["2026-06-05", 29.47, 31.02, 28.11, 32.0, 960223.0], ["2026-06-08", 30.4, 34.12, 30.36, 34.12, 1128946.0], ["2026-06-09", 36.01, 37.53, 35.2, 37.53, 758854.0], ["2026-06-10", 39.66, 35.8, 35.31, 39.9, 1940058.0], ["2026-06-11", 35.0, 33.35, 32.9, 35.64, 1165708.0], ["2026-06-12", 33.74, 32.22, 32.06, 35.68, 1129970.0], ["2026-06-15", 32.79, 33.23, 31.87, 33.39, 891381.0], ["2026-06-16", 33.12, 33.9, 32.3, 34.83, 1082932.0], ["2026-06-17", 33.68, 33.18, 32.8, 34.28, 783462.0], ["2026-06-18", 33.53, 36.5, 33.29, 36.5, 729035.0]];
+const flowMap = {"2026-06-05": 1.49, "2026-06-08": 4.89, "2026-06-09": 2.33, "2026-06-10": -5.74, "2026-06-11": -1.81, "2026-06-12": -2.27, "2026-06-15": 0.71, "2026-06-16": 0.5, "2026-06-17": -2.07, "2026-06-18": 4.25};
+const dates = raw.map(r=>r[0].slice(5));
+const candle = raw.map(r=>[r[1],r[2],r[3],r[4]]);
+const vol = raw.map(r=>r[5]/10000);
+function MA(n){const c=raw.map(r=>r[2]);const o=[];for(let i=0;i<c.length;i++){if(i<n-1){o.push('-');continue;}let s=0;for(let j=0;j<n;j++)s+=c[i-j];o.push(+(s/n).toFixed(2));}return o;}
+const flow = raw.map(r=>(r[0] in flowMap)?flowMap[r[0]]:null);
+const chart = echarts.init(document.getElementById('kline'));
+chart.setOption({backgroundColor:'transparent',animation:false,
+ legend:{data:['日K','MA5','MA20','MA60'],top:0,textStyle:{color:'#9aa7b8'}},
+ tooltip:{trigger:'axis',axisPointer:{type:'cross'},backgroundColor:'#161b22',borderColor:'#293040',textStyle:{color:'#e6edf3'}},
+ axisPointer:{link:[{xAxisIndex:'all'}]},
+ grid:[{left:48,right:16,top:30,height:230},{left:48,right:16,top:285,height:60},{left:48,right:16,top:360,height:55}],
+ xAxis:[{type:'category',data:dates,gridIndex:0,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{show:false},boundaryGap:true},
+  {type:'category',data:dates,gridIndex:1,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{show:false}},
+  {type:'category',data:dates,gridIndex:2,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#6b7689',fontSize:10,interval:5}}],
+ yAxis:[{scale:true,gridIndex:0,splitLine:{lineStyle:{color:'#1c2230'}},axisLabel:{color:'#9aa7b8'}},
+  {scale:true,gridIndex:1,splitLine:{show:false},axisLabel:{color:'#6b7689',fontSize:10},name:'量(万手)',nameTextStyle:{color:'#6b7689',fontSize:9}},
+  {scale:true,gridIndex:2,splitLine:{lineStyle:{color:'#1c2230'}},axisLabel:{color:'#6b7689',fontSize:10},name:'主力(亿)',nameTextStyle:{color:'#6b7689',fontSize:9}}],
+ series:[{name:'日K',type:'candlestick',data:candle,itemStyle:{color:'#ff5b5b',color0:'#2ecc71',borderColor:'#ff5b5b',borderColor0:'#2ecc71'}},
+  {name:'MA5',type:'line',data:MA(5),smooth:true,symbol:'none',lineStyle:{width:1,color:'#f5d27a'}},
+  {name:'MA20',type:'line',data:MA(20),smooth:true,symbol:'none',lineStyle:{width:1,color:'#5ab0ff'}},
+  {name:'MA60',type:'line',data:MA(60),smooth:true,symbol:'none',lineStyle:{width:1.4,color:'#c77dff'}},
+  {name:'量',type:'bar',xAxisIndex:1,yAxisIndex:1,data:vol.map((v,i)=>({value:v,itemStyle:{color:candle[i][1]>=candle[i][0]?'rgba(255,91,91,.55)':'rgba(46,204,113,.55)'}}))},
+  {name:'主力净额',type:'bar',xAxisIndex:2,yAxisIndex:2,data:flow.map(v=>v===null?'-':({value:v,itemStyle:{color:v>=0?'#ff5b5b':'#2ecc71'}}))}]});
+window.addEventListener('resize',()=>chart.resize());
+</script></body></html>
