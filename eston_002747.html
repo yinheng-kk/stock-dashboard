@@ -97,7 +97,7 @@
   <section class="card">
     <div class="sec-h"><div class="sec-n">K</div><div class="sec-t">动态K线 · 日线+MA+主力资金+10日概率预判</div><div class="sec-tag">近48日+概率带10日</div></div>
     <div id="kline"></div>
-    <p class="small">蜡烛=日K前复权；线=MA5/20/60；下栏柱=单日主力净额（亿，红进绿出）。自 5 月 30 日低位 23.74 起强势反弹，6-18 <b class="hl">放量涨停冲 36.5</b>，主力单日净流入 +4.25亿，量能 25.78亿创阶段新高，逼近 120 日高点 37.53/39.9。 <b class="hl">金色虚线</b>＝蒙特卡洛预判中枢(P50)，<b class="hl">金色阴影带</b>＝P10–P90概率区间（约80%概率落入）。方法：阻尼漂移(φ=0.82趋势衰减)＋该股历史日收益残差自助重采样2000条路径＋实现波动率σ定宽＋近5日主力资金流偏置＋A股单日±10%硬约束。<b>带越宽=越不确定</b>；为概率分布而非确定点位，越远越发散，仅供参考不构成建议。</p>
+    <p class="small">蜡烛=日K前复权；线=MA5/20/60；下栏柱=单日主力净额（亿，红进绿出）。自 5 月 30 日低位 23.74 起强势反弹，6-18 <b class="hl">放量涨停冲 36.5</b>，主力单日净流入 +4.25亿，量能 25.78亿创阶段新高，逼近 120 日高点 37.53/39.9。 <b class="hl">金色虚线</b>＝蒙特卡洛预判中枢(P50)，<b class="hl">金色阴影带</b>＝P10–P90概率区间（约80%概率落入）；<b class="hl">灰虚线</b>＝近20日支撑/阻力参考位。突破概率(K线右上)＝10日内收盘价穿过支撑/阻力的路径占比。方法：阻尼漂移(φ=0.82趋势衰减)＋该股历史日收益残差自助重采样2000条路径＋实现波动率σ定宽＋近5日主力资金流偏置＋A股单日±10%硬约束。<b>带越宽=越不确定</b>；为概率分布而非确定点位，越远越发散，仅供参考不构成建议。</p>
   </section>
 
   <section class="card"><div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能</div><div class="sec-tag">涨停放量·量价齐升</div></div><p>6-18 成交额 <b class="hl">25.78亿</b>、换手 9.32%，为反弹以来最大单日量能，配合涨停＝<b class="hl">放量突破</b>而非缩量滞涨。前期 23.7→36.5 一波 +54% 的上行中量能逐级抬升，资金跟随度高，属强势特征。</p></section>
@@ -125,7 +125,7 @@ const vol = raw.map(r=>r[5]/10000);
 function MA(n){const c=raw.map(r=>r[2]);const o=[];for(let i=0;i<c.length;i++){if(i<n-1){o.push('-');continue;}let s=0;for(let j=0;j<n;j++)s+=c[i-j];o.push(+(s/n).toFixed(2));}return o;}
 const flow = raw.map(r=>(r[0] in flowMap)?flowMap[r[0]]:null);
 
-// ===== 概率化趋势预判：阻尼漂移 + 历史残差自助法蒙特卡洛(P10/50/90概率带) =====
+// ===== 概率化趋势预判：阻尼漂移 + 历史残差自助法蒙特卡洛(P10/50/90概率带) + 支撑阻力突破概率 =====
 const HORIZON=10;
 function seeded(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296;};}
 function quantile(arr,p){const a=arr.slice().sort((x,y)=>x-y);const i=(a.length-1)*p;const lo=Math.floor(i),hi=Math.ceil(i);return a[lo]+(a[hi]-a[lo])*(i-lo);}
@@ -142,7 +142,11 @@ function projection(){
   const bias=(fsum===0?0:(fsum/(Math.abs(fsum)+8)))*sd*0.5;
   // 3) 阻尼系数φ：趋势随时间衰减(Holt damped trend)，根治涨停后无限外推
   const PHI=0.82;
-  // 4) 蒙特卡洛：历史去均值残差自助 + 阻尼漂移 + A股单日±10%硬约束
+  // 4) 支撑/阻力：近20日最低/最高点
+  const hist20=c.slice(-20);
+  const support=Math.min(...hist20);
+  const resistance=Math.max(...hist20);
+  // 5) 蒙特卡洛：历史去均值残差自助 + 阻尼漂移 + A股单日±10%硬约束
   const resid=recent.map(x=>x-mu); const N=2000; const rnd=seeded(123457); const last=c[n-1];
   const paths=[];
   for(let s=0;s<N;s++){
@@ -155,7 +159,11 @@ function projection(){
   }
   const p10=[],p50=[],p90=[];
   for(let k=0;k<HORIZON;k++){const col=paths.map(pp=>pp[k]);p10.push(+quantile(col,0.1).toFixed(2));p50.push(+quantile(col,0.5).toFixed(2));p90.push(+quantile(col,0.9).toFixed(2));}
-  return {p10,p50,p90,last,mu,sd,bias};
+  // 6) 计算10日突破概率：第10天收盘价穿过支撑/阻力的路径比例
+  const day10prices=paths.map(p=>p[HORIZON-1]);
+  const breakAboveResist=day10prices.filter(p=>p>resistance).length/N;
+  const breakBelowSupport=day10prices.filter(p=>p<support).length/N;
+  return {p10,p50,p90,last,mu,sd,bias,support:+support.toFixed(2),resistance:+resistance.toFixed(2),breakAboveResist:+(breakAboveResist*100).toFixed(1),breakBelowSupport:+(breakBelowSupport*100).toFixed(1)};
 }
 const pj=projection();
 const futureLabels=[]; for(let k=1;k<=HORIZON;k++) futureLabels.push('+'+k);
@@ -169,6 +177,8 @@ const lineMid=mkFut(anchorClose,pj.p50);                                 // 中�
 const projColor = pj.p50[HORIZON-1]>=anchorClose ? '#ff5b5b' : '#2ecc71';
 
 const chart = echarts.init(document.getElementById('kline'));
+const lineSupport=new Array(raw.length).fill(pj.support).concat(new Array(HORIZON+1).fill(pj.support));
+const lineResist=new Array(raw.length).fill(pj.resistance).concat(new Array(HORIZON+1).fill(pj.resistance));
 chart.setOption({backgroundColor:'transparent',animation:false,
  legend:{data:['日K','MA5','MA20','MA60','预判中枢P50','P10–P90概率带'],top:0,textStyle:{color:'#9aa7b8'}},
  tooltip:{trigger:'axis',axisPointer:{type:'cross'},backgroundColor:'#161b22',borderColor:'#293040',textStyle:{color:'#e6edf3'}},
@@ -187,8 +197,14 @@ chart.setOption({backgroundColor:'transparent',animation:false,
   {name:'P10下沿',type:'line',data:lineLo,stack:'conf',symbol:'none',connectNulls:true,lineStyle:{opacity:0},z:3,legendHoverLink:false,tooltip:{show:false}},
   {name:'P10–P90概率带',type:'line',data:lineBand,stack:'conf',symbol:'none',connectNulls:true,lineStyle:{opacity:0},areaStyle:{color:'rgba(245,210,122,0.16)'},z:3},
   {name:'预判中枢P50',type:'line',data:lineMid,smooth:false,symbol:'none',connectNulls:true,lineStyle:{width:1.8,type:'dashed',color:projColor},z:5},
+  {name:'支撑参考',type:'line',data:lineSupport,smooth:false,symbol:'none',connectNulls:true,lineStyle:{width:1,type:'dashed',color:'#6b7689',opacity:0.5},z:2,legendHoverLink:false,tooltip:{show:false}},
+  {name:'阻力参考',type:'line',data:lineResist,smooth:false,symbol:'none',connectNulls:true,lineStyle:{width:1,type:'dashed',color:'#6b7689',opacity:0.5},z:2,legendHoverLink:false,tooltip:{show:false}},
   {name:'量',type:'bar',xAxisIndex:1,yAxisIndex:1,data:vol.map((v,i)=>({value:v,itemStyle:{color:candle[i][1]>=candle[i][0]?'rgba(255,91,91,.55)':'rgba(46,204,113,.55)'}}))},
-  {name:'主力净额',type:'bar',xAxisIndex:2,yAxisIndex:2,data:flow.map(v=>v===null?'-':({value:v,itemStyle:{color:v>=0?'#ff5b5b':'#2ecc71'}}))}]});
+  {name:'主力净额',type:'bar',xAxisIndex:2,yAxisIndex:2,data:flow.map(v=>v===null?'-':({value:v,itemStyle:{color:v>=0?'#ff5b5b':'#2ecc71'}}))}],
+ graphic:[
+  {type:'text',left:dates.length*20+64,top:45,style:{text:'上破↑'+pj.breakAboveResist+'%',fill:'#ff9999',fontSize:12,fontFamily:'monospace'},z:100},
+  {type:'text',left:dates.length*20+64,top:65,style:{text:'下破↓'+pj.breakBelowSupport+'%',fill:'#99dd99',fontSize:12,fontFamily:'monospace'},z:100}
+ ]});
 window.addEventListener('resize',()=>chart.resize());
 
 // ===== 六维趋势雷达图 =====
