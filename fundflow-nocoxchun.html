@@ -511,7 +511,7 @@ main > *:nth-child(4) { animation-delay: 0.24s; }
 </section>
 
 <footer class="foot">
-  数据源：东方财富 push2delay · 主力净流入累计（超大单+大单）· 盘中每 5s 刷新末端点，午休 30s，盘后 60s ·
+  数据源：东方财富 push2delay · 主力净流入累计（超大单+大单）· 盘中每 2s 刷新末端点，午休 30s，盘后 60s ·
   静态复盘版 <a href="https://a1084772800.github.io/tianjige-form/render.html?id=fund-flow-timeline-latest" target="_top">fund-flow-timeline-latest</a>
 </footer>
 
@@ -925,13 +925,13 @@ function computeSchedule(now) {
              nextWakeupTs: null };
   }
   if (nowMin < lunchStart) {
-    return { delay: 5000, pill: 'open', text: '实时中', nextWakeupTs: null };
+    return { delay: 2000, pill: 'open', text: '实时中', nextWakeupTs: null };
   }
   if (nowMin < lunchEnd) {
     return { delay: 30000, pill: 'lunch', text: '午休 · 13:00 恢复', nextWakeupTs: null };
   }
   if (nowMin < sessionEnd) {
-    return { delay: 5000, pill: 'open', text: '实时中', nextWakeupTs: null };
+    return { delay: 2000, pill: 'open', text: '实时中', nextWakeupTs: null };
   }
   // 15:01 之后
   return { delay: null, pill: 'closed', text: '已收盘 · 明早 09:25 自动唤醒',
