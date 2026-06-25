@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>尾盘资金流向 · 短视频版</title>
+<style>
+:root{
+  --bg:#06080f; --bg2:#0a0e1a; --card:#0f1426;
+  --gold:#f6d365; --orange:#fda085;
+  --up:#ef4444; --down:#22c55e;
+  --t1:#f3ecdc; --t2:#9aa7b5; --t3:#5a6a7a;
+  --soft:rgba(246,211,101,.12); --strong:rgba(246,211,101,.30);
+}
+*{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent;}
+html,body{height:100%; background:var(--bg); overflow:hidden;}
+body{
+  font-family:"PingFang SC","Noto Serif CJK SC","Source Han Serif","Songti SC",serif;
+  color:var(--t1); font-variant-numeric:tabular-nums;
+  display:flex; justify-content:center; align-items:stretch;
+}
+/* 竖屏舞台 9:16 */
+.stage{
+  position:relative; width:100%; max-width:480px; height:100%;
+  background:
+     radial-gradient(120% 60% at 50% -10%, rgba(246,211,101,.10), transparent 60%),
+     radial-gradient(100% 50% at 50% 110%, rgba(239,68,68,.08), transparent 60%),
+     linear-gradient(180deg,#06080f 0%, #0a0e1a 40%, #06080f 100%);
+  display:flex; flex-direction:column;
+  padding:14px 14px 10px; overflow:hidden;
+}
+/* 飘动光斑 */
+.stage::before{
+  content:''; position:absolute; inset:0; pointer-events:none; z-index:0;
+  background:
+     radial-gradient(2px 2px at 20% 30%, rgba(246,211,101,.5), transparent),
+     radial-gradient(2px 2px at 70% 20%, rgba(239,68,68,.4), transparent),
+     radial-gradient(1.5px 1.5px at 40% 70%, rgba(246,211,101,.4), transparent),
+     radial-gradient(1.5px 1.5px at 85% 60%, rgba(34,197,94,.35), transparent),
+     radial-gradient(2px 2px at 55% 85%, rgba(246,211,101,.35), transparent);
+  animation:drift 9s ease-in-out infinite alternate;
+}
+@keyframes drift{from{transform:translateY(0) scale(1);opacity:.7} to{transform:translateY(-18px) scale(1.04);opacity:1}}
+.stage>*{position:relative; z-index:1;}
+
+/* ── HERO ── */
+.hero{flex:0 0 auto; text-align:center; padding:6px 0 10px;}
+.hero .kicker{font-size:12px; letter-spacing:6px; color:var(--gold); opacity:.85;}
+.hero h1{
+  font-size:clamp(26px,8vw,40px); font-weight:800; letter-spacing:3px; margin:4px 0 2px;
+  background:linear-gradient(180deg,#fff 0%,var(--gold) 70%,var(--orange) 100%);
+  -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent;
+  filter:drop-shadow(0 2px 12px rgba(246,211,101,.35));
+}
+.hero .date{font-size:12.5px; color:var(--t2); letter-spacing:1px;}
+.hero .date b{color:var(--gold);}
+.live{
+  display:inline-flex; align-items:center; gap:6px; margin-top:7px;
+  padding:3px 11px; border-radius:20px; font-size:11.5px; letter-spacing:1px;
+  border:1px solid var(--soft); background:rgba(15,20,38,.6); color:var(--t3);
+}
+.live .dot{width:7px;height:7px;border-radius:50%;background:var(--t3);}
+.live.open{color:var(--down);border-color:rgba(34,197,94,.4);}
+.live.open .dot{background:var(--down);box-shadow:0 0 8px var(--down);animation:pulse 1.6s infinite;}
+.live.lunch{color:var(--gold);border-color:rgba(246,211,101,.4);} .live.lunch .dot{background:var(--gold);box-shadow:0 0 6px var(--gold);}
+.live.closed .dot{background:var(--t3);}
+.live.error{color:var(--up);border-color:rgba(239,68,68,.4);} .live.error .dot{background:var(--up);}
+@keyframes pulse{0%,100%{transform:scale(1);opacity:1}50%{transform:scale(1.4);opacity:.6}}
+
+/* ── 聚光大字（轮播 TOP 板块）── */
+.spot{
+  flex:0 0 auto; margin:8px 2px 6px; padding:14px 16px;
+  border-radius:14px; position:relative; overflow:hidden;
+  background:linear-gradient(135deg, rgba(239,68,68,.16), rgba(246,211,101,.06));
+  border:1px solid var(--strong);
+  box-shadow:0 0 0 1px rgba(246,211,101,.05), 0 8px 30px rgba(0,0,0,.4);
+}
+.spot::after{ /* 呼吸光 */
+  content:''; position:absolute; inset:-40%; border-radius:50%;
+  background:radial-gradient(circle, rgba(239,68,68,.18), transparent 60%);
+  animation:breathe 3.4s ease-in-out infinite;
+}
+@keyframes breathe{0%,100%{transform:scale(.85);opacity:.5}50%{transform:scale(1.15);opacity:.9}}
+.spot>*{position:relative;z-index:1;}
+.spot .lab{font-size:11px; letter-spacing:3px; color:var(--orange); opacity:.9;}
+.spot .row{display:flex; align-items:flex-end; justify-content:space-between; gap:10px; margin-top:4px;}
+.spot .nm{font-size:clamp(20px,6vw,28px); font-weight:800; color:#fff; letter-spacing:1px;
+  text-shadow:0 2px 10px rgba(0,0,0,.5); white-space:nowrap; overflow:hidden; text-overflow:ellipsis;}
+.spot .amt{font-size:clamp(26px,9vw,40px); font-weight:900; color:var(--up); letter-spacing:0;
+  text-shadow:0 0 18px rgba(239,68,68,.45); white-space:nowrap;}
+.spot .amt .u{font-size:.5em; color:var(--orange); margin-left:2px; font-weight:700;}
+.spot .sub{display:flex; gap:14px; margin-top:6px; font-size:11px; color:var(--t2);}
+.spot .sub b{font-variant-numeric:tabular-nums;}
+.spot.flip .nm,.spot.flip .amt{animation:flipin .5s cubic-bezier(.2,.8,.2,1);}
+@keyframes flipin{from{transform:translateY(14px);opacity:0;filter:blur(3px)}to{transform:translateY(0);opacity:1;filter:blur(0)}}
+
+/* ── 资金赛跑 Bar Chart Race ── */
+.race{flex:1 1 auto; min-height:0; margin:4px 0 6px; display:flex; flex-direction:column;}
+.race .rh{display:flex; justify-content:space-between; align-items:baseline; padding:2px 4px 6px;}
+.race .rh .tt{font-size:13px; font-weight:700; color:var(--gold); letter-spacing:2px;
+  display:inline-flex; align-items:center; gap:6px;}
+.race .rh .tt::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--up);box-shadow:0 0 8px var(--up);}
+.race .rh .tnow{font-size:11px; color:var(--t2);} .race .rh .tnow b{color:var(--gold);}
+#race{flex:1 1 auto; width:100%; min-height:0;}
+
+/* ── 底部异动跑马灯 ── */
+.ticker{
+  flex:0 0 auto; height:30px; margin-top:2px; overflow:hidden; position:relative;
+  border-top:1px solid var(--soft); border-bottom:1px solid var(--soft);
+  display:flex; align-items:center; background:rgba(15,20,38,.4);
+  border-radius:6px;
+}
+.ticker .lab{flex:0 0 auto; padding:0 9px; font-size:10.5px; letter-spacing:1px;
+  color:var(--gold); background:rgba(246,211,101,.08); height:100%; display:flex; align-items:center;
+  border-right:1px solid var(--soft);}
+.ticker .track{flex:1 1 auto; overflow:hidden; white-space:nowrap;}
+.ticker .move{display:inline-block; padding-left:100%; animation:marq 26s linear infinite;}
+.ticker .it{display:inline-block; margin:0 16px; font-size:12px;}
+.ticker .it .n{color:var(--t1); font-weight:600;}
+.ticker .it .p{color:var(--up); font-weight:700; margin-left:5px;}
+.ticker .it.zt .p{color:#fff; background:var(--up); padding:0 4px; border-radius:3px;}
+@keyframes marq{from{transform:translateX(0)}to{transform:translateX(-100%)}}
+
+.foot{flex:0 0 auto; text-align:center; font-size:9.5px; color:var(--t3); padding:6px 0 2px; letter-spacing:.5px;}
+.foot b{color:var(--orange);}
+</style>
+</head>
+<body>
+<div class="stage">
+
+  <div class="hero">
+    <div class="kicker">阿 波 策 略 · 资 金 流 向</div>
+    <h1>尾盘资金流向</h1>
+    <div class="date">实时主力净流入 · <b id="dDate">——</b></div>
+    <span class="live closed" id="live"><span class="dot"></span><span id="liveTxt">初始化</span></span>
+  </div>
+
+  <div class="spot" id="spot">
+    <div class="lab" id="spotLab">▲ 净流入冠军</div>
+    <div class="row">
+      <span class="nm" id="spotNm">读取中…</span>
+      <span class="amt"><span id="spotAmt">0.0</span><span class="u">亿</span></span>
+    </div>
+    <div class="sub">
+      <span>全场流入 <b id="sumIn" style="color:var(--up)">—</b></span>
+      <span>全场流出 <b id="sumOut" style="color:var(--down)">—</b></span>
+      <span>净额 <b id="sumNet">—</b></span>
+    </div>
+  </div>
+
+  <div class="race">
+    <div class="rh">
+      <span class="tt">资金赛跑 · 板块净流入 TOP</span>
+      <span class="tnow">末端 <b id="tNow">—</b></span>
+    </div>
+    <div id="race"></div>
+  </div>
+
+  <div class="ticker">
+    <span class="lab">强势先锋</span>
+    <div class="track"><div class="move" id="tkMove"><span class="it"><span class="n">读取强势个股…</span></span></div></div>
+  </div>
+
+  <div class="foot">数据源 <b>东方财富 push2delay</b> · 盘中每 2s 刷新 · 阿波策略竖屏短视频版</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/echarts@5.5.1/dist/echarts.min.js"></script>
+<script>
+const LIVE_API = "https://stock-live.chuchuran.com/api/fund-flow/live";
+const VANGUARD_API = LIVE_API.replace("/fund-flow/live","/fund-flow/vanguard") + "?top_sector_n=6&top_stock_n=3";
+const RACE_N = 10;
+
+/* ── 数字滚动补间 ── */
+function tween(el, to, dur, fmt){
+  const from = parseFloat(el.dataset.v||"0") || 0;
+  to = +to || 0; el.dataset.v = to;
+  const t0 = performance.now();
+  function step(now){
+    const k = Math.min(1,(now-t0)/dur);
+    const e = 1-Math.pow(1-k,3);
+    el.textContent = fmt(from+(to-from)*e);
+    if(k<1) requestAnimationFrame(step);
+  }
+  requestAnimationFrame(step);
+}
+const f1 = v => (v>=0?'+':'')+v.toFixed(1);
+const f2 = v => (v>=0?'+':'')+v.toFixed(2);
+
+/* ── live pill ── */
+function setLive(st, txt){
+  const p=document.getElementById('live'); p.className='live '+st;
+  const L={open:'实时中',lunch:'午休',closed:'已收盘','pre-market':'待开盘',error:'连接异常'};
+  document.getElementById('liveTxt').textContent = txt||L[st]||st;
+}
+
+/* ── Bar Chart Race ── */
+let chart=null, colorMap={};
+const POS=['#ef4444','#f97316','#f59e0b','#eab308','#fb7185','#e11d48','#db2777','#fda085','#f87171','#fca5a5'];
+function initRace(){
+  chart=echarts.init(document.getElementById('race'),'dark');
+  window.addEventListener('resize',()=>chart&&chart.resize());
+}
+function renderRace(top){
+  if(!chart) initRace();
+  top.forEach((s,i)=>{ if(!colorMap[s.name]) colorMap[s.name]=POS[i%POS.length]; });
+  const maxV=Math.max(1,...top.map(s=>s.v));
+  chart.setOption({
+    backgroundColor:'transparent',
+    grid:{left:6,right:64,top:4,bottom:4,containLabel:true},
+    xAxis:{max:maxV*1.12,show:false,type:'value'},
+    yAxis:{
+      type:'category', inverse:true,
+      data:top.map(s=>s.name),
+      axisLine:{show:false}, axisTick:{show:false},
+      axisLabel:{color:'#f3ecdc',fontSize:13,fontWeight:600,
+        formatter:(n)=>n.length>5?n.slice(0,5):n},
+      animationDuration:300, animationDurationUpdate:500,
+    },
+    series:[{
+      type:'bar', realtimeSort:true,
+      data:top.map(s=>({value:s.v,itemStyle:{
+        color:new echarts.graphic.LinearGradient(0,0,1,0,[
+          {offset:0,color:'rgba(239,68,68,.25)'},{offset:1,color:colorMap[s.name]}]),
+        borderRadius:[0,7,7,0]}})),
+      barWidth:'62%',
+      label:{show:true,position:'right',valueAnimation:true,color:'#fff',
+        fontSize:13,fontWeight:700,formatter:(p)=>'+'+(+p.value).toFixed(1)+'亿'},
+    }],
+    animationDuration:400, animationDurationUpdate:700, animationEasingUpdate:'cubicOut',
+  });
+}
+
+/* ── 聚光大字轮播 ── */
+let spotList=[], spotIdx=0;
+function cycleSpot(){
+  if(!spotList.length) return;
+  const s=spotList[spotIdx%spotList.length]; spotIdx++;
+  const sp=document.getElementById('spot');
+  document.getElementById('spotLab').textContent='▲ 净流入 No.'+((spotIdx-1)%spotList.length+1);
+  document.getElementById('spotNm').textContent=s.name;
+  tween(document.getElementById('spotAmt'), s.v, 700, f1);
+  sp.classList.remove('flip'); void sp.offsetWidth; sp.classList.add('flip');
+}
+
+/* ── 主拉取 ── */
+async function pollLive(){
+  try{
+    const r=await fetch(LIVE_API,{cache:'no-store'}); if(!r.ok) throw 0;
+    const d=await r.json();
+    const secs=(d.sectors||[]).map(s=>({
+      name:s.name, v:(s.points&&s.points.length)?s.points[s.points.length-1][1]:(s.net_inflow_yi||0)}));
+    if(!secs.length){ setLive(d.market_status||'closed'); return; }
+
+    const inflow=secs.filter(x=>x.v>0).sort((a,b)=>b.v-a.v);
+    const outflow=secs.filter(x=>x.v<0).sort((a,b)=>a.v-b.v);
+    renderRace(inflow.slice(0,RACE_N));
+
+    const sumIn=inflow.reduce((a,b)=>a+b.v,0);
+    const sumOut=outflow.reduce((a,b)=>a+b.v,0);
+    tween(document.getElementById('sumIn'),sumIn,600,v=>f1(v)+'亿');
+    tween(document.getElementById('sumOut'),sumOut,600,v=>f1(v)+'亿');
+    const net=document.getElementById('sumNet');
+    tween(net,sumIn+sumOut,600,v=>f1(v)+'亿');
+    net.style.color=(sumIn+sumOut)>=0?'var(--up)':'var(--down)';
+
+    spotList=inflow.slice(0,3);
+    const tLast=(d.sectors[0]&&d.sectors[0].points&&d.sectors[0].points.length)?d.sectors[0].points.slice(-1)[0][0]:'—';
+    document.getElementById('tNow').textContent=tLast;
+    document.getElementById('dDate').textContent=(d.date||'——');
+    setLive(d.market_status||'closed');
+  }catch(e){ setLive('error'); console.warn('live fail',e); }
+}
+
+/* ── 先锋跑马灯 ── */
+async function pollVanguard(){
+  try{
+    const r=await fetch(VANGUARD_API,{cache:'no-store'}); if(!r.ok) throw 0;
+    const d=await r.json(); const secs=d.sectors||[]; const its=[];
+    secs.forEach(s=>(s.stocks||[]).slice(0,3).forEach(st=>{
+      const zt=st.change_pct>=9.8;
+      its.push('<span class="it'+(zt?' zt':'')+'"><span class="n">'+st.name+'</span>'
+        +'<span class="p">+'+st.change_pct.toFixed(2)+'%</span></span>');
+    }));
+    if(its.length){
+      // 复制一份保证无缝滚动
+      document.getElementById('tkMove').innerHTML=its.join('')+its.join('');
+    }
+  }catch(e){ console.warn('vg fail',e); }
+}
+
+/* ── 节奏 ── */
+function tradingNow(){
+  const n=new Date(), d=n.getDay(); if(d===0||d===6) return false;
+  const m=n.getHours()*60+n.getMinutes();
+  return (m>=9*60+30&&m<11*60+30)||(m>=13*60&&m<15*60+1);
+}
+function loop(){
+  pollLive();
+  const fast=tradingNow();
+  setTimeout(loop, fast?2000:60000);
+}
+initRace();
+pollLive(); pollVanguard();
+loop();
+setInterval(pollVanguard, 30000);
+setInterval(cycleSpot, 3200);
+</script>
+</body>
+</html>
