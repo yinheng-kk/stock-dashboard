@@ -162,7 +162,9 @@ async function load(){
     render(data);
     return data.market_status;
   }catch(e){
-    document.getElementById('err').style.display='flex';
+    const el=document.getElementById('err');
+    el.textContent='ERR: '+(e&&e.message?e.message:e);
+    el.style.display='flex';
     return null;
   }
 }
