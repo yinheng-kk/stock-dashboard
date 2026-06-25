@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>行业融合择强看板 - {date}</title>
+    <script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #0f1419; color: #e0e0e0; }
+
+        .header { background: linear-gradient(135deg, #1a1f2e, #0f1419); padding: 20px; border-bottom: 1px solid #333; }
+        .header h1 { font-size: 24px; margin-bottom: 8px; }
+        .header p { font-size: 12px; color: #999; }
+
+        .container { max-width: 1400px; margin: 0 auto; padding: 20px; }
+
+        .section { margin-bottom: 40px; }
+        .section-title { font-size: 14px; font-weight: bold; padding: 12px; background: #1a1f2e; border-left: 3px solid #00d4ff; margin-bottom: 16px; }
+
+        .sector-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 16px; }
+
+        .sector-card {
+            background: #1a1f2e;
+            border: 1px solid #333;
+            border-radius: 8px;
+            padding: 16px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        .sector-card:hover { border-color: #00d4ff; box-shadow: 0 0 12px rgba(0, 212, 255, 0.2); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 12px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 12px;
+        }
+        .card-title { font-size: 16px; font-weight: bold; }
+        .strength-badge {
+            background: linear-gradient(135deg, #00d4ff, #0099cc);
+            color: #000;
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        .card-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 12px;
+            font-size: 12px;
+        }
+        .metric {
+            background: rgba(0, 212, 255, 0.1);
+            padding: 8px;
+            border-radius: 4px;
+            border-left: 2px solid #00d4ff;
+        }
+        .metric-label { color: #999; font-size: 11px; }
+        .metric-value { font-size: 14px; font-weight: bold; color: #00d4ff; margin-top: 4px; }
+
+        .risk-labels {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 6px;
+        }
+        .risk-label {
+            background: rgba(255, 80, 80, 0.2);
+            color: #ff5050;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 11px;
+            border: 1px solid rgba(255, 80, 80, 0.4);
+        }
+
+        .stock-list {
+            font-size: 12px;
+            margin-top: 12px;
+        }
+        .stock-item {
+            padding: 6px;
+            margin-top: 6px;
+            background: rgba(0, 212, 255, 0.05);
+            border-left: 2px solid #00d4ff;
+            border-radius: 2px;
+        }
+        .stock-code { font-weight: bold; color: #00d4ff; }
+
+        .table-container {
+            background: #1a1f2e;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 13px;
+        }
+        th {
+            background: #0f1419;
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #333;
+            font-weight: bold;
+            color: #00d4ff;
+        }
+        td {
+            padding: 12px;
+            border-bottom: 1px solid #2a3038;
+        }
+        tr:hover { background: rgba(0, 212, 255, 0.05); }
+
+        .pos { color: #16a34a; }
+        .neg { color: #e23b3b; }
+        .neutral { color: #999; }
+
+        .footer {
+            margin-top: 40px;
+            padding: 20px;
+            background: #0f1419;
+            border-top: 1px solid #333;
+            font-size: 12px;
+            color: #666;
+        }
+        .footer-note {
+            margin-top: 8px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>⚡ 行业融合择强看板</h1>
+        <p>数据日期: 2026-06-25 | 融合源: 资金流(东财) + 行业预警(通达信) + 业界三模型</p>
+    </div>
+
+    <div class="container">
+        <!-- TOP 10 板块 -->
+        <div class="section">
+            <div class="section-title">🎯 TOP 10 融合板块 (今日强度排序)</div>
+            <div class="sector-grid">
+
+                <div class="sector-card">
+                    <div class="card-header">
+                        <div class="card-title">1. 纺织服装</div>
+                        <div class="strength-badge" style="background: linear-gradient(135deg, #00d4ff, #0099cc); color: #fff;">95.7</div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-label">涵盖个股</div>
+                            <div class="metric-value">1</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">风险标签</div>
+                            <div class="metric-value" style="color: #ff6b6b;">1</div>
+                        </div>
+                    </div>
+                    <div class="stock-list">
+                        <strong>龙头前3:</strong>
+                        <div class="stock-item"><span class="stock-code">881160</span> 运动服装</div>
+                    </div>
+                </div>
+
+                <div class="sector-card">
+                    <div class="card-header">
+                        <div class="card-title">2. 电气设备</div>
+                        <div class="strength-badge" style="background: linear-gradient(135deg, #00d4ff, #0099cc); color: #fff;">94.3</div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-label">涵盖个股</div>
+                            <div class="metric-value">1</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">风险标签</div>
+                            <div class="metric-value" style="color: #ff6b6b;">1</div>
+                        </div>
+                    </div>
+                    <div class="stock-list">
+                        <strong>龙头前3:</strong>
+                        <div class="stock-item"><span class="stock-code">881300</span> 制冷空调设备</div>
+                    </div>
+                </div>
+
+                <div class="sector-card">
+                    <div class="card-header">
+                        <div class="card-title">3. 有色金属</div>
+                        <div class="strength-badge" style="background: linear-gradient(135deg, #00d4ff, #0099cc); color: #fff;">94.2</div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-label">涵盖个股</div>
+                            <div class="metric-value">1</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">风险标签</div>
+                            <div class="metric-value" style="color: #ff6b6b;">1</div>
+                        </div>
+                    </div>
+                    <div class="stock-list">
+                        <strong>龙头前3:</strong>
+                        <div class="stock-item"><span class="stock-code">881086</span> 其他金属</div>
+                    </div>
+                </div>
+
+                <div class="sector-card">
+                    <div class="card-header">
+                        <div class="card-title">4. 非银金融</div>
+                        <div class="strength-badge" style="background: linear-gradient(135deg, #00d4ff, #0099cc); color: #fff;">93.1</div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-label">涵盖个股</div>
+                            <div class="metric-value">1</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">风险标签</div>
+                            <div class="metric-value" style="color: #ff6b6b;">1</div>
+                        </div>
+                    </div>
+                    <div class="stock-list">
+                        <strong>龙头前3:</strong>
+                        <div class="stock-item"><span class="stock-code">881394</span> 证券</div>
+                    </div>
+                </div>
+
+                <div class="sector-card">
+                    <div class="card-header">
+                        <div class="card-title">5. 化工</div>
+                        <div class="strength-badge" style="background: linear-gradient(135deg, #00d4ff, #0099cc); color: #fff;">92.8</div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-label">涵盖个股</div>
+                            <div class="metric-value">7</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">风险标签</div>
+                            <div class="metric-value" style="color: #ff6b6b;">3</div>
+                        </div>
+                    </div>
+                    <div class="stock-list">
+                        <strong>龙头前3:</strong>
+                        <div class="stock-item"><span class="stock-code">881052</span> 橡胶助剂</div><div class="stock-item"><span class="stock-code">881053</span> 炭黑</div><div class="stock-item"><span class="stock-code">881058</span> 磷肥及磷化工</div>
+                    </div>
+                </div>
+
+                <div class="sector-card">
+                    <div class="card-header">
+                        <div class="card-title">6. 电子</div>
+                        <div class="strength-badge" style="background: linear-gradient(135deg, #00d4ff, #0099cc); color: #fff;">91.4</div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-label">涵盖个股</div>
+                            <div class="metric-value">9</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">风险标签</div>
+                            <div class="metric-value" style="color: #ff6b6b;">7</div>
+                        </div>
+                    </div>
+                    <div class="stock-list">
+                        <strong>龙头前3:</strong>
+                        <div class="stock-item"><span class="stock-code">881322</span> 集成电路设计</div><div class="stock-item"><span class="stock-code">881320</span> 半导体材料</div><div class="stock-item"><span class="stock-code">881319</span> 半导体</div>
+                    </div>
+                </div>
+
+                <div class="sector-card">
+                    <div class="card-header">
+                        <div class="card-title">7. 医药生物</div>
+                        <div class="strength-badge" style="background: linear-gradient(135deg, #ffaa00, #0099cc); color: #fff;">89.4</div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-label">涵盖个股</div>
+                            <div class="metric-value">4</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">风险标签</div>
+                            <div class="metric-value" style="color: #ff6b6b;">2</div>
+                        </div>
+                    </div>
+                    <div class="stock-list">
+                        <strong>龙头前3:</strong>
+                        <div class="stock-item"><span class="stock-code">881249</span> 医疗研发外包</div><div class="stock-item"><span class="stock-code">881247</span> 医疗服务</div><div class="stock-item"><span class="stock-code">881237</span> 抗体</div>
+                    </div>
+                </div>
+
+                <div class="sector-card">
+                    <div class="card-header">
+                        <div class="card-title">8. 装修建材</div>
+                        <div class="strength-badge" style="background: linear-gradient(135deg, #ffaa00, #0099cc); color: #fff;">89.0</div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-label">涵盖个股</div>
+                            <div class="metric-value">3</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">风险标签</div>
+                            <div class="metric-value" style="color: #ff6b6b;">0</div>
+                        </div>
+                    </div>
+                    <div class="stock-list">
+                        <strong>龙头前3:</strong>
+                        <div class="stock-item"><span class="stock-code">881096</span> 玻纤制造</div><div class="stock-item"><span class="stock-code">881094</span> 玻璃玻纤</div><div class="stock-item"><span class="stock-code">881090</span> 建材</div>
+                    </div>
+                </div>
+
+                <div class="sector-card">
+                    <div class="card-header">
+                        <div class="card-title">9. 计算机</div>
+                        <div class="strength-badge" style="background: linear-gradient(135deg, #ffaa00, #0099cc); color: #fff;">89.0</div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-label">涵盖个股</div>
+                            <div class="metric-value">2</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">风险标签</div>
+                            <div class="metric-value" style="color: #ff6b6b;">0</div>
+                        </div>
+                    </div>
+                    <div class="stock-list">
+                        <strong>龙头前3:</strong>
+                        <div class="stock-item"><span class="stock-code">881352</span> IT设备</div><div class="stock-item"><span class="stock-code">881354</span> 其他IT设备</div>
+                    </div>
+                </div>
+
+                <div class="sector-card">
+                    <div class="card-header">
+                        <div class="card-title">10. 电力及公用事业</div>
+                        <div class="strength-badge" style="background: linear-gradient(135deg, #ffaa00, #0099cc); color: #fff;">86.6</div>
+                    </div>
+                    <div class="card-metrics">
+                        <div class="metric">
+                            <div class="metric-label">涵盖个股</div>
+                            <div class="metric-value">4</div>
+                        </div>
+                        <div class="metric">
+                            <div class="metric-label">风险标签</div>
+                            <div class="metric-value" style="color: #ff6b6b;">1</div>
+                        </div>
+                    </div>
+                    <div class="stock-list">
+                        <strong>龙头前3:</strong>
+                        <div class="stock-item"><span class="stock-code">881457</span> 公路货运</div><div class="stock-item"><span class="stock-code">881456</span> 仓储物流</div><div class="stock-item"><span class="stock-code">881267</span> 其他电池</div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- TOP 30 个股详表 -->
+        <div class="section">
+            <div class="section-title">📊 TOP 30 个股详表 (融合强度排序)</div>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>排名</th>
+                            <th>代码</th>
+                            <th>行业名称</th>
+                            <th>所属板块</th>
+                            <th>当日超额(C%)</th>
+                            <th>5日超额(C5%)</th>
+                            <th>相对强度(RS)</th>
+                            <th>放量倍数(ar)</th>
+                            <th>融合强度</th>
+                            <th>风险标签</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+
+                        <tr>
+                            <td>1</td>
+                            <td>881052</td>
+                            <td>橡胶助剂</td>
+                            <td>化工</td>
+                            <td class="pos">+0.04%</td>
+                            <td class="pos">+11.25%</td>
+                            <td>97.2</td>
+                            <td>2.00x</td>
+                            <td><strong>97.5</strong></td>
+                            <td class="neutral"><small>—</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>2</td>
+                            <td>881249</td>
+                            <td>医疗研发外包</td>
+                            <td>医药生物</td>
+                            <td class="pos">+1.29%</td>
+                            <td class="pos">+14.86%</td>
+                            <td>87.8</td>
+                            <td>1.88x</td>
+                            <td><strong>95.9</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>3</td>
+                            <td>881160</td>
+                            <td>运动服装</td>
+                            <td>纺织服装</td>
+                            <td class="pos">+1.98%</td>
+                            <td class="pos">+14.04%</td>
+                            <td>95.0</td>
+                            <td>1.53x</td>
+                            <td><strong>95.7</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>4</td>
+                            <td>881053</td>
+                            <td>炭黑</td>
+                            <td>化工</td>
+                            <td class="pos">+3.53%</td>
+                            <td class="pos">+16.07%</td>
+                            <td>83.9</td>
+                            <td>1.84x</td>
+                            <td><strong>95.0</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>5</td>
+                            <td>881457</td>
+                            <td>公路货运</td>
+                            <td>电力及公用事业</td>
+                            <td class="pos">+0.45%</td>
+                            <td class="pos">+10.83%</td>
+                            <td>86.2</td>
+                            <td>2.60x</td>
+                            <td><strong>94.9</strong></td>
+                            <td class="neg"><small>末端拥挤,加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>6</td>
+                            <td>881322</td>
+                            <td>集成电路设计</td>
+                            <td>电子</td>
+                            <td class="pos">+4.88%</td>
+                            <td class="pos">+12.94%</td>
+                            <td>94.3</td>
+                            <td>1.50x</td>
+                            <td><strong>94.8</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>7</td>
+                            <td>881301</td>
+                            <td>磨具磨料</td>
+                            <td>机械设备</td>
+                            <td class="pos">+0.53%</td>
+                            <td class="pos">+14.04%</td>
+                            <td>95.5</td>
+                            <td>1.46x</td>
+                            <td><strong>94.6</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>8</td>
+                            <td>881058</td>
+                            <td>磷肥及磷化工</td>
+                            <td>化工</td>
+                            <td class="pos">+2.02%</td>
+                            <td class="pos">+10.50%</td>
+                            <td>84.7</td>
+                            <td>2.21x</td>
+                            <td><strong>94.5</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>9</td>
+                            <td>881300</td>
+                            <td>制冷空调设备</td>
+                            <td>电气设备</td>
+                            <td class="pos">+2.44%</td>
+                            <td class="pos">+12.59%</td>
+                            <td>93.0</td>
+                            <td>1.51x</td>
+                            <td><strong>94.3</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>10</td>
+                            <td>881086</td>
+                            <td>其他金属</td>
+                            <td>有色金属</td>
+                            <td class="pos">+0.21%</td>
+                            <td class="pos">+12.35%</td>
+                            <td>96.4</td>
+                            <td>1.45x</td>
+                            <td><strong>94.2</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>11</td>
+                            <td>881320</td>
+                            <td>半导体材料</td>
+                            <td>电子</td>
+                            <td class="pos">+1.79%</td>
+                            <td class="pos">+9.27%</td>
+                            <td>98.6</td>
+                            <td>1.46x</td>
+                            <td><strong>94.2</strong></td>
+                            <td class="neutral"><small>—</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>12</td>
+                            <td>881319</td>
+                            <td>半导体</td>
+                            <td>电子</td>
+                            <td class="pos">+3.75%</td>
+                            <td class="pos">+12.89%</td>
+                            <td>96.9</td>
+                            <td>1.39x</td>
+                            <td><strong>93.6</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>13</td>
+                            <td>881043</td>
+                            <td>其他化学制品</td>
+                            <td>化工</td>
+                            <td class="pos">+1.29%</td>
+                            <td class="pos">+5.20%</td>
+                            <td>94.3</td>
+                            <td>1.52x</td>
+                            <td><strong>93.2</strong></td>
+                            <td class="neutral"><small>—</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>14</td>
+                            <td>881104</td>
+                            <td>非金属材料</td>
+                            <td>[UNMATCHED]</td>
+                            <td class="pos">+3.44%</td>
+                            <td class="pos">+8.30%</td>
+                            <td>97.6</td>
+                            <td>1.43x</td>
+                            <td><strong>93.2</strong></td>
+                            <td class="neutral"><small>—</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>15</td>
+                            <td>881394</td>
+                            <td>证券</td>
+                            <td>非银金融</td>
+                            <td class="pos">+3.05%</td>
+                            <td class="pos">+4.97%</td>
+                            <td>85.8</td>
+                            <td>2.10x</td>
+                            <td><strong>93.1</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>16</td>
+                            <td>881247</td>
+                            <td>医疗服务</td>
+                            <td>医药生物</td>
+                            <td class="pos">+0.51%</td>
+                            <td class="pos">+9.79%</td>
+                            <td>81.1</td>
+                            <td>1.73x</td>
+                            <td><strong>92.5</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>17</td>
+                            <td>881028</td>
+                            <td>钛白粉</td>
+                            <td>化工</td>
+                            <td class="pos">+0.10%</td>
+                            <td class="pos">+10.94%</td>
+                            <td>84.2</td>
+                            <td>1.55x</td>
+                            <td><strong>92.5</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>18</td>
+                            <td>881096</td>
+                            <td>玻纤制造</td>
+                            <td>装修建材</td>
+                            <td class="pos">+6.31%</td>
+                            <td class="pos">+13.25%</td>
+                            <td>99.9</td>
+                            <td>1.28x</td>
+                            <td><strong>91.7</strong></td>
+                            <td class="neutral"><small>—</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>19</td>
+                            <td>881321</td>
+                            <td>半导体设备</td>
+                            <td>电子</td>
+                            <td class="pos">+2.66%</td>
+                            <td class="pos">+12.62%</td>
+                            <td>98.5</td>
+                            <td>1.29x</td>
+                            <td><strong>91.5</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>20</td>
+                            <td>881336</td>
+                            <td>其他电子</td>
+                            <td>电子</td>
+                            <td class="pos">+0.95%</td>
+                            <td class="pos">+8.48%</td>
+                            <td>96.2</td>
+                            <td>1.34x</td>
+                            <td><strong>91.3</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>21</td>
+                            <td>881330</td>
+                            <td>面板</td>
+                            <td>[UNMATCHED]</td>
+                            <td class="pos">+3.84%</td>
+                            <td class="pos">+5.74%</td>
+                            <td>94.2</td>
+                            <td>1.37x</td>
+                            <td><strong>91.0</strong></td>
+                            <td class="neutral"><small>—</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>22</td>
+                            <td>881323</td>
+                            <td>功率半导体</td>
+                            <td>电子</td>
+                            <td class="pos">+0.06%</td>
+                            <td class="pos">+13.27%</td>
+                            <td>96.1</td>
+                            <td>1.28x</td>
+                            <td><strong>90.8</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>23</td>
+                            <td>881324</td>
+                            <td>半导体制造</td>
+                            <td>电子</td>
+                            <td class="pos">+2.59%</td>
+                            <td class="pos">+16.21%</td>
+                            <td>95.6</td>
+                            <td>1.25x</td>
+                            <td><strong>90.8</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>24</td>
+                            <td>881316</td>
+                            <td>激光设备</td>
+                            <td>[UNMATCHED]</td>
+                            <td class="pos">+4.49%</td>
+                            <td class="pos">+7.59%</td>
+                            <td>96.4</td>
+                            <td>1.31x</td>
+                            <td><strong>90.2</strong></td>
+                            <td class="neutral"><small>—</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>25</td>
+                            <td>881353</td>
+                            <td>安防设备</td>
+                            <td>[UNMATCHED]</td>
+                            <td class="pos">+0.40%</td>
+                            <td class="pos">+3.21%</td>
+                            <td>83.4</td>
+                            <td>1.65x</td>
+                            <td><strong>90.1</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>26</td>
+                            <td>881094</td>
+                            <td>玻璃玻纤</td>
+                            <td>装修建材</td>
+                            <td class="pos">+5.41%</td>
+                            <td class="pos">+10.16%</td>
+                            <td>99.6</td>
+                            <td>1.23x</td>
+                            <td><strong>89.8</strong></td>
+                            <td class="neutral"><small>—</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>27</td>
+                            <td>881318</td>
+                            <td>电子</td>
+                            <td>电子</td>
+                            <td class="pos">+3.08%</td>
+                            <td class="pos">+8.35%</td>
+                            <td>94.5</td>
+                            <td>1.29x</td>
+                            <td><strong>89.5</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>28</td>
+                            <td>881021</td>
+                            <td>氨纶</td>
+                            <td>[UNMATCHED]</td>
+                            <td class="pos">+1.14%</td>
+                            <td class="pos">+2.89%</td>
+                            <td>87.7</td>
+                            <td>1.49x</td>
+                            <td><strong>89.1</strong></td>
+                            <td class="neg"><small>加速过热</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>29</td>
+                            <td>881352</td>
+                            <td>IT设备</td>
+                            <td>计算机</td>
+                            <td class="pos">+1.79%</td>
+                            <td class="pos">+3.14%</td>
+                            <td>80.8</td>
+                            <td>1.64x</td>
+                            <td><strong>89.0</strong></td>
+                            <td class="neutral"><small>—</small></td>
+                        </tr>
+
+                        <tr>
+                            <td>30</td>
+                            <td>881354</td>
+                            <td>其他IT设备</td>
+                            <td>计算机</td>
+                            <td class="pos">+2.55%</td>
+                            <td class="pos">+3.16%</td>
+                            <td>80.3</td>
+                            <td>1.64x</td>
+                            <td><strong>89.0</strong></td>
+                            <td class="neutral"><small>—</small></td>
+                        </tr>
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <!-- 模型说明 -->
+        <div class="section">
+            <div class="section-title">ℹ️ 模型说明</div>
+            <div class="footer-note">
+                <p><strong>融合逻辑 (三层漏斗):</strong></p>
+                <p>✓ <strong>硬过滤</strong>: C>0 ∩ 1.2≤ar≤3.5 ∩ 日涨≤7% ∩ C5前30% ∩ RS前30%</p>
+                <p>✓ <strong>强度分</strong> (0-100): 资金确认(25%) + 动量(25%) + 量能(25%) + 情绪(25%) [等权横截面Rank]</p>
+                <p>✓ <strong>风控标签</strong> [命中即规避]: 末端拥挤(C5前5%+ar>2.5) | 加速过热(C5/C20>0.45) | 量价背离(高ar低涨幅) | 情绪转弱(封板率↓) | 大盘逆风(基准跌>1%)</p>
+
+                <p style="margin-top: 12px;"><strong>数据源:</strong></p>
+                <p>• 资金热度: 东财主力净流入 (链接1 fundflow-live.html)</p>
+                <p>• 行业动量: 通达信463细分行业 (链接2 industry_alert_dashboard.html)</p>
+                <p>• 业界对标: 华西六类量价 + Quantpedia动量轮动 + BigQuant行业轮动</p>
+
+                <p style="margin-top: 12px;"><strong>定位:</strong> 实时择强工具 (不可回测) — 资金侧无历史，仅用于盘中动态监控</p>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>© 2026 Sector Fusion Dashboard | 生成时间: {datetime.datetime.now().strftime('%Y-%m-%d %H:%M:%S')}</p>
+    </div>
+</body>
+</html>
