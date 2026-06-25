@@ -78,6 +78,20 @@ function colorFor(v, maxAbs){
 
 function fmt(v){ return (v>=0?'+':'') + v.toFixed(1); }
 
+function pickTime(data){
+  const ga = data.generated_at;
+  if (typeof ga === 'string' && ga.length >= 16) return ga.slice(11,16);
+  if (data.ts != null){
+    try{
+      let t = data.ts;
+      if (typeof t === 'number' && t < 1e12) t = t*1000;   // 秒 -> 毫秒
+      const dd = new Date(t);
+      if (!isNaN(dd)) return ('0'+dd.getHours()).slice(-2)+':'+('0'+dd.getMinutes()).slice(-2);
+    }catch(_){}
+  }
+  return '';
+}
+
 function render(data){
   const { vw, vh } = dims();
   let secs = (data.sectors||[]).filter(s => typeof s.net_inflow_yi === 'number' && Math.abs(s.net_inflow_yi) > 0.05);
@@ -94,7 +108,7 @@ function render(data){
   document.getElementById('mDn').textContent = dns.length+' 个 '+sumDn.toFixed(0)+'亿';
   const ms = {pre:'盘前',open:'交易中',noon:'午休',close:'已收盘'}[data.market_status]||data.market_status||'';
   document.getElementById('mStatus').textContent = ms;
-  document.getElementById('mTs').textContent = (data.ts||'').slice(11,16);
+  document.getElementById('mTs').textContent = pickTime(data);
   // 中线 banner 定位:上区/下区分界
   document.getElementById('midBanner').style.top = (window.innerHeight*0.49)+'px';
 
@@ -162,9 +176,7 @@ async function load(){
     render(data);
     return data.market_status;
   }catch(e){
-    const el=document.getElementById('err');
-    el.textContent='ERR: '+(e&&e.message?e.message:e);
-    el.style.display='flex';
+    document.getElementById('err').style.display='flex';
     return null;
   }
 }
