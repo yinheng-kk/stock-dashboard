@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>主力净额气泡图 · 实时</title>
+<style>
+  :root{ --bg:#05070d; --txt:#eaf0fb; --dim:#7f93b8; --red:#ff3b4e; --green:#19c27e; }
+  *{ box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  html,body{ margin:0; padding:0; height:100%; background:var(--bg); color:var(--txt);
+    font-family:-apple-system,"PingFang SC","Microsoft YaHei",sans-serif; overflow:hidden; }
+  .top{ position:fixed; top:0; left:0; right:0; z-index:10; padding:10px 14px 8px;
+    background:linear-gradient(180deg,rgba(5,7,13,.95),rgba(5,7,13,0)); }
+  .top h1{ margin:0; font-size:16px; font-weight:800; letter-spacing:.5px; }
+  .top h1 b{ color:#ffd24a; text-shadow:0 0 12px rgba(255,210,74,.5); }
+  .top .meta{ font-size:11px; color:var(--dim); margin-top:2px; display:flex; gap:10px; flex-wrap:wrap; }
+  .top .meta .up{ color:var(--red); } .top .meta .dn{ color:var(--green); }
+  .mid{ position:fixed; left:0; right:0; z-index:9; text-align:center; pointer-events:none; }
+  .mid span{ font-size:11px; color:var(--dim); background:rgba(5,7,13,.6); padding:2px 12px; border-radius:20px; }
+  svg{ display:block; width:100vw; height:100vh; height:100dvh; }
+  .bub circle{ stroke:rgba(255,255,255,.10); stroke-width:1; transition:opacity .4s;
+    transform-box:fill-box; transform-origin:center; animation:breathe var(--bt,4s) ease-in-out infinite; }
+  @keyframes breathe{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.045); } }
+  .bub text{ fill:#fff; text-anchor:middle; font-weight:800; pointer-events:none;
+    paint-order:stroke; stroke:rgba(0,0,0,.28); stroke-width:.6px; }
+  .bub .nm{ font-weight:800; }
+  .bub .vl{ font-weight:700; opacity:.96; }
+  .err{ position:fixed; inset:0; display:none; align-items:center; justify-content:center; color:var(--dim); font-size:13px; }
+</style>
+</head>
+<body>
+<div class="top">
+  <h1>累计主力净额 · <b>气泡图</b> · <span style="font-weight:600;font-size:13px;color:var(--dim)">单位 亿元</span></h1>
+  <div class="meta">
+    <span id="mStatus">连接中…</span>
+    <span class="up">▲ 流入 <b id="mUp">--</b></span>
+    <span class="dn">▼ 流出 <b id="mDn">--</b></span>
+    <span id="mTs"></span>
+  </div>
+</div>
+<svg id="svg" preserveAspectRatio="xMidYMid meet"></svg>
+<div class="err" id="err">数据加载失败,重试中…</div>
+
+<script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"></script>
+<script>
+const LIVE_API = "https://stock-live.chuchuran.com/api/fund-flow/live";
+const svg = d3.select("#svg");
+let W = 0, H = 0, VB = 1000;          // viewBox 高度按宽高比算
+let nodes = [], sim = null, byCode = new Map();
+
+function dims(){
+  W = window.innerWidth; H = window.innerHeight;
+  const ratio = H / W;
+  const vw = 1000, vh = Math.round(vw * ratio);
+  svg.attr("viewBox", `0 0 ${vw} ${vh}`);
+  return { vw, vh };
+}
+
+// 半径:面积 ∝ |净额|。sqrt 比例,夹在 [min,max]
+function radiusScale(maxAbs, vw){
+  const maxR = Math.min(vw*0.16, 150);
+  const minR = vw*0.028;
+  return v => {
+    const r = Math.sqrt(Math.abs(v)/maxAbs) * maxR;
+    return Math.max(minR, r);
+  };
+}
+
+function colorFor(v, maxAbs){
+  const t = Math.min(1, Math.abs(v)/maxAbs);       // 越大越亮
+  if (v >= 0){ // 红
+    const l = 38 + t*16;
+    return `hsl(${352 - t*4}, ${82+t*10}%, ${l}%)`;
+  } else {     // 绿
+    const l = 30 + t*14;
+    return `hsl(${152 + t*6}, ${70+t*14}%, ${l}%)`;
+  }
+}
+
+function fmt(v){ return (v>=0?'+':'') + v.toFixed(1); }
+
+function pickTime(data){
+  const ga = data.generated_at;
+  if (typeof ga === 'string' && ga.length >= 16) return ga.slice(11,16);
+  if (data.ts != null){
+    try{
+      let t = data.ts;
+      if (typeof t === 'number' && t < 1e12) t = t*1000;   // 秒 -> 毫秒
+      const dd = new Date(t);
+      if (!isNaN(dd)) return ('0'+dd.getHours()).slice(-2)+':'+('0'+dd.getMinutes()).slice(-2);
+    }catch(_){}
+  }
+  return '';
+}
+
+function render(data){
+  const { vw, vh } = dims();
+  let secs = (data.sectors||[]).filter(s => typeof s.net_inflow_yi === 'number' && Math.abs(s.net_inflow_yi) > 0.05);
+  if (!secs.length){ document.getElementById('err').style.display='flex'; return; }
+  document.getElementById('err').style.display='none';
+
+  const maxAbs = d3.max(secs, s => Math.abs(s.net_inflow_yi)) || 1;
+  const R = radiusScale(maxAbs, vw);
+
+  // 头部统计
+  const ups = secs.filter(s=>s.net_inflow_yi>0), dns = secs.filter(s=>s.net_inflow_yi<0);
+  const sumUp = d3.sum(ups, s=>s.net_inflow_yi), sumDn = d3.sum(dns, s=>s.net_inflow_yi);
+  document.getElementById('mUp').textContent = ups.length+' 个 '+sumUp.toFixed(0)+'亿';
+  document.getElementById('mDn').textContent = dns.length+' 个 '+sumDn.toFixed(0)+'亿';
+  const ms = {pre:'盘前',open:'交易中',noon:'午休',close:'已收盘'}[data.market_status]||data.market_status||'';
+  document.getElementById('mStatus').textContent = ms;
+  document.getElementById('mTs').textContent = pickTime(data);
+
+  // 复用已有节点位置(同 code),保证刷新不乱跳
+  nodes = secs.map(s => {
+    const old = byCode.get(s.code);
+    return {
+      code:s.code, name:s.name, v:s.net_inflow_yi, r:R(s.net_inflow_yi),
+      x: old? old.x : vw/2 + (Math.random()-0.5)*vw*0.5,
+      y: old? old.y : (s.net_inflow_yi>0 ? vh*0.30 : vh*0.72) + (Math.random()-0.5)*60,
+      vx: old?old.vx:0, vy: old?old.vy:0,
+      // 每个泡独立的漂浮相位/频率/幅度,让动态持续不停
+      ph: old? old.ph : Math.random()*Math.PI*2,
+      fq: old? old.fq : 0.6 + Math.random()*0.7,
+      amp: old? old.amp : 0.5 + Math.random()*0.6
+    };
+  });
+  byCode = new Map(nodes.map(n=>[n.code,n]));
+
+  const yUp = vh*0.30, yDn = vh*0.74;
+  if (sim) sim.stop();
+  // 持续漂浮力:按时间正弦给每个泡一点点速度,永不冻结
+  function floatForce(){
+    const t = performance.now()/1000;
+    return function(){
+      nodes.forEach(d=>{
+        d.vx += Math.cos(t*d.fq + d.ph) * d.amp * 0.04;
+        d.vy += Math.sin(t*d.fq*0.8 + d.ph) * d.amp * 0.04;
+      });
+    };
+  }
+  sim = d3.forceSimulation(nodes)
+    .force("x", d3.forceX(vw/2).strength(0.045))
+    .force("y", d3.forceY(d => d.v>0 ? yUp : yDn).strength(0.10))
+    .force("collide", d3.forceCollide(d => d.r + vw*0.012).strength(1).iterations(4))
+    .force("charge", d3.forceManyBody().strength(-4))
+    .force("float", floatForce())
+    .alpha(0.95)
+    .alphaDecay(0)           // 不衰减 -> 模拟一直跑
+    .alphaTarget(0.10)       // 保持低能量持续微动
+    .velocityDecay(0.86)     // 高阻尼让漂浮柔和不乱飞
+    .on("tick", ticked);
+
+  // 绑定
+  const g = svg.selectAll("g.bub").data(nodes, d=>d.code);
+  g.exit().remove();
+  const ent = g.enter().append("g").attr("class","bub");
+  ent.append("circle");
+  ent.append("text").attr("class","nm");
+  ent.append("text").attr("class","vl");
+  const all = ent.merge(g);
+  all.select("circle")
+     .attr("fill", d=>colorFor(d.v,maxAbs))
+     .attr("r", d=>d.r)
+     .style("--bt", d=>(3 + (d.fq||1)*1.6).toFixed(2)+'s');
+  all.select("text.nm")
+     .attr("font-size", d=>Math.max(10, d.r*0.34))
+     .attr("dy", d=>-d.r*0.06)
+     .text(d=>d.name.length>5 ? d.name.slice(0,5) : d.name);
+  all.select("text.vl")
+     .attr("font-size", d=>Math.max(9, d.r*0.30))
+     .attr("dy", d=>d.r*0.34)
+     .text(d=>fmt(d.v)+'亿');
+  // 小气泡隐藏金额避免拥挤
+  all.select("text.vl").style("display", d=> d.r < vw*0.05 ? 'none':null);
+  window._all = all;
+}
+
+function ticked(){
+  if(!window._all) return;
+  const vb = svg.attr("viewBox").split(' ').map(Number);
+  const vw=vb[2], vh=vb[3];
+  nodes.forEach(d=>{
+    d.x = Math.max(d.r, Math.min(vw-d.r, d.x));
+    d.y = Math.max(d.r+vh*0.05, Math.min(vh-d.r, d.y));
+  });
+  window._all.attr("transform", d=>`translate(${d.x},${d.y})`);
+}
+
+async function load(){
+  try{
+    const r = await fetch(LIVE_API, { cache:'no-store' });
+    const data = await r.json();
+    render(data);
+    return data.market_status;
+  }catch(e){
+    document.getElementById('err').style.display='flex';
+    return null;
+  }
+}
+
+let timer=null;
+async function loop(){
+  const st = await load();
+  const ms = st==='open' ? 3000 : st==='noon' ? 30000 : 60000;
+  timer = setTimeout(loop, ms);
+}
+window.addEventListener('resize', ()=>{ if(window._lastData) render(window._lastData); });
+// 包一层保存最后数据供 resize 重排
+const _origRender = render;
+render = function(d){ window._lastData=d; _origRender(d); };
+loop();
+</script>
+</body>
+</html>
