@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>累计主力净额 · 气泡图 · 实时</title>
+<style>
+  html,body{ margin:0; padding:0; height:100%; background:#05070d; }
+  iframe{ display:block; border:0; width:100%; height:100vh; height:100dvh; }
+</style>
+</head>
+<body>
+<!-- 正文在 sandbox(无 allow-same-origin)iframe 中运行,源为 null,stock-live API CORS 白名单放行 null,实时数据可拉 -->
+<iframe src="./fundflow-bubble-core.html"
+        sandbox="allow-scripts allow-popups"
+        referrerpolicy="no-referrer"
+        title="主力净额气泡图"></iframe>
+</body>
+</html>
