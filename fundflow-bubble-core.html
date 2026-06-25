@@ -18,9 +18,7 @@
   .mid{ position:fixed; left:0; right:0; z-index:9; text-align:center; pointer-events:none; }
   .mid span{ font-size:11px; color:var(--dim); background:rgba(5,7,13,.6); padding:2px 12px; border-radius:20px; }
   svg{ display:block; width:100vw; height:100vh; height:100dvh; }
-  .bub circle{ stroke:rgba(255,255,255,.10); stroke-width:1; transition:opacity .4s;
-    transform-box:fill-box; transform-origin:center; animation:breathe var(--bt,4s) ease-in-out infinite; }
-  @keyframes breathe{ 0%,100%{ transform:scale(1); } 50%{ transform:scale(1.045); } }
+  .bub circle{ stroke:rgba(255,255,255,.10); stroke-width:1; transition:opacity .4s; }
   .bub text{ fill:#fff; text-anchor:middle; font-weight:800; pointer-events:none;
     paint-order:stroke; stroke:rgba(0,0,0,.28); stroke-width:.6px; }
   .bub .nm{ font-weight:800; }
@@ -118,37 +116,19 @@ function render(data){
       code:s.code, name:s.name, v:s.net_inflow_yi, r:R(s.net_inflow_yi),
       x: old? old.x : vw/2 + (Math.random()-0.5)*vw*0.5,
       y: old? old.y : (s.net_inflow_yi>0 ? vh*0.30 : vh*0.72) + (Math.random()-0.5)*60,
-      vx: old?old.vx:0, vy: old?old.vy:0,
-      // 每个泡独立的漂浮相位/频率/幅度,让动态持续不停
-      ph: old? old.ph : Math.random()*Math.PI*2,
-      fq: old? old.fq : 0.6 + Math.random()*0.7,
-      amp: old? old.amp : 0.5 + Math.random()*0.6
+      vx: old?old.vx:0, vy: old?old.vy:0
     };
   });
   byCode = new Map(nodes.map(n=>[n.code,n]));
 
   const yUp = vh*0.30, yDn = vh*0.74;
   if (sim) sim.stop();
-  // 持续漂浮力:按时间正弦给每个泡一点点速度,永不冻结
-  function floatForce(){
-    const t = performance.now()/1000;
-    return function(){
-      nodes.forEach(d=>{
-        d.vx += Math.cos(t*d.fq + d.ph) * d.amp * 0.04;
-        d.vy += Math.sin(t*d.fq*0.8 + d.ph) * d.amp * 0.04;
-      });
-    };
-  }
   sim = d3.forceSimulation(nodes)
     .force("x", d3.forceX(vw/2).strength(0.045))
     .force("y", d3.forceY(d => d.v>0 ? yUp : yDn).strength(0.10))
     .force("collide", d3.forceCollide(d => d.r + vw*0.012).strength(1).iterations(4))
     .force("charge", d3.forceManyBody().strength(-4))
-    .force("float", floatForce())
-    .alpha(0.95)
-    .alphaDecay(0)           // 不衰减 -> 模拟一直跑
-    .alphaTarget(0.10)       // 保持低能量持续微动
-    .velocityDecay(0.86)     // 高阻尼让漂浮柔和不乱飞
+    .alpha(0.95).alphaDecay(0.02)
     .on("tick", ticked);
 
   // 绑定
@@ -161,8 +141,7 @@ function render(data){
   const all = ent.merge(g);
   all.select("circle")
      .attr("fill", d=>colorFor(d.v,maxAbs))
-     .attr("r", d=>d.r)
-     .style("--bt", d=>(3 + (d.fq||1)*1.6).toFixed(2)+'s');
+     .attr("r", d=>d.r);
   all.select("text.nm")
      .attr("font-size", d=>Math.max(10, d.r*0.34))
      .attr("dy", d=>-d.r*0.06)
