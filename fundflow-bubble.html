@@ -11,9 +11,12 @@
 </head>
 <body>
 <!-- 正文在 sandbox(无 allow-same-origin)iframe 中运行,源为 null,stock-live API CORS 白名单放行 null,实时数据可拉 -->
-<iframe src="./fundflow-bubble-core.html"
-        sandbox="allow-scripts allow-popups"
+<iframe id="f" sandbox="allow-scripts allow-popups"
         referrerpolicy="no-referrer"
         title="主力净额气泡图"></iframe>
+<script>
+  // 动态带版本号,避免边缘缓存把核心页钉在旧版
+  document.getElementById('f').src = './fundflow-bubble-core.html?v=' + Date.now();
+</script>
 </body>
 </html>
