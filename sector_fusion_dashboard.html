@@ -61,7 +61,6 @@
             .sector-row td:nth-child(4) { display: block; margin-top: 5px; font-size: 11px !important; color: #888 !important; }
             .sector-row td:nth-child(4)::before { content: "对应东财板块: "; color: #666; }
             .sector-row td:nth-child(5) { display: block; margin-top: 7px; font-size: 12px; line-height: 1.7; }
-            .sector-row td:nth-child(6) { display: none; }
 
             .expanded-row { padding: 2px 0 6px; }
             .expanded-row td { border: none !important; padding: 3px 0 !important; }
@@ -69,7 +68,6 @@
             .expanded-row td:nth-child(2) { display: inline-block; margin: 4px 0 4px 16px; }
             .expanded-row td:nth-child(3) { display: inline-block; margin-left: 6px; }
             .expanded-row td:nth-child(4) { display: block; padding-left: 16px !important; margin-top: 4px; font-size: 12px; color: #bbb; }
-            .expanded-row td:nth-child(5) { display: none; }
 
             .footer-note p { font-size: 12px; }
             .footer { padding: 16px; }
@@ -90,12 +88,11 @@
                 <table>
                     <thead>
                         <tr>
-                            <th style="width: 5%;">排</th>
-                            <th style="width: 11%;">板块</th>
-                            <th style="width: 8%;">强度分</th>
-                            <th style="width: 14%;">对应东财板块</th>
-                            <th style="width: 52%;">相关性最强龙头个股 (点击展开)</th>
-                            <th style="width: 10%;">详细</th>
+                            <th style="width: 6%;">排</th>
+                            <th style="width: 15%;">板块</th>
+                            <th style="width: 10%;">强度分</th>
+                            <th style="width: 17%;">对应东财板块</th>
+                            <th style="width: 52%;">相关性最强龙头个股 <span style="color:#666;font-weight:normal;">(▶ 点击展开)</span></th>
                         </tr>
                     </thead>
                     <tbody>
@@ -106,7 +103,6 @@
                             <td><span class="strength-badge" style="background: linear-gradient(135deg, #00d4ff, #0099cc); color: #fff;">96.3</span></td>
                             <td style="font-size:12px; color:#aaa;">光学元件</td>
                             <td class="dragon-industries"><span class="expand-btn">▶</span> 水晶光电(002273), 波长光电(301421), 永新光学(603297)</td>
-                            <td style="text-align: center;"><small style="color: #666;">点击展开</small></td>
                         </tr>
 
                         <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
@@ -114,7 +110,6 @@
                             <td><span class="corr-badge" style="background:#16a34a;">ρ=0.85</span></td>
                             <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
                             <td>现价 35.08 &nbsp; <span class="neg">-3.65%</span> &nbsp; <span class="neutral">量比1.68</span></td>
-                            <td></td>
                         </tr>
 
                         <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
@@ -122,7 +117,6 @@
                             <td><span class="corr-badge" style="background:#16a34a;">ρ=0.79</span></td>
                             <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
                             <td>现价 93.5 &nbsp; <span class="pos">+6.74%</span> &nbsp; <span class="neutral">量比1.93</span></td>
-                            <td></td>
                         </tr>
 
                         <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
@@ -130,7 +124,6 @@
                             <td><span class="corr-badge" style="background:#16a34a;">ρ=0.77</span></td>
                             <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
                             <td>现价 137.22 &nbsp; <span class="pos">+4.51%</span> &nbsp; <span class="neutral">量比2.00</span></td>
-                            <td></td>
                         </tr>
 
                         <tr class="sector-row top10" onclick="toggleExpand(this)">
@@ -139,7 +132,6 @@
                             <td><span class="strength-badge" style="background: linear-gradient(135deg, #00d4ff, #0099cc); color: #fff;">94.7</span></td>
                             <td style="font-size:12px; color:#aaa;">炭黑</td>
                             <td class="dragon-industries"><span class="expand-btn">▶</span> 黑猫股份(002068), 远翔新材(301300), 永东股份(002753)</td>
-                            <td style="text-align: center;"><small style="color: #666;">点击展开</small></td>
                         </tr>
 
                         <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
@@ -147,7 +139,6 @@
                             <td><span class="corr-badge" style="background:#16a34a;">ρ=0.78</span></td>
                             <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
                             <td>现价 14.43 &nbsp; <span class="neg">-2.70%</span> &nbsp; <span class="neutral">量比1.96</span></td>
-                            <td></td>
                         </tr>
 
                         <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
@@ -155,7 +146,6 @@
                             <td><span class="corr-badge" style="background:#ffaa00;">ρ=0.67</span></td>
                             <td><span class="tier-tag" style="color:#ffaa00; border-color:#ffaa00;">中跟随</span></td>
                             <td>现价 31.87 &nbsp; <span class="neg">-1.70%</span> &nbsp; <span class="neutral">量比1.52</span></td>
-                            <td></td>
                         </tr>
 
                         <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
@@ -163,7 +153,6 @@
                             <td><span class="corr-badge" style="background:#ffaa00;">ρ=0.58</span></td>
                             <td><span class="tier-tag" style="color:#ffaa00; border-color:#ffaa00;">中跟随</span></td>
                             <td>现价 5.76 &nbsp; <span class="neg">-1.54%</span> &nbsp; <span class="neutral">量比1.60</span></td>
-                            <td></td>
                         </tr>
 
                         <tr class="sector-row top10" onclick="toggleExpand(this)">
@@ -171,8 +160,28 @@
                             <td><strong>装修建材</strong></td>
                             <td><span class="strength-badge" style="background: linear-gradient(135deg, #00d4ff, #0099cc); color: #fff;">92.5</span></td>
                             <td style="font-size:12px; color:#aaa;">玻璃制造</td>
-                            <td class="dragon-industries"><span class="expand-btn">▶</span> 板块K线失败:HTTPSConnectionPool(host='29.push2his.eastmoney.com', port=443): Max retries exceeded with url: /api/qt/stock/kline/get?secid=90.BK1461&klt=101&fqt=1&fields1=f1&fields2=f51,f53&lmt=22&end=20500101 (Caused by ProxyError('Unable to connect to proxy', RemoteDisconnected('Remote end closed connection without response')))</td>
-                            <td style="text-align: center;"><small style="color: #666;">点击展开</small></td>
+                            <td class="dragon-industries"><span class="expand-btn">▶</span> 耀皮玻璃(600819), 旗滨集团(601636), 南  玻Ａ(000012)</td>
+                        </tr>
+
+                        <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
+                            <td colspan="2" style="padding-left: 40px;"><em>└─ 龙头1</em> <span class="stock-code">600819</span> <strong>耀皮玻璃</strong></td>
+                            <td><span class="corr-badge" style="background:#16a34a;">ρ=0.86</span></td>
+                            <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
+                            <td>现价 5.7 &nbsp; <span class="neg">-0.18%</span> &nbsp; <span class="neutral">量比0.72</span></td>
+                        </tr>
+
+                        <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
+                            <td colspan="2" style="padding-left: 40px;"><em>└─ 龙头2</em> <span class="stock-code">601636</span> <strong>旗滨集团</strong></td>
+                            <td><span class="corr-badge" style="background:#16a34a;">ρ=0.77</span></td>
+                            <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
+                            <td>现价 8.93 &nbsp; <span class="pos">+6.95%</span> &nbsp; <span class="neutral">量比1.31</span></td>
+                        </tr>
+
+                        <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
+                            <td colspan="2" style="padding-left: 40px;"><em>└─ 龙头3</em> <span class="stock-code">000012</span> <strong>南  玻Ａ</strong></td>
+                            <td><span class="corr-badge" style="background:#16a34a;">ρ=0.76</span></td>
+                            <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
+                            <td>现价 4.8 &nbsp; <span class="pos">+0.63%</span> &nbsp; <span class="neutral">量比1.32</span></td>
                         </tr>
 
                         <tr class="sector-row top10" onclick="toggleExpand(this)">
@@ -181,7 +190,6 @@
                             <td><span class="strength-badge" style="background: linear-gradient(135deg, #ffaa00, #0099cc); color: #fff;">81.0</span></td>
                             <td style="font-size:12px; color:#aaa;">光伏电池组件</td>
                             <td class="dragon-industries"><span class="expand-btn">▶</span> 协鑫集成(002506), 晶科能源(688223), 泽润新能(301636)</td>
-                            <td style="text-align: center;"><small style="color: #666;">点击展开</small></td>
                         </tr>
 
                         <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
@@ -189,7 +197,6 @@
                             <td><span class="corr-badge" style="background:#16a34a;">ρ=0.91</span></td>
                             <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
                             <td>现价 3.02 &nbsp; <span class="neg">-0.66%</span> &nbsp; <span class="neutral">量比3.05</span></td>
-                            <td></td>
                         </tr>
 
                         <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
@@ -197,7 +204,6 @@
                             <td><span class="corr-badge" style="background:#16a34a;">ρ=0.88</span></td>
                             <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
                             <td>现价 4.78 &nbsp; <span class="neg">-2.05%</span> &nbsp; <span class="neutral">量比1.75</span></td>
-                            <td></td>
                         </tr>
 
                         <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
@@ -205,7 +211,6 @@
                             <td><span class="corr-badge" style="background:#16a34a;">ρ=0.84</span></td>
                             <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
                             <td>现价 42.09 &nbsp; <span class="neg">-2.64%</span> &nbsp; <span class="neutral">量比1.29</span></td>
-                            <td></td>
                         </tr>
 
                         <tr class="sector-row top10" onclick="toggleExpand(this)">
@@ -214,7 +219,6 @@
                             <td><span class="strength-badge" style="background: linear-gradient(135deg, #ffaa00, #0099cc); color: #fff;">80.8</span></td>
                             <td style="font-size:12px; color:#aaa;">生猪养殖</td>
                             <td class="dragon-industries"><span class="expand-btn">▶</span> 巨星农牧(603477), 天邦食品(002124), 温氏股份(300498)</td>
-                            <td style="text-align: center;"><small style="color: #666;">点击展开</small></td>
                         </tr>
 
                         <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
@@ -222,7 +226,6 @@
                             <td><span class="corr-badge" style="background:#16a34a;">ρ=0.89</span></td>
                             <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
                             <td>现价 13.39 &nbsp; <span class="pos">+3.64%</span> &nbsp; <span class="neutral">量比2.78</span></td>
-                            <td></td>
                         </tr>
 
                         <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
@@ -230,7 +233,6 @@
                             <td><span class="corr-badge" style="background:#16a34a;">ρ=0.83</span></td>
                             <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
                             <td>现价 2.1 &nbsp; <span class="pos">+2.44%</span> &nbsp; <span class="neutral">量比1.71</span></td>
-                            <td></td>
                         </tr>
 
                         <tr class="expanded-row hidden-row" style="background: rgba(0, 212, 255, 0.04);">
@@ -238,7 +240,6 @@
                             <td><span class="corr-badge" style="background:#16a34a;">ρ=0.82</span></td>
                             <td><span class="tier-tag" style="color:#16a34a; border-color:#16a34a;">强跟随</span></td>
                             <td>现价 12.25 &nbsp; <span class="pos">+4.52%</span> &nbsp; <span class="neutral">量比2.97</span></td>
-                            <td></td>
                         </tr>
 
                     </tbody>
@@ -273,7 +274,7 @@
     </div>
 
     <div class="footer">
-        <p>© 2026 Sector Fusion Dashboard v3 (个股版·方案C) | 生成时间: 2026-06-26 16:15:39</p>
+        <p>© 2026 Sector Fusion Dashboard v3 (个股版·方案C) | 生成时间: 2026-06-26 17:08:24</p>
     </div>
 
     <script>
