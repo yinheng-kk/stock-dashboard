@@ -386,7 +386,15 @@ main > *:nth-child(4) { animation-delay: 0.24s; }
     <h1>阿波策略 1 <span class="sub">· 26 板块分时净流入 · 复盘 replay</span></h1>
     <span id="livePill" class="live-pill replay"><span class="dot"></span><span id="liveText">复盘</span></span>
   </div>
-  <div class="hdr-meta" id="metaLine">&mdash;</div>
+  <div class="hdr-meta" style="display:flex; gap:16px; align-items:center; flex-wrap:wrap;">
+    <span id="metaLine">&mdash;</span>
+    <div style="display:flex; gap:8px; align-items:center;">
+      <label for="dateSelect" style="color:var(--text-secondary); font-size:12px;">选择日期：</label>
+      <select id="dateSelect" style="appearance:none; background:var(--bg-card); color:var(--text-primary); border:1px solid var(--border-soft); padding:4px 8px; border-radius:2px; font-size:12px; cursor:pointer;">
+        <option value="">加载中...</option>
+      </select>
+    </div>
+  </div>
 </header>
 
 <section class="sys-status" aria-label="复盘信息">
@@ -464,6 +472,7 @@ const LIVE_API = /*__LIVE_API__*/ "https://stock-live.chuchuran.com/api/fund-flo
 const VANGUARD_API = LIVE_API.replace("/fund-flow/live", "/fund-flow/vanguard") + "?top_sector_n=5&top_stock_n=3";
 const YIZIBAN_API = LIVE_API.replace("/fund-flow/live", "/fund-flow/yiziban");
 const INDICES_API = LIVE_API.replace("/fund-flow/live", "/indices/realtime");
+const ARCHIVE_API_BASE = "https://raw.githubusercontent.com/yinheng-kk/stock-dashboard/refs/heads/main/_fundflow_archive";
 const VG_TOP_SECTORS = 5;
 const VG_TOP_STOCKS = 3;
 
@@ -715,7 +724,15 @@ function fetchT(url, opts, ms){
   return fetch(url, Object.assign({ signal:ctrl.signal }, opts)).finally(()=>clearTimeout(id));
 }
 // 一次并行拉全部四个端点；仅主图(live)失败会 reject，快照三件套缺失降级为 null
-function fetchAll(){
+// date 参数：若传入则读 archive JSON，否则读实时 live API
+function fetchAll(date=null){
+  if(date){
+    // 读归档版本
+    const archiveUrl = `${ARCHIVE_API_BASE}/${date}.json`;
+    return fetchT(archiveUrl, { cache:'no-store' }).then(r=>r.ok?r.json():Promise.reject('archive '+r.status))
+      .then(archive=>({ live:archive.live, vg:archive.vanguard, yz:archive.yiziban, idx:archive.indices }));
+  }
+  // 读实时版本
   return Promise.all([
     fetchT(LIVE_API,     { cache:'no-store' }).then(r=>r.ok?r.json():Promise.reject('live '+r.status)),
     fetchT(VANGUARD_API, { cache:'no-store' }).then(r=>r.json()).catch(()=>null),
@@ -737,24 +754,34 @@ function writeCache(bundle){
   try{ sessionStorage.setItem(CACHE_KEY, JSON.stringify({ day:new Date().toDateString(), bundle })); }catch(e){}
 }
 
-async function loadReplay(){
+let currentDate = null;  // 当前选中日期（null=今日实时）
+
+async function loadReplay(date=null){
+  currentDate = date;
   initChart();
   let bundle = readCache();
-  if(!bundle){
-    // 一次失败 → 退避 800ms 自动重试一次，仍失败才报错
-    try { bundle = await fetchAll(); }
-    catch(e){
-      console.warn('[replay] load fail, retry once', e);
-      try { await new Promise(r=>setTimeout(r,800)); bundle = await fetchAll(); }
-      catch(e2){
-        console.error('[replay] load fail (retried)', e2);
-        document.getElementById('chart').innerHTML='<div class="placeholder">复盘数据加载失败：'+e2+'</div>';
-        setPill('error');
-        return;
-      }
-    }
-    writeCache(bundle);
+  // 只有读实时数据时才用 sessionStorage 缓存；读归档数据总是实时拉
+  if(!date && bundle){
+    renderBundleData(bundle, date);
+    return;
   }
+  // 一次失败 → 退避 800ms 自动重试一次，仍失败才报错
+  try { bundle = await fetchAll(date); }
+  catch(e){
+    console.warn('[replay] load fail, retry once', e);
+    try { await new Promise(r=>setTimeout(r,800)); bundle = await fetchAll(date); }
+    catch(e2){
+      console.error('[replay] load fail (retried)', e2);
+      document.getElementById('chart').innerHTML='<div class="placeholder">复盘数据加载失败：'+e2+'</div>';
+      setPill('error');
+      return;
+    }
+  }
+  if(!date) writeCache(bundle);
+  renderBundleData(bundle, date);
+}
+
+async function renderBundleData(bundle, date){
   const { live, vg, yz, idx } = bundle;
 
   const sectors = live.sectors || [];
@@ -769,8 +796,9 @@ async function loadReplay(){
   maxIdx = lastDataIndex(FULL);
 
   // 头部信息
+  const dateLabel = date ? `${date}（归档）` : (live.date||'—');
   document.getElementById('metaLine').innerHTML =
-    '<b style="color:var(--accent-gold)">'+(live.date||'—')+'</b> · '
+    '<b style="color:var(--accent-gold)">'+dateLabel+'</b> · '
     + (live.count||sectors.length)+' 个板块 · 全天回放 · '
     + '<span style="color:var(--text-muted)">服务端 '+(live.generated_at||'—')+'</span>';
   document.getElementById('replayDate').textContent = live.date || '—';
@@ -786,6 +814,26 @@ async function loadReplay(){
   renderAt(maxIdx);
   pause();
   document.getElementById('playBtn').textContent='▶ 播放';   // 首屏即引导从头回放
+}
+
+async function initDateSelector(){
+  const sel = document.getElementById('dateSelect');
+  try{
+    // 从 GitHub API 拉取文件列表（仅支持公开仓库）
+    const repoUrl = "https://api.github.com/repos/yinheng-kk/stock-dashboard/contents/_fundflow_archive?ref=main";
+    const resp = await fetchT(repoUrl, { cache:'no-store' });
+    const files = resp.ok ? await resp.json() : [];
+    const dates = files.filter(f=>f.name.endsWith('.json')).map(f=>f.name.replace('.json','')).sort().reverse();
+
+    sel.innerHTML = '<option value="">今日实时</option>' + dates.map(d=>`<option value="${d}">${d}</option>`).join('');
+    sel.addEventListener('change', (e)=>{
+      if(e.target.value) loadReplay(e.target.value);
+      else loadReplay(null);
+    });
+  }catch(e){
+    console.warn('[dateSelector] init fail', e);
+    sel.innerHTML = '<option value="">仅今日实时</option>';
+  }
 }
 
 /* ── 控件绑定 ───────────────────────────── */
@@ -817,6 +865,7 @@ function onFlowClick(e){
 document.getElementById('inflowList').addEventListener('click', onFlowClick);
 document.getElementById('outflowList').addEventListener('click', onFlowClick);
 
+initDateSelector();
 loadReplay();
 </script>
 </body>
