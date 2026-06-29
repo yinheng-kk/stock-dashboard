@@ -577,10 +577,14 @@ function applyHighlight(){
 
 let chartResizeBound=false;
 function initChart(){
-  document.getElementById('chart').innerHTML='';
-  chart=echarts.init(document.getElementById('chart'),'dark');
-  // 切换日期会新建 echarts 实例：必须重置 chartBaseDone，否则 renderChart 走增量分支
-  // 只 merge series 而不重建 xAxis(TIME_AXIS)/grid/yAxis → 新实例无骨架 → 空图(复盘看不到)
+  // 切换日期会重走 initChart：必须先 dispose 旧实例，否则 echarts.init 在已注册实例的 DOM 上
+  // 会返回那个旧实例(此时其 canvas 已被 innerHTML='' 移除→脱离文档)，setOption 画到脱离的
+  // canvas 上→页面全空(复盘看不到，首屏实时因无旧实例正常)。
+  const el=document.getElementById('chart');
+  if(chart){ try{ chart.dispose(); }catch(e){} chart=null; }
+  el.innerHTML='';
+  chart=echarts.init(el,'dark');
+  // 新实例无骨架：重置 chartBaseDone，让 renderChart 重建 xAxis(TIME_AXIS)/grid/yAxis 而非只 merge series
   chartBaseDone=false;
   if(!chartResizeBound){ window.addEventListener('resize',()=>chart&&chart.resize()); chartResizeBound=true; }
 }
