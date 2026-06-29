@@ -575,10 +575,14 @@ function applyHighlight(){
   if(pinnedName) chart.dispatchAction({ type:'highlight', seriesName:pinnedName });
 }
 
+let chartResizeBound=false;
 function initChart(){
   document.getElementById('chart').innerHTML='';
   chart=echarts.init(document.getElementById('chart'),'dark');
-  window.addEventListener('resize',()=>chart&&chart.resize());
+  // 切换日期会新建 echarts 实例：必须重置 chartBaseDone，否则 renderChart 走增量分支
+  // 只 merge series 而不重建 xAxis(TIME_AXIS)/grid/yAxis → 新实例无骨架 → 空图(复盘看不到)
+  chartBaseDone=false;
+  if(!chartResizeBound){ window.addEventListener('resize',()=>chart&&chart.resize()); chartResizeBound=true; }
 }
 function yRange(sectors){
   let mn=Infinity,mx=-Infinity;
