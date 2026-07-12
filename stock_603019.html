@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>中科曙光 603019 · 股票分析</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  :root{--bg:#0d1117;--panel:#161b22;--panel2:#1c2230;--line:#293040;
+    --gold:#e8b84b;--gold2:#f5d27a;--txt:#e6edf3;--sub:#9aa7b8;--muted:#6b7689;
+    --up:#ff5b5b;--down:#2ecc71;--warn:#ffb454;--good:#5ad1a0;--bad:#ff6b6b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7;font-size:15px;padding:0 0 60px}
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{text-align:center;padding:38px 16px 26px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent)}
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-top:18px;padding:14px;
+    border:1px solid var(--line);border-radius:12px;background:var(--panel);max-width:640px;margin-left:auto;margin-right:auto}
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .up{color:var(--up)} .dn{color:var(--down)}
+  .caveat{margin:22px 0;padding:14px 16px;border-radius:10px;background:rgba(255,180,84,.08);
+    border:1px solid rgba(255,180,84,.3);font-size:13px;color:#ffd9a3}
+  .caveat b{color:var(--warn)}
+  section.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:16px 0}
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px}
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  b.hl{color:var(--gold2)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:19px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .fusion{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel));border-color:rgba(232,184,75,.35)}
+  #kchart{width:100%;height:440px;margin-top:4px}
+  @media(max-width:560px){#kchart{height:360px}}
+  .lgd{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:8px 2px 2px}
+  .lgd i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+  .projbox{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;font-size:12.5px;line-height:1.85}
+  .projbox b{color:var(--gold2)}
+  .scen{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .scen div{flex:1;min-width:210px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:11px}
+  .scen h4{font-size:13px;margin-bottom:5px}
+  .s1{color:var(--up)} .s2{color:var(--gold2)} .s3{color:var(--down)}
+  .vp-tab{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0;overflow-x:auto;display:block}
+  .vp-tab th,.vp-tab td{padding:7px 5px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+  .vp-tab td.l{text-align:left}
+  .updn{color:var(--up)} .dndn{color:var(--down)}
+  .topbar{max-width:860px;margin:0 auto;padding:10px 16px 0}
+  .topbar a{color:var(--gold);font-size:12px;text-decoration:none}
+  /* 人工深扒(9段)用到的扩展类 */
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  table.compare,table.logic{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  table.compare th,table.compare td,table.logic th,table.logic td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  table.compare th,table.logic th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  table.compare td.l,table.compare th.l,table.logic td.l,table.logic th.l{text-align:left}
+  table.compare tr.self td{background:rgba(232,184,75,.09);font-weight:600}
+  .pos{color:var(--up)} .negc{color:var(--down)}
+  .compare th:first-child,.compare td:first-child{text-align:left}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .ddhead{background:linear-gradient(180deg,rgba(232,184,75,.12),var(--panel));border-color:rgba(232,184,75,.4);text-align:center}
+  .ddhead .sec-t{color:var(--gold2);font-size:18px}
+</style></head><body>
+<div class="topbar"><a href="/">‹ 返回股票分析首页</a></div>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 股 票 分 析</div>
+  <h1>中科曙光<span class="code">603019</span></h1>
+  <div class="meta">截至 2026-07-10 收盘 ｜ 计算机设备·IT设备 ｜ 生成 2026-07-13 02:01</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">现价(真实价)</div><div class="val up">¥107.5</div></div>
+    <div class="item"><div class="lbl">涨跌幅</div><div class="val up">+3.38%</div></div>
+    <div class="item"><div class="lbl">PE / PB</div><div class="val" style="font-size:16px">— / —</div></div>
+    <div class="item"><div class="lbl">换手 / 市值</div><div class="val" style="font-size:16px">— / —</div></div>
+    <div class="item"><div class="lbl">技术研判</div><div class="val" style="color:var(--warn);font-size:15px">强势偏高·追高谨慎</div></div>
+  </div>
+</header>
+<div class="wrap">
+  <div class="caveat"><b>⚠ 数据口径：</b>① 本次东财实时快照接口持续故障（域名级连接中断），K线/成交量改用<b>通达信(pytdx)直连</b>获取，为真实成交价，无需复权换算；
+    ② 因快照通道不可用，<b>PE/PB/换手/市值本次暂缺</b>（图中"—"），行业为人工标注；
+    ③ 本页为<b>量化技术面 + 多路径推演</b>自动分析，<b>不含基本面深扒</b>，非投资建议。</div>
+
+  <section class="card fusion">
+    <div class="sec-h"><div class="sec-t">📈 预测性K线 · 多路径推演</div><div class="sec-tag">真实日K + bootstrap 5000 路径</div></div>
+    <div id="kchart"></div>
+    <div class="lgd">
+      <span><i style="background:#ff5b5b"></i>实体阳线</span>
+      <span><i style="background:#2ecc71"></i>实体阴线</span>
+      <span><i style="background:rgba(232,184,75,.55)"></i>预测蜡烛(中性p50)</span>
+      <span><i style="background:rgba(232,184,75,.20)"></i>概率带(p10~p90)</span>
+      <span><i style="background:#ff5b5b"></i>乐观p90</span>
+      <span><i style="background:#2ecc71"></i>谨慎p10</span>
+    </div>
+    <div class="projbox"><b>近一月手法量化（预测依据）：</b>日均振幅 <b>5.0%</b>、日收益波动σ <b>4.1%</b>、近25日 <b>阳15阴10</b>（均涨3.67% / 均跌-2.86%，区间-7.7%~10.0%）。<br><b>推演方法：</b>bootstrap 重采样该股近月真实日收益 5000 条路径，叠加「动量衰减 + 向 MA20(94.05) 均值回归」漂移，逐日取 10/50/90 分位 → 中性蜡烛取 p50、概率带 = p10~p90 不确定性锥（seed=42 可复现）。<br><b>未来8日中性收盘推演：</b>108.64 → 108.13 → 107.97 → 107.09 → 106.19 → 105.4 → 104.4 → 103.37。</div>
+    <div class="scen">
+      <div><h4 class="s1">▲ 乐观 p90</h4><span style="font-size:12.5px;color:var(--sub)">情绪延续 + 放量续攻，8日上沿冲 <b>117.45</b>（约 +9.3%）。</span></div>
+      <div><h4 class="s2">● 中性 p50（概率最高）</h4><span style="font-size:12.5px;color:var(--sub)">震荡消化，8日落 <b>103.37</b>（约 -3.8%）；预测蜡烛即此路径。</span></div>
+      <div><h4 class="s3">▼ 谨慎 p10</h4><span style="font-size:12.5px;color:var(--sub)">题材退潮/放量破位，下看 <b>91.37</b>（约 -15.0%）。</span></div>
+    </div>
+    <p class="small" style="margin-top:10px">蜡烛/概率带为基于该股近月<b>真实</b>K线的 bootstrap 多路径推演，<b>非真实成交、非投资建议</b>，越远越不可信。</p>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n" style="background:linear-gradient(135deg,#7aa2ff,#3a5bbf)">量</div><div class="sec-t">近6日量价节奏（自动）</div><div class="sec-tag">日级口径</div></div>
+    <table class="vp-tab">
+      <thead><tr><th class="l">日期</th><th>涨跌</th><th>日内(收-开)</th><th>最高</th><th>量(万手)</th><th>量比20</th><th>手法判读</th></tr></thead>
+      <tbody><tr><td class="l">07-03</td><td class="dndn">-1.99%</td><td class="dndn">-0.93%</td><td>96.6</td><td>79.0</td><td>0.9</td><td class="l">缩量回调</td></tr><tr><td class="l">07-06</td><td class="updn">+2.03%</td><td class="updn">+0.48%</td><td>95.92</td><td>81.1</td><td>0.92</td><td class="l">温和上涨</td></tr><tr><td class="l">07-07</td><td class="dndn">-1.12%</td><td class="dndn">-0.03%</td><td>96.74</td><td>60.0</td><td>0.68</td><td class="l">缩量回调</td></tr><tr><td class="l">07-08</td><td class="updn">+4.97%</td><td class="updn">+0.28%</td><td>101.15</td><td>120.6</td><td>1.37</td><td class="l">放量上攻</td></tr><tr><td class="l">07-09</td><td class="updn">+5.95%</td><td class="updn">+5.93%</td><td>104.7</td><td>124.6</td><td>1.42</td><td class="l">低开高走/盘中拉抬</td></tr><tr style="background:rgba(232,184,75,.09)"><td class="l">07-10</td><td class="updn">+3.38%</td><td class="updn">+3.88%</td><td>113.0</td><td>159.9</td><td>1.82</td><td class="l">低开高走/盘中拉抬</td></tr></tbody>
+    </table>
+    <p class="small">⚠ 口径：分钟级分时（VWAP/站均价）受东财风控不稳定，本表为<b>真实日级量价</b>（东财日K）自动判读，非分钟分时。</p>
+  </section>
+
+    <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能</div></div>
+    <p>近5日均量 / 近20日均量 = <b class='hl'>1.24</b>（放量）；最近一日成交 159.9 万手。</p>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">技术研判</div><div class="sec-tag">强势偏高·追高谨慎</div></div>
+    <p>现价 107.5 位于 MA20(94.05) 上方（偏离 +14.3%）、MA60(92.34) 上方；距 120 日高点 113.0 还有 -4.9%。MA5/10/20/60 = 99.54/99.21/94.05/92.34，短中期均线多头排列。</p>
+    <div class="takeaway">综合：现价距 MA20 +14.3%、距 120 日高 -4.9% → <b>强势偏高·追高谨慎</b>。</div>
+  </section>
+
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">关键价位（纯技术）</div></div>
+    <div class="lvl">
+      <div class="chip res"><div class="k">上方压力(前高/+5%)</div><div class="v">113.0</div></div>
+      <div class="chip sup"><div class="k">下方支撑(MA20/30日低)</div><div class="v">78.51</div></div>
+      <div class="chip stop"><div class="k">止盈/止损参考(MA20×0.985)</div><div class="v">92.64</div></div>
+    </div>
+    <p class="small" style="margin-top:10px">价位由 MA20/MA60/区间高低点自动测算，仅作技术参考，非投资建议。</p>
+  </section>
+
+  <footer>阿波罗 · 股票分析 ｜ 数据源：通达信(pytdx)公开行情(东财REST故障备用) ｜ 真实价口径 ｜ 推演为统计模拟非真实成交 ｜ 本页不构成投资建议</footer>
+</div>
+
+<script>
+var dates=["2025-12-10", "2025-12-11", "2025-12-12", "2025-12-15", "2025-12-16", "2025-12-17", "2025-12-18", "2025-12-19", "2025-12-22", "2025-12-23", "2025-12-24", "2025-12-25", "2025-12-26", "2025-12-29", "2025-12-30", "2025-12-31", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-19", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-25", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-20", "2026-07-21", "2026-07-22"],ohlc=[[90.12, 90.12, 90.12, 91.78], [89.02, 89.63, 88.46, 90.92], [88.82, 88.95, 86.13, 88.99], [87.94, 85.48, 85.43, 88.66], [85.48, 82.72, 82.3, 85.68], [83.49, 85.98, 82.95, 86.2], [84.8, 84.88, 84.7, 86.6], [85.97, 85.85, 85.35, 87.3], [86.99, 87.43, 86.85, 88.2], [87.42, 87.66, 86.5, 88.4], [87.67, 87.15, 86.66, 88.0], [87.18, 86.68, 86.0, 87.5], [86.77, 85.81, 85.21, 86.78], [85.81, 85.19, 85.0, 86.75], [85.0, 85.39, 84.77, 86.82], [85.41, 85.64, 84.58, 87.0], [85.82, 87.8, 85.82, 87.96], [88.0, 89.47, 87.6, 91.41], [89.5, 89.14, 88.43, 90.24], [89.5, 93.0, 89.5, 95.93], [93.0, 93.34, 91.25, 93.79], [93.64, 95.99, 92.89, 96.87], [96.02, 91.5, 91.42, 96.68], [91.5, 93.43, 91.41, 94.99], [93.01, 93.11, 91.81, 93.98], [93.98, 93.48, 92.2, 94.63], [94.35, 94.24, 92.71, 95.08], [94.2, 91.86, 91.6, 95.94], [91.28, 98.23, 91.17, 98.88], [101.0, 96.95, 96.4, 102.88], [95.98, 95.91, 94.5, 96.95], [96.28, 93.23, 93.02, 96.95], [93.25, 92.78, 90.83, 93.58], [93.29, 91.56, 91.0, 93.74], [91.55, 89.61, 89.58, 92.17], [89.35, 89.77, 87.1, 90.4], [89.0, 87.17, 87.1, 89.76], [87.88, 87.75, 86.25, 88.5], [87.3, 86.23, 85.62, 87.3], [85.12, 85.4, 85.03, 86.11], [85.4, 86.79, 85.05, 87.44], [90.0, 91.23, 88.64, 91.33], [91.23, 91.2, 90.98, 93.0], [91.26, 89.38, 89.2, 91.28], [90.38, 92.12, 89.72, 92.22], [91.0, 91.7, 90.6, 92.73], [93.5, 91.5, 91.2, 93.87], [91.0, 90.62, 89.89, 91.69], [90.83, 92.03, 89.9, 92.51], [91.01, 92.18, 89.81, 93.49], [90.0, 90.45, 89.67, 91.31], [88.99, 83.28, 83.0, 88.99], [81.0, 82.33, 80.6, 84.16], [83.9, 84.79, 83.47, 85.7], [84.58, 84.19, 83.66, 85.45], [83.5, 86.61, 82.32, 87.27], [88.5, 88.19, 86.9, 89.57], [88.0, 88.05, 87.57, 89.07], [88.05, 89.87, 87.63, 92.59], [91.38, 89.1, 88.97, 92.2], [88.02, 88.13, 85.8, 88.56], [88.5, 85.39, 85.38, 88.7], [85.39, 87.49, 84.68, 87.69], [85.92, 84.77, 84.41, 86.7], [85.2, 83.76, 83.75, 87.02], [81.99, 79.58, 79.19, 82.56], [80.6, 80.68, 78.5, 80.9], [80.92, 83.05, 80.91, 83.5], [83.18, 81.96, 81.75, 84.49], [80.54, 81.43, 80.18, 82.3], [80.05, 79.9, 79.06, 80.65], [79.64, 78.6, 78.58, 80.45], [80.14, 80.39, 79.63, 80.81], [80.02, 78.08, 77.86, 80.02], [78.08, 77.89, 76.78, 78.78], [77.9, 77.94, 77.37, 79.3], [80.1, 82.9, 79.93, 82.9], [81.8, 83.3, 81.22, 83.89], [84.0, 85.3, 83.94, 86.86], [84.61, 88.99, 84.61, 90.5], [89.53, 88.85, 87.79, 89.78], [90.5, 88.29, 88.03, 91.0], [88.99, 88.99, 88.07, 89.69], [89.01, 89.92, 89.01, 91.5], [90.43, 91.97, 90.3, 94.28], [90.98, 89.4, 88.58, 90.98], [89.0, 91.84, 88.7, 91.88], [92.95, 91.68, 90.8, 93.91], [93.06, 92.76, 90.53, 94.46], [94.76, 94.24, 92.23, 95.1], [93.01, 90.9, 90.46, 94.69], [90.37, 90.42, 88.95, 91.4], [90.98, 92.96, 90.05, 93.38], [96.0, 99.8, 96.0, 102.26], [99.8, 98.75, 97.49, 99.8], [97.99, 96.3, 96.0, 97.99], [99.0, 100.05, 97.4, 101.0], [99.86, 97.42, 96.87, 99.86], [96.0, 100.71, 95.02, 101.0], [105.0, 97.59, 97.5, 105.0], [97.52, 94.46, 94.0, 99.36], [94.29, 98.7, 94.1, 101.6], [98.0, 98.26, 95.0, 98.55], [97.23, 98.38, 97.0, 99.49], [100.86, 93.25, 92.98, 101.0], [93.26, 94.8, 93.02, 95.44], [95.3, 96.45, 93.6, 96.45], [95.9, 94.33, 91.91, 95.98], [94.09, 90.99, 90.29, 95.96], [90.92, 91.25, 89.0, 92.16], [93.3, 88.22, 87.89, 94.0], [88.5, 85.4, 85.36, 89.54], [86.03, 86.02, 83.45, 86.54], [85.56, 86.32, 85.06, 88.78], [85.0, 84.4, 84.12, 86.21], [83.67, 82.37, 82.14, 84.82], [79.9, 78.51, 77.77, 80.69], [79.6, 80.4, 78.9, 80.49], [81.87, 82.7, 81.87, 86.33], [81.0, 81.37, 80.51, 82.44], [83.0, 82.15, 82.0, 83.47], [83.26, 85.45, 82.58, 85.48], [85.7, 84.47, 83.78, 85.77], [83.5, 86.51, 83.4, 86.56], [86.51, 88.68, 86.0, 89.64], [88.75, 89.02, 86.5, 89.33], [89.5, 87.06, 86.48, 91.56], [86.7, 88.93, 85.0, 89.66], [93.0, 97.82, 92.16, 97.82], [98.0, 98.76, 96.65, 102.0], [99.0, 97.48, 94.5, 101.3], [98.01, 107.23, 98.01, 107.23], [107.59, 102.45, 100.98, 109.6], [98.7, 94.56, 94.01, 99.98], [93.55, 92.68, 92.6, 96.6], [94.11, 94.56, 91.2, 95.92], [93.53, 93.5, 92.74, 96.74], [97.88, 98.15, 95.39, 101.15], [98.17, 103.99, 96.18, 104.7], [103.48, 107.5, 102.7, 113.0], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"]],fcands=[["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], [107.5, 108.64, 104.81, 111.36], [108.64, 108.13, 105.43, 111.36], [108.13, 107.97, 105.27, 110.83], [107.97, 107.09, 104.41, 110.67], [107.09, 106.19, 103.54, 109.77], [106.19, 105.4, 102.77, 108.84], [105.4, 104.4, 101.79, 108.03], [104.4, 103.37, 100.79, 107.01]],vols=[[0, 530194.0, 1], [1, 994954.0, 1], [2, 879232.0, 1], [3, 547567.0, -1], [4, 532672.0, -1], [5, 547740.0, 1], [6, 319415.0, 1], [7, 429430.0, -1], [8, 463854.0, 1], [9, 432596.0, 1], [10, 403363.0, -1], [11, 346927.0, -1], [12, 434407.0, -1], [13, 440161.0, -1], [14, 390378.0, 1], [15, 427985.0, 1], [16, 600295.0, 1], [17, 710008.0, 1], [18, 470227.0, -1], [19, 996764.0, 1], [20, 645110.0, 1], [21, 775388.0, 1], [22, 712019.0, -1], [23, 733864.0, 1], [24, 451272.0, 1], [25, 499663.0, -1], [26, 526472.0, -1], [27, 508469.0, -1], [28, 1242779.0, 1], [29, 911614.0, -1], [30, 599048.0, -1], [31, 530268.0, -1], [32, 411271.0, -1], [33, 425648.0, -1], [34, 459298.0, -1], [35, 398621.0, 1], [36, 292698.0, -1], [37, 297012.0, -1], [38, 289709.0, -1], [39, 167505.0, 1], [40, 292506.0, 1], [41, 500588.0, 1], [42, 421510.0, -1], [43, 288097.0, -1], [44, 409012.0, 1], [45, 334840.0, 1], [46, 322301.0, -1], [47, 340780.0, -1], [48, 385376.0, 1], [49, 437611.0, 1], [50, 364173.0, 1], [51, 751782.0, -1], [52, 310093.0, 1], [53, 355100.0, 1], [54, 216408.0, -1], [55, 414923.0, 1], [56, 404992.0, -1], [57, 295442.0, 1], [58, 615393.0, 1], [59, 403761.0, -1], [60, 332617.0, 1], [61, 264789.0, -1], [62, 299966.0, 1], [63, 305099.0, -1], [64, 395725.0, -1], [65, 398396.0, -1], [66, 257859.0, 1], [67, 297580.0, 1], [68, 262755.0, -1], [69, 203436.0, 1], [70, 260979.0, -1], [71, 202236.0, -1], [72, 251262.0, 1], [73, 243085.0, -1], [74, 202614.0, -1], [75, 213564.0, 1], [76, 454581.0, 1], [77, 357336.0, 1], [78, 467892.0, 1], [79, 701246.0, 1], [80, 438270.0, -1], [81, 500843.0, -1], [82, 370044.0, 1], [83, 579035.0, 1], [84, 673754.0, 1], [85, 431334.0, -1], [86, 496669.0, 1], [87, 616822.0, -1], [88, 825272.0, -1], [89, 769163.0, -1], [90, 632570.0, -1], [91, 410803.0, 1], [92, 638184.0, 1], [93, 1337990.0, 1], [94, 739492.0, -1], [95, 678499.0, -1], [96, 912077.0, 1], [97, 651217.0, -1], [98, 821870.0, 1], [99, 978166.0, -1], [100, 803340.0, -1], [101, 925637.0, 1], [102, 647166.0, 1], [103, 554677.0, 1], [104, 835662.0, -1], [105, 555904.0, 1], [106, 665800.0, 1], [107, 687464.0, -1], [108, 591210.0, -1], [109, 481327.0, 1], [110, 531484.0, -1], [111, 403557.0, -1], [112, 386343.0, -1], [113, 447613.0, 1], [114, 339374.0, -1], [115, 386422.0, -1], [116, 427223.0, -1], [117, 306295.0, 1], [118, 646505.0, 1], [119, 319593.0, 1], [120, 349840.0, -1], [121, 404451.0, 1], [122, 363323.0, -1], [123, 441971.0, 1], [124, 563085.0, 1], [125, 500785.0, 1], [126, 537406.0, -1], [127, 518436.0, 1], [128, 1317459.0, 1], [129, 1508692.0, 1], [130, 976916.0, -1], [131, 1463808.0, 1], [132, 1424745.0, -1], [133, 940947.0, -1], [134, 790119.0, -1], [135, 811132.0, 1], [136, 599880.0, -1], [137, 1205971.0, 1], [138, 1246370.0, 1], [139, 1598837.0, 1]];
+var ma5=[null, null, null, null, 87.38, 86.55, 85.6, 84.98, 85.37, 86.36, 86.59, 86.95, 86.95, 86.5, 86.04, 85.74, 85.97, 86.7, 87.49, 89.01, 90.55, 92.19, 92.59, 93.45, 93.47, 93.5, 93.15, 93.22, 94.18, 94.95, 95.44, 95.24, 95.42, 94.09, 92.62, 91.39, 90.18, 89.17, 88.11, 87.26, 86.67, 87.48, 88.17, 88.8, 90.14, 91.13, 91.18, 91.06, 91.59, 91.61, 91.36, 89.71, 88.05, 86.61, 85.01, 84.24, 85.22, 86.37, 87.38, 88.36, 88.67, 88.11, 88.0, 86.98, 85.91, 84.2, 83.26, 82.37, 81.81, 81.34, 81.4, 80.99, 80.46, 79.68, 78.97, 78.58, 79.44, 80.02, 81.47, 83.69, 85.87, 86.95, 88.08, 89.01, 89.6, 89.71, 90.42, 90.96, 91.53, 91.98, 92.28, 92.0, 92.26, 93.66, 94.57, 95.65, 97.57, 98.46, 98.65, 98.41, 98.05, 97.78, 97.94, 97.48, 96.61, 96.68, 96.23, 95.44, 93.96, 93.56, 92.25, 90.04, 88.38, 87.44, 86.07, 84.9, 83.52, 82.4, 81.68, 81.07, 81.03, 82.41, 83.23, 83.99, 85.45, 86.83, 87.15, 88.04, 90.3, 92.32, 94.01, 98.04, 100.75, 100.1, 98.88, 98.3, 95.55, 94.69, 96.58, 99.54, null, null, null, null, null, null, null, null],ma20=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 87.2, 87.36, 87.68, 87.8, 88.2, 88.72, 89.1, 89.56, 89.87, 90.41, 90.87, 91.31, 91.64, 91.98, 92.3, 92.51, 92.72, 92.69, 92.6, 92.46, 92.08, 91.75, 91.51, 91.5, 91.29, 91.24, 91.16, 91.02, 90.96, 90.65, 90.41, 90.14, 89.64, 89.11, 88.78, 88.51, 88.35, 88.4, 88.41, 88.6, 88.78, 88.85, 88.56, 88.37, 88.14, 87.72, 87.12, 86.57, 86.2, 85.69, 85.16, 84.63, 84.39, 84.3, 83.96, 83.65, 83.21, 82.95, 82.71, 82.48, 82.48, 82.51, 82.66, 82.73, 82.99, 83.4, 83.89, 84.45, 84.88, 85.42, 86.06, 86.61, 87.2, 87.83, 88.92, 89.96, 90.88, 91.74, 92.44, 93.21, 93.64, 93.92, 94.44, 94.91, 95.33, 95.39, 95.66, 95.89, 96.03, 95.94, 95.79, 95.65, 95.4, 95.06, 94.38, 93.66, 92.97, 91.89, 91.04, 90.14, 89.33, 88.71, 88.05, 87.36, 86.77, 86.54, 86.25, 85.78, 85.51, 85.85, 86.23, 86.69, 87.78, 88.6, 89.02, 89.43, 90.04, 90.79, 91.68, 92.74, 94.05, null, null, null, null, null, null, null, null],ma60=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 89.35, 89.32, 89.25, 89.22, 89.21, 89.23, 89.12, 89.05, 89.01, 88.91, 88.81, 88.69, 88.56, 88.47, 88.35, 88.22, 88.09, 88.01, 87.91, 87.84, 87.78, 87.7, 87.57, 87.53, 87.47, 87.46, 87.39, 87.35, 87.34, 87.25, 87.21, 87.12, 87.08, 87.08, 87.22, 87.37, 87.48, 87.69, 87.86, 88.1, 88.3, 88.43, 88.55, 88.67, 88.82, 88.84, 88.89, 88.97, 89.03, 89.02, 89.0, 88.96, 89.0, 89.06, 89.09, 89.09, 89.02, 88.86, 88.73, 88.61, 88.48, 88.38, 88.38, 88.33, 88.36, 88.44, 88.6, 88.71, 88.81, 89.07, 89.36, 89.65, 90.13, 90.5, 90.77, 91.02, 91.3, 91.47, 91.72, 92.03, 92.34, null, null, null, null, null, null, null, null],optS=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 113.2, 115.08, 116.45, 116.99, 117.22, 117.73, 117.78, 117.45],cauS=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 103.69, 101.88, 100.15, 98.21, 96.15, 94.71, 93.06, 91.37];
+var bandLow=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 103.69, 101.88, 100.15, 98.21, 96.15, 94.71, 93.06, 91.37],bandUp=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 9.51, 13.2, 16.3, 18.78, 21.07, 23.02, 24.72, 26.08],nHist=140;
+var HI=113.0,M20=94.05,M60=92.34;
+var ch=echarts.init(document.getElementById('kchart'),'dark');
+ch.setOption({
+ backgroundColor:'transparent',
+ legend:{data:['日K','预测蜡烛','MA5','MA20','MA60','乐观p90','谨慎p10'],textStyle:{color:'#9aa7b8'},top:0,type:'scroll'},
+ tooltip:{trigger:'axis',axisPointer:{type:'cross'}},
+ axisPointer:{link:[{xAxisIndex:'all'}]},
+ grid:[{left:48,right:14,top:30,height:260},{left:48,right:14,top:310,height:64}],
+ xAxis:[
+  {type:'category',data:dates,boundaryGap:true,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#9aa7b8',fontSize:10},splitLine:{show:false},
+   markLine:{symbol:'none',silent:true,lineStyle:{color:'#e8b84b',type:'dashed',opacity:.55},data:[{xAxis:nHist-1,label:{formatter:'今日',color:'#e8b84b',fontSize:10}}]}},
+  {type:'category',gridIndex:1,data:dates,axisLabel:{show:false},axisLine:{lineStyle:{color:'#293040'}}}],
+ yAxis:[
+  {scale:true,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#9aa7b8'},splitLine:{lineStyle:{color:'#1b2230'}}},
+  {gridIndex:1,axisLabel:{show:false},axisLine:{show:false},splitLine:{show:false}}],
+ dataZoom:[{type:'inside',xAxisIndex:[0,1],start:50,end:100},{type:'slider',xAxisIndex:[0,1],bottom:2,height:15,start:50,end:100}],
+ series:[
+  {name:'谨慎下界',type:'line',data:bandLow,stack:'band',symbol:'none',lineStyle:{opacity:0},silent:true,z:1},
+  {name:'概率带',type:'line',data:bandUp,stack:'band',symbol:'none',lineStyle:{opacity:0},areaStyle:{color:'rgba(232,184,75,.18)'},silent:true,z:1},
+  {name:'日K',type:'candlestick',data:ohlc,itemStyle:{color:'#ff5b5b',color0:'#2ecc71',borderColor:'#ff5b5b',borderColor0:'#2ecc71'},
+   markLine:{symbol:'none',precision:2,data:[
+    {yAxis:HI,lineStyle:{color:'#ff5b5b',type:'dotted'},label:{formatter:'前高 '+HI,color:'#ff5b5b',fontSize:10}},
+    {yAxis:M20,lineStyle:{color:'#7aa2ff',type:'dotted'},label:{formatter:'MA20 '+M20,color:'#7aa2ff',fontSize:10}},
+    {yAxis:M60,lineStyle:{color:'#bc8cff',type:'dotted'},label:{formatter:'MA60 '+M60,color:'#bc8cff',fontSize:10}}]}},
+  {name:'预测蜡烛',type:'candlestick',data:fcands,barWidth:'60%',
+   itemStyle:{color:'rgba(255,91,91,.45)',color0:'rgba(46,204,113,.45)',borderColor:'rgba(255,91,91,.7)',borderColor0:'rgba(46,204,113,.7)'},z:3},
+  {name:'MA5',type:'line',data:ma5,smooth:true,symbol:'none',lineStyle:{width:1,color:'#e8b84b'}},
+  {name:'MA20',type:'line',data:ma20,smooth:true,symbol:'none',lineStyle:{width:1,color:'#7aa2ff'}},
+  {name:'MA60',type:'line',data:ma60,smooth:true,symbol:'none',lineStyle:{width:1.4,color:'#bc8cff'}},
+  {name:'乐观p90',type:'line',data:optS,smooth:true,symbol:'none',connectNulls:true,lineStyle:{width:1.5,type:'dashed',color:'#ff5b5b',opacity:.85}},
+  {name:'谨慎p10',type:'line',data:cauS,smooth:true,symbol:'none',connectNulls:true,lineStyle:{width:1.5,type:'dashed',color:'#2ecc71',opacity:.85}},
+  {name:'量',type:'bar',xAxisIndex:1,yAxisIndex:1,data:vols.map(function(v){return{value:v[1],itemStyle:{color:v[2]>0?'#ff5b5b':'#2ecc71'}}})}
+ ]
+});
+window.addEventListener('resize',function(){ch.resize()});
+</script>
+
+</body></html>
