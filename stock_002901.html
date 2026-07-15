@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>大博医疗 002901 · 股票分析</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  :root{--bg:#0d1117;--panel:#161b22;--panel2:#1c2230;--line:#293040;
+    --gold:#e8b84b;--gold2:#f5d27a;--txt:#e6edf3;--sub:#9aa7b8;--muted:#6b7689;
+    --up:#ff5b5b;--down:#2ecc71;--warn:#ffb454;--good:#5ad1a0;--bad:#ff6b6b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7;font-size:15px;padding:0 0 60px}
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{text-align:center;padding:38px 16px 26px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent)}
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-top:18px;padding:14px;
+    border:1px solid var(--line);border-radius:12px;background:var(--panel);max-width:640px;margin-left:auto;margin-right:auto}
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .up{color:var(--up)} .dn{color:var(--down)}
+  .caveat{margin:22px 0;padding:14px 16px;border-radius:10px;background:rgba(255,180,84,.08);
+    border:1px solid rgba(255,180,84,.3);font-size:13px;color:#ffd9a3}
+  .caveat b{color:var(--warn)}
+  section.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:16px 0}
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px}
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  b.hl{color:var(--gold2)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:19px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .fusion{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel));border-color:rgba(232,184,75,.35)}
+  #kchart{width:100%;height:440px;margin-top:4px}
+  @media(max-width:560px){#kchart{height:360px}}
+  .lgd{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:8px 2px 2px}
+  .lgd i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+  .projbox{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;font-size:12.5px;line-height:1.85}
+  .projbox b{color:var(--gold2)}
+  .scen{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .scen div{flex:1;min-width:210px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:11px}
+  .scen h4{font-size:13px;margin-bottom:5px}
+  .s1{color:var(--up)} .s2{color:var(--gold2)} .s3{color:var(--down)}
+  .vp-tab{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0;overflow-x:auto;display:block}
+  .vp-tab th,.vp-tab td{padding:7px 5px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+  .vp-tab td.l{text-align:left}
+  .updn{color:var(--up)} .dndn{color:var(--down)}
+  .topbar{max-width:860px;margin:0 auto;padding:10px 16px 0}
+  .topbar a{color:var(--gold);font-size:12px;text-decoration:none}
+  /* 人工深扒(9段)用到的扩展类 */
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  table.compare,table.logic{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  table.compare th,table.compare td,table.logic th,table.logic td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  table.compare th,table.logic th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  table.compare td.l,table.compare th.l,table.logic td.l,table.logic th.l{text-align:left}
+  table.compare tr.self td{background:rgba(232,184,75,.09);font-weight:600}
+  .pos{color:var(--up)} .negc{color:var(--down)}
+  .compare th:first-child,.compare td:first-child{text-align:left}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .ddhead{background:linear-gradient(180deg,rgba(232,184,75,.12),var(--panel));border-color:rgba(232,184,75,.4);text-align:center}
+  .ddhead .sec-t{color:var(--gold2);font-size:18px}
+</style></head><body>
+<div class="topbar"><a href="/">‹ 返回股票分析首页</a></div>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 股 票 分 析</div>
+  <h1>大博医疗<span class="code">002901</span></h1>
+  <div class="meta">截至 2026-07-15 收盘 ｜ 医疗器械 ｜ 生成 2026-07-16 01:37</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">现价(真实价)</div><div class="val up">¥48.23</div></div>
+    <div class="item"><div class="lbl">涨跌幅</div><div class="val up">+3.08%</div></div>
+    <div class="item"><div class="lbl">PE / PB</div><div class="val" style="font-size:16px">34.06 / 5.74</div></div>
+    <div class="item"><div class="lbl">换手 / 市值</div><div class="val" style="font-size:16px">1.82% / 199.7亿</div></div>
+    <div class="item"><div class="lbl">技术研判</div><div class="val" style="color:var(--warn);font-size:15px">强势偏高·追高谨慎</div></div>
+  </div>
+</header>
+<div class="wrap">
+  <div class="caveat"><b>⚠ 数据口径：</b>① K线已按复权因子 <b>1.0</b> 换算为<b>真实可交易价</b>（与下文价位同口径）；
+    ② 估值/换手/市值取东财实时快照，PE-TTM 为动态口径；
+    ③ 本页为<b>量化技术面 + 多路径推演</b>自动分析，<b>不含基本面深扒</b>，非投资建议。</div>
+
+  <section class="card fusion">
+    <div class="sec-h"><div class="sec-t">📈 预测性K线 · 多路径推演</div><div class="sec-tag">真实日K + bootstrap 5000 路径</div></div>
+    <div id="kchart"></div>
+    <div class="lgd">
+      <span><i style="background:#ff5b5b"></i>实体阳线</span>
+      <span><i style="background:#2ecc71"></i>实体阴线</span>
+      <span><i style="background:rgba(232,184,75,.55)"></i>预测蜡烛(中性p50)</span>
+      <span><i style="background:rgba(232,184,75,.20)"></i>概率带(p10~p90)</span>
+      <span><i style="background:#ff5b5b"></i>乐观p90</span>
+      <span><i style="background:#2ecc71"></i>谨慎p10</span>
+    </div>
+    <div class="projbox"><b>近一月手法量化（预测依据）：</b>日均振幅 <b>3.85%</b>、日收益波动σ <b>2.0%</b>、近25日 <b>阳15阴10</b>（均涨2.12% / 均跌-1.39%，区间-3.18%~4.21%）。<br><b>推演方法：</b>bootstrap 重采样该股近月真实日收益 5000 条路径，叠加「动量衰减 + 向 MA20(43.33) 均值回归」漂移，逐日取 10/50/90 分位 → 中性蜡烛取 p50、概率带 = p10~p90 不确定性锥（seed=42 可复现）。<br><b>未来8日中性收盘推演：</b>48.42 → 48.27 → 48.03 → 47.75 → 47.44 → 47.09 → 46.83 → 46.52。</div>
+    <div class="scen">
+      <div><h4 class="s1">▲ 乐观 p90</h4><span style="font-size:12.5px;color:var(--sub)">情绪延续 + 放量续攻，8日上沿冲 <b>49.42</b>（约 +2.5%）。</span></div>
+      <div><h4 class="s2">● 中性 p50（概率最高）</h4><span style="font-size:12.5px;color:var(--sub)">震荡消化，8日落 <b>46.52</b>（约 -3.5%）；预测蜡烛即此路径。</span></div>
+      <div><h4 class="s3">▼ 谨慎 p10</h4><span style="font-size:12.5px;color:var(--sub)">题材退潮/放量破位，下看 <b>43.75</b>（约 -9.3%）。</span></div>
+    </div>
+    <p class="small" style="margin-top:10px">蜡烛/概率带为基于该股近月<b>真实</b>K线的 bootstrap 多路径推演，<b>非真实成交、非投资建议</b>，越远越不可信。</p>
+  </section>
+
+  
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n" style="background:linear-gradient(135deg,#7aa2ff,#3a5bbf)">量</div><div class="sec-t">近6日量价节奏（自动）</div><div class="sec-tag">日级口径</div></div>
+    <table class="vp-tab">
+      <thead><tr><th class="l">日期</th><th>涨跌</th><th>日内(收-开)</th><th>最高</th><th>量(万手)</th><th>量比20</th><th>手法判读</th></tr></thead>
+      <tbody><tr><td class="l">07-08</td><td class="dndn">-1.81%</td><td class="dndn">-1.07%</td><td>44.67</td><td>2.0</td><td>0.69</td><td class="l">缩量回调</td></tr><tr><td class="l">07-09</td><td class="updn">+3.78%</td><td class="updn">+4.12%</td><td>45.47</td><td>3.3</td><td>1.17</td><td class="l">低开高走/盘中拉抬</td></tr><tr><td class="l">07-10</td><td class="dndn">-0.47%</td><td class="dndn">-0.02%</td><td>45.25</td><td>2.8</td><td>0.98</td><td class="l">窄幅整理</td></tr><tr><td class="l">07-13</td><td class="updn">+1.52%</td><td class="updn">+2.14%</td><td>46.0</td><td>3.2</td><td>1.11</td><td class="l">低开高走/盘中拉抬</td></tr><tr><td class="l">07-14</td><td class="updn">+2.97%</td><td class="updn">+2.47%</td><td>47.75</td><td>3.9</td><td>1.36</td><td class="l">低开高走/盘中拉抬</td></tr><tr style="background:rgba(232,184,75,.09)"><td class="l">07-15</td><td class="updn">+3.08%</td><td class="updn">+5.88%</td><td>48.74</td><td>5.2</td><td>1.83</td><td class="l">低开高走/盘中拉抬</td></tr></tbody>
+    </table>
+    <p class="small">⚠ 口径：分钟级分时（VWAP/站均价）受东财风控不稳定，本表为<b>真实日级量价</b>（东财日K）自动判读，非分钟分时。</p>
+  </section>
+
+    <section class="card ddhead">
+    <div class="sec-h" style="justify-content:center"><div class="sec-t">📚 人工深度基本面深扒 · 阿波罗9段</div></div>
+    <p class="small" style="margin-top:4px">以下为人工多源深挖（量能/资金/同业/股东/财务/估值分位/赛道逻辑/矛盾链/操作策略）。基本面与价位为深扒撰写时口径，以各段标注日期为准；上方价格头与预测K线为实时口径。</p>
+  </section>
+<!-- 大博医疗 002901 · 人工9段深扒片段（数据截至 2026-07-15 收盘，由 _sa_render.py 注入混合式报告） -->
+  <!-- ① 量能 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能</div><div class="sec-tag">连续放量突破</div></div>
+    <p>近5日均量 / 近20日均量 = <b class="hl">1.29（放量）</b>。07-08~07-15 六个交易日中五日上涨（07-08 −1.81%缩量回调，07-09 <b class="hl">+3.78%放量拉升</b>，07-10 −0.47%窄幅整理，07-13 +1.52%，07-14 +2.97%，07-15 <b class="hl">+3.08%再创阶段新高</b>），量比从 07-08 的 0.69 一路走高到 07-15 的 <b class="hl">1.83</b>。典型<b class="hl">连续放量突破型上攻</b>，短线情绪转强，但也意味着<b class="x">短期涨幅集中、追高承接风险上升</b>。</p>
+  </section>
+
+  <!-- ② 资金流向 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">同业中唯一净流入</div></div>
+    <ul>
+      <li>近5日（07-09~07-15）主力资金累计 <b class="hl">净流入 +0.41亿</b>，07-15 当日净流入 +0.23亿<span class="ok"> ✅</span>——金额不算大，但方向与股价放量上攻一致</li>
+      <li>横向对比同一天骨科同业：威高骨科 −0.0亿、三友医疗 −0.08亿、春立医疗 −0.06亿<b class="x">均为净流出</b>，大博是同业五家中<b class="hl">唯一录得5日主力净流入为正</b>的标的</li>
+      <li class="small">因东财资金流接口本次抓取多次超时/连接中断，仅取得最近5日汇总口径，未能拿到更长历史序列（如6月资金流节奏），下次更新时补齐</li>
+    </ul>
+    <div class="takeaway">资金规模不大但方向明确、相对同业占优，说明这轮上涨更多是<b class="hl">存量资金的板块内轮动/挑边买入</b>，而非增量资金大幅涌入的普涨行情。</div>
+  </section>
+
+  <!-- ③ 板块/同业对比 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">板块 / 同业对比</div><div class="sec-tag">骨科耗材 · 关节/脊柱/创伤</div></div>
+    <p class="small">数据：东方财富实时快照（截至 7-15 收盘）。同业取骨科耗材可比标的；PE 为东财<b>动态口径</b>，凯利泰300326当次抓取失败已剔除。</p>
+    <table class="compare">
+      <thead>
+        <tr>
+          <th class="l">公司</th><th>现价</th><th>涨跌</th><th>PE(动态)</th><th>PB</th>
+          <th>换手</th><th>总市值<br>(亿)</th><th>5日主力<br>(亿)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="self">
+          <td class="l">大博医疗 002901<br><span class="small">创伤/脊柱/关节/运动医学</span></td><td>48.23</td><td class="pos">+3.08%</td><td>34.1</td><td class="x">5.74</td>
+          <td>1.82%</td><td><b>199.7</b></td><td class="pos">+0.41</td>
+        </tr>
+        <tr>
+          <td class="l">威高骨科 688161<br><span class="small">脊柱/创伤/关节龙头</span></td><td>22.44</td><td class="pos">+2.33%</td><td>50.7</td><td>2.19</td>
+          <td>0.47%</td><td>89.8</td><td class="negc">−0.00</td>
+        </tr>
+        <tr>
+          <td class="l">三友医疗 688085<br><span class="small">脊柱类耗材</span></td><td>13.05</td><td class="pos">+4.23%</td><td class="x">169.6</td><td>2.26</td>
+          <td>1.97%</td><td>47.9</td><td class="negc">−0.08</td>
+        </tr>
+        <tr>
+          <td class="l">春立医疗 688236<br><span class="small">关节类耗材</span></td><td>15.32</td><td class="pos">+2.13%</td><td class="ok">23.8</td><td>1.97</td>
+          <td>1.50%</td><td>58.8</td><td class="negc">−0.06</td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="takeaway">
+      <b>横向解读：</b>① 今日骨科耗材四家标的<b class="hl">全线上涨</b>，板块情绪回暖，但资金面分化——仅大博录得净流入，其余三家均净流出，<b class="hl">资金阶段性更青睐大博</b>；
+      ② 大博总市值 199.7亿，<b class="hl">在四家里体量最大</b>（约威高骨科的2.2倍）；
+      ③ 大博 PE(动态) 34.1倍处于同业中等水平，明显低于三友医疗169.6倍（体量小、业绩波动大导致PE失真）和威高骨科50.7倍，但<b style="color:var(--gold)">PB 5.74倍显著高于同业（其余三家均在2倍左右）</b>，反映市场给予大博更高的净资产溢价，与其毛利率(70%+，同业中最高)、多产品线布局相匹配。
+    </div>
+  </section>
+
+  <!-- ④ 股东户数 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">股东户数</div><div class="sec-tag">Q3见顶后连续两期回落</div></div>
+    <ul>
+      <li>2025-03-31：18310户　→　2025-06-30：19395户（+5.93%）</li>
+      <li>2025-09-30：<b class="x">22765户（+17.38%，年内峰值）</b>　→　2025-12-31：<b class="hl">20376户（−10.49%，转为回落）</b></li>
+      <li>2026-03-31（最新披露）：20297户（−0.39%，趋于企稳）</li>
+    </ul>
+    <p>户数在 2025-09-30 见顶（22765户）后连续两期回落至 20297户，<b class="hl">降幅约8.9%</b>；户均持股市值同步从峰值 101.8万 降至 <b class="hl">89.3万</b>。与此前分析的中科曙光"散户持续加速涌入"相反，大博的筹码结构在Q4之后呈现<b class="ok">趋于集中/分散度收敛</b>的迹象，是相对健康的信号，但 2026年Q2（6-30）最新一期数据尚未披露，需下次更新验证趋势能否延续。</p>
+  </section>
+
+  <!-- ⑤ 十大股东 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">十大股东</div><div class="sec-tag">创始人系集中控盘 · 减持计划悬而未落地</div></div>
+    <ul>
+      <li>第一大 <b>广西大博商通创业投资有限公司 33.67%</b>（不变）；第二大 <b>大博醫療國際投資有限公司 25.88%</b>（不变）——均为创始人林氏家族控制的投资平台</li>
+      <li>第三、四大均为个人：<b>林志雄 7.47%</b>、<b>林志军 7.00%</b>（均不变，二人与前两大平台合计构成创始人系）</li>
+      <li><span class="x">香港中央结算有限公司（陆股通）3.14%，本季 −20.41%（减持约23万股）</span>；<span class="ok">中国银行-华宝中证医疗ETF 1.18%，+45.06%（本季新进重仓，被动指数买入）</span></li>
+    </ul>
+    <p>前四大股东（创始人系）合计持股约 <b class="hl">74%</b>，控制权高度集中，本期（截至2026-03-31）<b class="ok">均未减持</b>；但<b style="color:var(--warn)">需重点跟踪：第二大股东"大博医疗国际投资"曾于2025-08-26公告拟减持不超2%股份，本期数据显示其持股比例尚未变动</b>，说明该减持计划截至一季度末仍未执行或仅小幅执行，一旦启动可能对短期股价形成压力。陆股通本季减持约两成、被动型医疗ETF却新进加仓，机构类资金信号并不统一。</p>
+  </section>
+
+  <!-- ⑥ 财务 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑥</div><div class="sec-t">财务</div><div class="sec-tag">集采出清后修复 · 毛利率逆势走高</div></div>
+    <ul>
+      <li><b class="hl">2025 全年</b>：营业总收入 <b class="hl">26.01亿（+21.79%）</b>、归母净利润 <b class="hl">5.996亿（+68.06%）</b>、扣非净利润 4.796亿、毛利率 70.50%、销售净利率 24.49%、ROE 18.15%</li>
+      <li><b class="hl">2026 Q1（单季）</b>：营收 6.415亿（+16.56%）、归母净利润 1.466亿（+42.16%）、扣非净利润 1.320亿；<b class="ok">毛利率 74.16%（同比环比均提升）</b>、销售净利率 25.24%</li>
+      <li>财务结构：资产负债率仅 <b class="ok">23.36%</b>，流动比率 4.23、速动比率 2.71，<b class="ok">现金充裕、几乎无偿债压力</b></li>
+    </ul>
+    <p>营收增速从2025全年 21.8% 小幅放缓至 Q1 的 16.6%，但<b class="hl">毛利率逆势走高（70.5%→74.2%），带动利润增速仍维持40%+的高水平</b>——这是"以价换量"转向"以质换利"的典型信号：骨科集采负面出清后，公司产品结构持续向关节、运动医学等高毛利品类升级。财务结构极稳健，扩张与分红/回购的资金压力都很小。</p>
+  </section>
+
+  <!-- ⑦ 估值 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑦</div><div class="sec-t">估值</div><div class="sec-tag">PE处于历史低位 vs PB处于近3年高位·背离</div></div>
+    <ul>
+      <li><span class="ok">✅ 真实 TTM PE（滚动近四季度净利润计算）≈ <b class="hl">31.1倍</b>，全历史分位仅 <b class="hl">14.1%</b>，近750日（近3年）分位 <b class="hl">8.7%</b>——处于自身历史绝对低位</span></li>
+      <li><span class="x">PB ≈ 5.4~5.7倍（akshare口径5.36，东财实时快照5.74，因数据更新时点不同存在小幅差异），全历史分位40.3%，但<b class="x">近750日（近3年）分位高达 79.2%</b></span>，与PE呈现的"便宜"结论相背离</li>
+    </ul>
+    <p><b style="color:var(--warn)">⚠ 需要辨析：</b>PE分位显示当前估值处于自身历史低位（近3年仅8.7%分位），主要是因为2025年以来利润增速（+68%）显著快于股价涨幅，盈利端修复跑赢了估值扩张；但<b class="x">PB近3年分位高达79.2%，说明相对净资产而言当前价格并不便宜</b>——这是净资产因持续留存收益快速增厚（每股净资产从2025Q1的7.71元升至2026Q1的9.00元）与股价同期涨幅不完全同步共同作用的结果。<b class="hl">PE"便宜"与PB"不便宜"两个信号并存，不能只用单一指标下结论</b>，详见矛盾逻辑链。</p>
+  </section>
+
+  <!-- ⑧ 催化剂/产业链 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑧</div><div class="sec-t">催化剂 / 产业链</div><div class="sec-tag">集采出清 · 机器人注册证推进 · 减持悬念未解</div></div>
+    <p><b class="hl">正向催化：</b>① 07-09机构调研披露<b class="hl">膝关节手术机器人已进入临床应用</b>，公司正推进其他骨科机器人注册证落地，是收入结构升级的增量看点；② 行业层面，骨科耗材集采负面影响已<b class="hl">基本出清</b>，2024年低基数下净利润同比暴增493%~561%，2025年在此基础上继续<b class="hl">+68.06%高增长</b>，大博在脊柱类国采中位列最具竞争力的<b class="hl">A组</b>；③ 已布局<b class="hl">60余个海外市场</b>，海外收入此前保持三位数增速（基数尚小），是第二增长曲线；④ 截至6/30已<b class="hl">累计回购总股本1.06%</b>，彰显管理层信心；⑤ 07-05秩鼎ESG评级从BBB<b class="hl">上调至A</b>。</p>
+    <p><b style="color:var(--warn)">⚠ 需要澄清的风险点：</b>① 第二大股东"大博医疗国际投资"（持股25.88%）2025-08-26公告的<b class="x">不超2%减持计划</b>，截至最新一期(2026-03-31)十大股东数据仍<b class="x">未见执行</b>，何时启动、以何种节奏减持是未来最大的持股结构不确定性；② 现有回购方案价格上限不超过50元/股，<b class="x">现价48.23已逼近上限</b>，继续回购托底的空间有限；③ 集采仍是行业常态化政策，不排除后续新一轮或续约集采带来阶段性降价压力。</p>
+  </section>
+
+  <!-- 联网消息面 · 基本面速览 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n" style="background:linear-gradient(135deg,#7aa2ff,#3a5bbf)">息</div><div class="sec-t">联网消息面 · 基本面速览</div><div class="sec-tag">2026-07-16 更新·机器人临床落地+减持悬念未解</div></div>
+    <ul>
+      <li><b class="hl">业绩：</b>2026Q1 营收 6.41亿（+16.56%），归母净利 1.47亿（<b class="hl">+42.16%</b>）；对比 2025 全年营收 26.01亿（+21.79%）/归母净利 5.996亿（<b class="hl">+68.06%</b>），全年高增长确立，Q1 增速边际放缓但仍维持40%+的利润增长。</li>
+      <li><b class="hl">行业地位：</b>公司是创伤/脊柱/关节/运动医学多品类布局的国产骨科耗材龙头，在骨科脊柱类国家集采中位列最具竞争力的<b class="hl">A组</b>；行业层面集采负面影响已基本出清，公司2024年低基数下净利润同比暴增493%~561%，2025年在此基础上继续高增长，产品结构持续向高毛利品类升级（毛利率2025全年70.5%→2026Q1 74.2%）。</li>
+      <li><b class="hl">产品/催化：</b>07-09机构调研披露<b class="hl">膝关节手术机器人已进入临床应用</b>，其他骨科机器人注册证正推进落地；公司已布局60余个海外市场，国际化是第二增长曲线；07-05秩鼎ESG评级由BBB上调至A。</li>
+      <li><b class="hl">重大事项：</b>截至2026-06-30已<b class="hl">累计回购总股本1.06%</b>（回购价格上限不超50元/股，现价48.23已逼近上限，继续托底空间有限）；<b style="color:var(--warn)">第二大股东"大博医疗国际投资"（持股25.88%）2025-08-26公告拟减持不超2%股份，截至最新一期(2026-03-31)十大股东数据仍未见执行</b>，减持计划的启动时点是最大的持股结构悬念。</li>
+      <li><b class="hl">风险点：</b>减持计划悬而未落地；PB近3年（750日）历史分位高达79.2%，账面估值并不便宜（与PE历史低位分位形成背离）；技术面短期超买（RSI14=73.2），偏离MA20已达+11.3%，涨幅存在透支。</li>
+    </ul>
+    <p><b class="hl">一句话总结：</b>集采出清+产品结构升级驱动业绩确定性修复，膝关节机器人等新品打开中期第二增长空间，但短期股价情绪偏热、第二大股东2%减持计划悬而未解，安全边际更多体现在PE历史分位而非PB/技术面。</p>
+  </section>
+
+  <!-- ⑨ 技术指标 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑨</div><div class="sec-t">技术指标</div><div class="sec-tag">金叉超买 · 短期偏强透支</div></div>
+    <ul>
+      <li>RSI14 <b class="x">73.2</b>（已进入超买区，&gt;70）</li>
+      <li>MACD <b style="color:var(--up)">金叉·红柱</b>（DIF 1.43 &gt; DEA 0.96，柱 0.939，且柱体持续放大）</li>
+      <li>均线：MA5(46.04) &gt; MA10(45.1) &gt; MA20(43.33) &gt; MA60(41.82)，<b class="hl">短中期均线多头排列</b>，现价 48.23 距 MA20 偏离 <b class="x">+11.3%</b>，距120日高 52.62 尚差 <b class="hl">−8.3%</b></li>
+    </ul>
+    <p>技术面短期强势（金叉+放量+多头排列），与①量能观察到的连续放量突破一致；但<b class="x">RSI14已超买、偏离MA20达两位数（+11.3%）</b>，短期涨幅存在透支迹象，追涨性价比下降，警惕获利了结带来的缩量回踩。</p>
+  </section>
+
+  <!-- 矛盾逻辑链 -->
+  <section class="card logic">
+    <div class="sec-h"><div class="sec-t">⚖ 矛盾逻辑链 —— 一只「PE便宜 vs PB/技术面不便宜」的骨科修复龙头</div></div>
+    <table class="logic">
+      <thead><tr><th class="l good-col">利好 / 支撑</th><th class="l bad-col">利空 / 风险</th></tr></thead>
+      <tbody>
+        <tr><td class="l">集采负面出清，2025年净利+68%、2026Q1净利+42%，增长确定性强</td><td class="l">RSI14达73.2明显超买，MACD虽金叉但现价偏离MA20已达+11.3%，短期透支</td></tr>
+        <tr><td class="l">毛利率逆势走高至74.2%（历史高位），产品结构持续向高毛利品类升级</td><td class="l">PB近3年（750日）历史分位高达79.2%，与PE"便宜"结论相背离，账面溢价并不低</td></tr>
+        <tr><td class="l">真实TTM PE约31倍，近3年历史分位仅8.7%，估值端处于自身历史低位</td><td class="l">第二大股东大博国际(25.88%)2025-08公告的2%减持计划尚未执行，悬而未落地</td></tr>
+        <tr><td class="l">前四大股东(创始人系)合计持股约74%，控制权稳定，本期均未减持</td><td class="l">陆股通本季减持约两成持股，外资边际转弱；回购价格上限50元已逼近现价，托底空间有限</td></tr>
+        <tr><td class="l">5日主力资金逆势净流入+0.41亿，同业其余三家均净流出，资金阶段性青睐大博</td><td class="l">股东户数虽从Q3高点回落，但仍处近一年偏高区间，散户参与度不低</td></tr>
+        <tr><td class="l">财务结构极稳健：资产负债率仅23%，流动比率4.2倍，无偿债压力</td><td class="l">膝关节机器人等新品仍处注册证推进阶段，尚未形成规模化收入贡献</td></tr>
+      </tbody>
+    </table>
+    <div class="takeaway"><b>本质矛盾：</b>基本面修复的确定性（集采出清+毛利率走高+净利高增长）与估值信号的内部背离（PE历史低位 vs PB近3年高位）叠加短期技术面透支（RSI超买+偏离MA20两位数）共同构成当前定价的核心张力——<b class="hl">它是一只中期基本面修复逻辑扎实、但短期情绪与账面估值均已不便宜的公司</b>，赢在产业出清后的业绩弹性，弱在"什么时候买"这个短期择时问题上，且第二大股东悬而未决的减持计划是需要持续跟踪的最大不确定性。</div>
+  </section>
+
+  <!-- 操作策略 -->
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-t">🎯 操作策略（深扒撰写时基准价 ¥48.23 / 截至 7-15）</div></div>
+    <ul>
+      <li><b class="hl">短期（1-4周）：强势但超买，不追高。</b>RSI14达73.2、偏离MA20 +11.3%，历史上这类放量急拉后大概率需要缩量回踩消化，等待43元(MA20)附近企稳信号再考虑介入更稳健。</li>
+      <li><b class="hl">中期（1-2季）：胜负手在减持进度+中报增速能否延续。</b>盯三件事——①大博医疗国际2%减持计划的实际执行节奏、②2026中报能否维持40%+净利增速、③膝关节机器人等新品注册证的落地时点。三者若均正面验证，PE历史低位的安全边际会进一步兑现；若减持启动或增速放缓，需警惕PB高位（近3年79%分位）成为回调的触发点。</li>
+      <li><b class="hl">仓位定位：</b>作为骨科耗材集采出清后的修复标的，具备中期配置价值，但当前股价短线情绪偏热，建议逢高兑现部分仓位或等回踩布局，不做单笔追高，控制好仓位以应对减持计划落地的不确定性。</li>
+    </ul>
+    <div class="lvl">
+      <div class="chip res"><div class="k">压力位</div><div class="v">52.62(120日高)</div></div>
+      <div class="chip sup"><div class="k">关键支撑</div><div class="v">43.33(MA20) / 39.33</div></div>
+      <div class="chip stop"><div class="k">止损参考</div><div class="v">跌破42.68离场</div></div>
+    </div>
+    <p class="small" style="margin-top:10px">以上为人工深扒（数据截至 2026-07-15），基于公开行情/财报/资金/股东数据客观梳理，部分资金流历史数据因接口连接不稳定未能完整获取，<b>非投资建议</b>。</p>
+  </section>
+
+
+  <footer>阿波罗 · 股票分析 ｜ 数据源：东方财富公开行情 ｜ 真实价口径 ｜ 推演为统计模拟非真实成交 ｜ 本页不构成投资建议</footer>
+</div>
+
+<script>
+var dates=["2025-12-29", "2025-12-30", "2025-12-31", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-19", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-25", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-27"],ohlc=[[48.51, 47.73, 47.61, 48.77], [47.73, 47.43, 47.31, 48.13], [47.61, 46.78, 46.68, 47.61], [46.95, 49.04, 46.91, 49.16], [49.22, 49.7, 49.03, 51.02], [49.73, 48.89, 48.89, 49.85], [48.89, 48.92, 48.34, 49.61], [48.9, 50.6, 48.54, 50.66], [50.21, 50.36, 49.71, 50.78], [50.71, 51.62, 50.21, 52.27], [52.15, 49.91, 49.41, 52.18], [49.42, 50.29, 48.93, 50.31], [50.42, 49.71, 49.48, 50.51], [49.66, 49.76, 49.41, 51.06], [49.81, 48.69, 48.3, 49.95], [48.41, 49.36, 48.4, 50.06], [49.32, 48.83, 48.62, 50.06], [48.84, 49.56, 48.64, 49.84], [49.56, 47.71, 47.67, 49.56], [49.61, 51.31, 49.41, 51.41], [51.22, 50.63, 50.4, 52.62], [50.62, 50.26, 49.66, 51.38], [50.24, 50.54, 49.91, 51.38], [50.72, 48.61, 48.56, 50.72], [48.71, 49.16, 48.11, 49.44], [49.0, 48.75, 48.19, 49.48], [48.74, 49.55, 48.56, 49.86], [49.39, 49.02, 48.86, 49.9], [49.27, 48.52, 47.74, 49.38], [48.45, 48.04, 47.93, 48.59], [48.03, 47.27, 47.16, 48.07], [47.46, 47.29, 46.7, 48.11], [47.33, 46.91, 46.82, 47.7], [47.26, 47.51, 46.76, 47.68], [47.51, 47.61, 47.21, 47.78], [47.59, 47.89, 47.07, 48.13], [47.79, 48.59, 47.58, 48.68], [47.94, 47.28, 47.02, 48.58], [47.2, 46.48, 46.22, 47.66], [46.39, 44.81, 44.6, 46.48], [45.92, 44.74, 44.51, 45.92], [44.96, 44.81, 44.52, 45.44], [44.36, 43.63, 43.1, 44.36], [44.21, 44.71, 43.91, 44.78], [44.74, 44.69, 44.24, 45.18], [44.7, 43.95, 43.69, 45.0], [43.96, 44.4, 43.85, 44.72], [44.41, 44.44, 43.77, 44.51], [44.45, 44.3, 44.24, 45.0], [44.31, 43.71, 43.52, 44.54], [43.33, 42.62, 42.4, 43.79], [42.71, 42.06, 41.97, 43.18], [41.58, 40.02, 39.61, 41.59], [40.61, 41.26, 40.21, 41.31], [41.31, 41.72, 41.29, 41.86], [41.68, 41.41, 41.12, 42.22], [41.27, 42.46, 40.96, 42.69], [42.36, 43.02, 42.13, 43.25], [43.18, 43.19, 43.01, 43.74], [43.42, 44.41, 43.01, 44.54], [44.18, 43.12, 42.81, 44.35], [43.15, 42.46, 42.26, 43.33], [42.72, 42.6, 42.21, 43.02], [43.16, 43.47, 42.95, 43.58], [43.26, 41.91, 41.75, 43.36], [42.09, 42.75, 41.94, 42.89], [42.63, 41.97, 41.91, 42.64], [42.26, 44.07, 41.5, 44.38], [44.09, 43.55, 43.19, 44.25], [43.55, 43.53, 43.14, 43.77], [43.33, 43.19, 42.69, 43.45], [43.01, 43.39, 42.72, 43.75], [43.4, 43.43, 43.04, 43.73], [43.43, 43.97, 43.21, 44.4], [43.98, 43.27, 43.07, 44.0], [43.3, 41.43, 41.22, 43.3], [41.41, 41.26, 41.21, 42.35], [41.49, 41.14, 40.92, 41.87], [41.24, 41.72, 40.52, 41.86], [43.92, 42.81, 42.81, 45.31], [42.94, 42.26, 42.01, 43.2], [42.26, 42.58, 42.26, 43.33], [42.59, 41.31, 41.31, 42.71], [41.31, 41.42, 40.59, 41.61], [41.2, 40.21, 40.01, 41.39], [40.21, 40.41, 39.92, 40.69], [40.41, 39.94, 39.8, 40.61], [39.95, 39.85, 39.41, 40.29], [39.49, 39.47, 39.09, 39.81], [39.47, 39.87, 39.41, 40.04], [40.81, 40.09, 39.62, 40.96], [40.26, 40.93, 39.97, 41.63], [41.03, 40.58, 39.75, 41.35], [40.65, 40.66, 40.02, 41.06], [40.62, 41.21, 40.21, 42.05], [41.05, 40.54, 40.51, 41.61], [40.31, 39.97, 39.76, 40.53], [39.97, 40.01, 39.26, 40.25], [40.03, 40.24, 39.65, 40.67], [40.21, 40.19, 39.91, 40.61], [40.17, 39.55, 39.36, 40.17], [39.89, 39.33, 38.99, 39.89], [39.32, 39.9, 39.25, 40.21], [39.47, 39.56, 39.15, 40.41], [39.45, 40.53, 39.31, 40.53], [40.41, 41.05, 40.3, 41.17], [40.89, 40.71, 39.61, 40.89], [40.8, 41.56, 40.48, 41.72], [41.7, 41.89, 41.19, 42.0], [41.76, 41.33, 41.09, 41.9], [41.5, 41.05, 40.96, 41.72], [41.08, 41.68, 41.08, 41.89], [41.71, 41.16, 40.21, 41.79], [41.1, 41.46, 40.82, 42.41], [41.86, 41.78, 41.27, 42.36], [41.41, 41.43, 40.03, 41.89], [41.31, 41.27, 40.75, 42.35], [41.27, 42.5, 39.81, 42.66], [42.37, 41.19, 40.45, 42.47], [41.1, 42.18, 40.51, 42.34], [42.19, 42.97, 42.02, 43.38], [43.16, 44.78, 43.15, 45.41], [44.76, 45.58, 44.16, 46.59], [45.14, 44.13, 43.79, 45.17], [43.8, 43.33, 43.16, 44.67], [43.19, 44.97, 42.75, 45.47], [44.77, 44.76, 43.61, 45.25], [44.49, 45.44, 44.21, 46.0], [45.66, 46.79, 45.31, 47.75], [45.55, 48.23, 45.55, 48.74], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"]],fcands=[["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], [48.23, 48.42, 47.3, 49.35], [48.42, 48.27, 47.34, 49.35], [48.27, 48.03, 47.11, 49.2], [48.03, 47.75, 46.83, 48.95], [47.75, 47.44, 46.53, 48.67], [47.44, 47.09, 46.18, 48.35], [47.09, 46.83, 45.93, 48.0], [46.83, 46.52, 45.63, 47.73]],vols=[[0, 16178.0, -1], [1, 15383.0, -1], [2, 13179.0, -1], [3, 30897.0, 1], [4, 27258.0, 1], [5, 19477.0, -1], [6, 19470.0, 1], [7, 34356.0, 1], [8, 28554.0, 1], [9, 51342.0, 1], [10, 54951.0, -1], [11, 22792.0, 1], [12, 18007.0, -1], [13, 19930.0, 1], [14, 23409.0, -1], [15, 27076.0, 1], [16, 16809.0, -1], [17, 20395.0, 1], [18, 29808.0, -1], [19, 72388.0, 1], [20, 39154.0, -1], [21, 37322.0, -1], [22, 32490.0, 1], [23, 28591.0, -1], [24, 18546.0, 1], [25, 18943.0, -1], [26, 17636.0, 1], [27, 18605.0, -1], [28, 20024.0, -1], [29, 11576.0, -1], [30, 19817.0, -1], [31, 21267.0, -1], [32, 13363.0, -1], [33, 10956.0, 1], [34, 11461.0, 1], [35, 15297.0, 1], [36, 15899.0, 1], [37, 18534.0, -1], [38, 16339.0, -1], [39, 24131.0, -1], [40, 13691.0, -1], [41, 15595.0, -1], [42, 17596.0, -1], [43, 11191.0, 1], [44, 14710.0, -1], [45, 18017.0, -1], [46, 11034.0, 1], [47, 10192.0, 1], [48, 12460.0, -1], [49, 11817.0, -1], [50, 15691.0, -1], [51, 12037.0, -1], [52, 19995.0, -1], [53, 14475.0, 1], [54, 8954.0, 1], [55, 10759.0, -1], [56, 12534.0, 1], [57, 12509.0, 1], [58, 11282.0, 1], [59, 15498.0, 1], [60, 17416.0, -1], [61, 8794.0, -1], [62, 8263.0, -1], [63, 11082.0, 1], [64, 16437.0, -1], [65, 12925.0, 1], [66, 11757.0, -1], [67, 35496.0, 1], [68, 24819.0, -1], [69, 14044.0, -1], [70, 12992.0, -1], [71, 15838.0, 1], [72, 11821.0, 1], [73, 14042.0, 1], [74, 19955.0, -1], [75, 26085.0, -1], [76, 16973.0, -1], [77, 13483.0, -1], [78, 19551.0, 1], [79, 36313.0, -1], [80, 24391.0, -1], [81, 18232.0, 1], [82, 25083.0, -1], [83, 22215.0, 1], [84, 23490.0, -1], [85, 12758.0, 1], [86, 13037.0, -1], [87, 13435.0, -1], [88, 11640.0, -1], [89, 11136.0, 1], [90, 18247.0, -1], [91, 29389.0, 1], [92, 20172.0, -1], [93, 12688.0, 1], [94, 21792.0, 1], [95, 16061.0, -1], [96, 12271.0, -1], [97, 16934.0, 1], [98, 17685.0, 1], [99, 15566.0, -1], [100, 12065.0, -1], [101, 12611.0, -1], [102, 13808.0, 1], [103, 13942.0, 1], [104, 14006.0, 1], [105, 17527.0, 1], [106, 18039.0, -1], [107, 17870.0, 1], [108, 16872.0, 1], [109, 12307.0, -1], [110, 11484.0, -1], [111, 16683.0, 1], [112, 19597.0, -1], [113, 18901.0, 1], [114, 18510.0, -1], [115, 22421.0, 1], [116, 19199.0, -1], [117, 33407.0, 1], [118, 27440.0, -1], [119, 30693.0, 1], [120, 30823.0, 1], [121, 43134.0, 1], [122, 48024.0, 1], [123, 28385.0, -1], [124, 19800.0, -1], [125, 33434.0, 1], [126, 28117.0, -1], [127, 31675.0, 1], [128, 39067.0, 1], [129, 52364.0, 1]];
+var ma5=[null, null, null, null, 48.14, 48.37, 48.67, 49.43, 49.69, 50.08, 50.28, 50.56, 50.38, 50.26, 49.67, 49.56, 49.27, 49.24, 48.83, 49.35, 49.61, 49.89, 50.09, 50.27, 49.84, 49.46, 49.32, 49.02, 49.0, 48.78, 48.48, 48.03, 47.61, 47.4, 47.32, 47.44, 47.7, 47.78, 47.57, 47.01, 46.38, 45.62, 44.89, 44.54, 44.52, 44.36, 44.28, 44.44, 44.36, 44.16, 43.89, 43.43, 42.54, 41.93, 41.54, 41.29, 41.37, 41.97, 42.36, 42.9, 43.24, 43.24, 43.16, 43.21, 42.71, 42.64, 42.54, 42.83, 42.85, 43.17, 43.26, 43.55, 43.42, 43.5, 43.45, 43.1, 42.67, 42.21, 41.76, 41.67, 41.84, 42.1, 42.14, 42.08, 41.56, 41.19, 40.66, 40.37, 39.98, 39.91, 39.84, 40.04, 40.19, 40.43, 40.69, 40.78, 40.59, 40.48, 40.39, 40.19, 39.99, 39.86, 39.84, 39.71, 39.77, 40.07, 40.35, 40.68, 41.15, 41.31, 41.31, 41.5, 41.42, 41.34, 41.43, 41.5, 41.42, 41.69, 41.63, 41.71, 42.02, 42.72, 43.34, 43.93, 44.16, 44.56, 44.55, 44.53, 45.06, 46.04, null, null, null, null, null, null, null, null],ma20=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 49.31, 49.45, 49.6, 49.78, 49.76, 49.74, 49.73, 49.76, 49.68, 49.59, 49.41, 49.28, 49.13, 48.99, 48.88, 48.82, 48.75, 48.74, 48.62, 48.56, 48.24, 47.94, 47.67, 47.32, 47.13, 46.91, 46.66, 46.41, 46.18, 45.97, 45.75, 45.52, 45.26, 44.91, 44.6, 44.31, 43.98, 43.67, 43.46, 43.3, 43.28, 43.2, 43.08, 43.03, 42.97, 42.83, 42.77, 42.64, 42.63, 42.59, 42.58, 42.61, 42.67, 42.85, 42.98, 43.06, 43.06, 43.0, 42.91, 42.83, 42.75, 42.71, 42.71, 42.65, 42.55, 42.46, 42.35, 42.24, 42.03, 41.83, 41.65, 41.49, 41.37, 41.23, 41.06, 40.96, 40.91, 40.85, 40.79, 40.72, 40.59, 40.45, 40.29, 40.22, 40.13, 40.14, 40.17, 40.21, 40.3, 40.42, 40.49, 40.54, 40.58, 40.61, 40.65, 40.67, 40.72, 40.78, 40.91, 40.96, 41.06, 41.23, 41.5, 41.78, 42.01, 42.15, 42.35, 42.55, 42.74, 42.99, 43.33, null, null, null, null, null, null, null, null],ma60=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 46.94, 46.86, 46.78, 46.71, 46.62, 46.49, 46.39, 46.27, 46.16, 46.05, 45.91, 45.8, 45.69, 45.58, 45.49, 45.4, 45.26, 45.14, 45.0, 44.9, 44.76, 44.62, 44.49, 44.33, 44.21, 44.06, 43.93, 43.77, 43.61, 43.46, 43.33, 43.21, 43.1, 42.99, 42.88, 42.77, 42.65, 42.51, 42.39, 42.28, 42.21, 42.12, 42.03, 41.97, 41.88, 41.81, 41.76, 41.7, 41.65, 41.61, 41.57, 41.55, 41.54, 41.56, 41.56, 41.56, 41.56, 41.54, 41.54, 41.5, 41.46, 41.46, 41.5, 41.55, 41.56, 41.59, 41.62, 41.67, 41.69, 41.75, 41.82, null, null, null, null, null, null, null, null],optS=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 49.35, 49.74, 49.89, 49.9, 49.77, 49.67, 49.57, 49.42],cauS=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 47.35, 46.75, 46.16, 45.66, 45.12, 44.64, 44.16, 43.75];
+var bandLow=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 47.35, 46.75, 46.16, 45.66, 45.12, 44.64, 44.16, 43.75],bandUp=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 2.0, 2.99, 3.73, 4.24, 4.65, 5.03, 5.41, 5.67],nHist=130;
+var HI=52.62,M20=43.33,M60=41.82;
+var ch=echarts.init(document.getElementById('kchart'),'dark');
+ch.setOption({
+ backgroundColor:'transparent',
+ legend:{data:['日K','预测蜡烛','MA5','MA20','MA60','乐观p90','谨慎p10'],textStyle:{color:'#9aa7b8'},top:0,type:'scroll'},
+ tooltip:{trigger:'axis',axisPointer:{type:'cross'}},
+ axisPointer:{link:[{xAxisIndex:'all'}]},
+ grid:[{left:48,right:14,top:30,height:260},{left:48,right:14,top:310,height:64}],
+ xAxis:[
+  {type:'category',data:dates,boundaryGap:true,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#9aa7b8',fontSize:10},splitLine:{show:false},
+   markLine:{symbol:'none',silent:true,lineStyle:{color:'#e8b84b',type:'dashed',opacity:.55},data:[{xAxis:nHist-1,label:{formatter:'今日',color:'#e8b84b',fontSize:10}}]}},
+  {type:'category',gridIndex:1,data:dates,axisLabel:{show:false},axisLine:{lineStyle:{color:'#293040'}}}],
+ yAxis:[
+  {scale:true,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#9aa7b8'},splitLine:{lineStyle:{color:'#1b2230'}}},
+  {gridIndex:1,axisLabel:{show:false},axisLine:{show:false},splitLine:{show:false}}],
+ dataZoom:[{type:'inside',xAxisIndex:[0,1],start:50,end:100},{type:'slider',xAxisIndex:[0,1],bottom:2,height:15,start:50,end:100}],
+ series:[
+  {name:'谨慎下界',type:'line',data:bandLow,stack:'band',symbol:'none',lineStyle:{opacity:0},silent:true,z:1},
+  {name:'概率带',type:'line',data:bandUp,stack:'band',symbol:'none',lineStyle:{opacity:0},areaStyle:{color:'rgba(232,184,75,.18)'},silent:true,z:1},
+  {name:'日K',type:'candlestick',data:ohlc,itemStyle:{color:'#ff5b5b',color0:'#2ecc71',borderColor:'#ff5b5b',borderColor0:'#2ecc71'},
+   markLine:{symbol:'none',precision:2,data:[
+    {yAxis:HI,lineStyle:{color:'#ff5b5b',type:'dotted'},label:{formatter:'前高 '+HI,color:'#ff5b5b',fontSize:10}},
+    {yAxis:M20,lineStyle:{color:'#7aa2ff',type:'dotted'},label:{formatter:'MA20 '+M20,color:'#7aa2ff',fontSize:10}},
+    {yAxis:M60,lineStyle:{color:'#bc8cff',type:'dotted'},label:{formatter:'MA60 '+M60,color:'#bc8cff',fontSize:10}}]}},
+  {name:'预测蜡烛',type:'candlestick',data:fcands,barWidth:'60%',
+   itemStyle:{color:'rgba(255,91,91,.45)',color0:'rgba(46,204,113,.45)',borderColor:'rgba(255,91,91,.7)',borderColor0:'rgba(46,204,113,.7)'},z:3},
+  {name:'MA5',type:'line',data:ma5,smooth:true,symbol:'none',lineStyle:{width:1,color:'#e8b84b'}},
+  {name:'MA20',type:'line',data:ma20,smooth:true,symbol:'none',lineStyle:{width:1,color:'#7aa2ff'}},
+  {name:'MA60',type:'line',data:ma60,smooth:true,symbol:'none',lineStyle:{width:1.4,color:'#bc8cff'}},
+  {name:'乐观p90',type:'line',data:optS,smooth:true,symbol:'none',connectNulls:true,lineStyle:{width:1.5,type:'dashed',color:'#ff5b5b',opacity:.85}},
+  {name:'谨慎p10',type:'line',data:cauS,smooth:true,symbol:'none',connectNulls:true,lineStyle:{width:1.5,type:'dashed',color:'#2ecc71',opacity:.85}},
+  {name:'量',type:'bar',xAxisIndex:1,yAxisIndex:1,data:vols.map(function(v){return{value:v[1],itemStyle:{color:v[2]>0?'#ff5b5b':'#2ecc71'}}})}
+ ]
+});
+window.addEventListener('resize',function(){ch.resize()});
+</script>
+
+</body></html>
