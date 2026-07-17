@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>五VIX波动率指数策略看板</title>
+    <script src="https://cdn.plot.ly/plotly-2.26.0.min.js"></script>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --surface-1: #fcfcfb;
+            --page-bg: #f9f9f7;
+            --text-primary: #0b0b0b;
+            --text-secondary: #52514e;
+            --text-muted: #898781;
+            --gridline: #e1e0d9;
+            --baseline: #c3c2b7;
+
+            /* Categorical colors (5 slots for 5 indices) */
+            --series-1: #2a78d6;   /* VIX50 - 蓝 */
+            --series-2: #008300;   /* VIX300 - 绿 */
+            --series-3: #e87ba4;   /* VIX500 - 紫粉 */
+            --series-4: #1baf7a;   /* VIX1000 - 青 */
+            --series-5: #eb6834;   /* VIXKC50 - 橙 */
+
+            /* Sequential (blue for magnitude) */
+            --seq-1: #cde2fb;
+            --seq-2: #86b6ef;
+            --seq-3: #3987e5;
+            --seq-4: #1c5cab;
+            --seq-5: #0d366b;
+
+            /* Diverging (blue-gray-red for polarity) */
+            --div-cool: #2a78d6;
+            --div-neutral: #f0efec;
+            --div-warm: #e34948;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
+            background-color: var(--page-bg);
+            color: var(--text-primary);
+        }
+
+        .dashboard {
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            margin-bottom: 40px;
+            border-bottom: 2px solid var(--gridline);
+            padding-bottom: 20px;
+        }
+
+        .header h1 {
+            font-size: 32px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            color: var(--text-secondary);
+            font-size: 14px;
+        }
+
+        .metrics-row {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+
+        .metric-tile {
+            background: var(--surface-1);
+            border: 1px solid var(--gridline);
+            border-radius: 8px;
+            padding: 16px;
+            text-align: center;
+        }
+
+        .metric-tile.positive { border-top: 3px solid var(--series-2); }
+        .metric-tile.negative { border-top: 3px solid #e34948; }
+        .metric-tile.neutral { border-top: 3px solid var(--text-muted); }
+
+        .metric-label {
+            font-size: 12px;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            margin-bottom: 8px;
+        }
+
+        .metric-value {
+            font-size: 24px;
+            font-weight: 600;
+            color: var(--text-primary);
+            margin-bottom: 4px;
+        }
+
+        .metric-unit {
+            font-size: 12px;
+            color: var(--text-secondary);
+        }
+
+        .charts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(600px, 1fr));
+            gap: 32px;
+            margin-bottom: 40px;
+        }
+
+        .chart-container {
+            background: var(--surface-1);
+            border: 1px solid var(--gridline);
+            border-radius: 8px;
+            padding: 20px;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
+        }
+
+        .chart-title {
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 16px;
+            color: var(--text-primary);
+        }
+
+        .chart-subtitle {
+            font-size: 12px;
+            color: var(--text-secondary);
+            margin-bottom: 12px;
+        }
+
+        .plot-wrapper {
+            width: 100%;
+            height: 400px;
+        }
+
+        .footer {
+            text-align: center;
+            padding: 20px;
+            color: var(--text-muted);
+            font-size: 12px;
+            border-top: 1px solid var(--gridline);
+            margin-top: 40px;
+        }
+
+        /* Dark mode */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --surface-1: #1a1a19;
+                --page-bg: #0d0d0d;
+                --text-primary: #ffffff;
+                --text-secondary: #c3c2b7;
+                --text-muted: #898781;
+                --gridline: #2c2c2a;
+                --baseline: #383835;
+
+                --series-1: #3987e5;
+                --series-2: #008300;
+                --series-3: #d55181;
+                --series-4: #199e70;
+                --series-5: #d95926;
+
+                --div-neutral: #383835;
+            }
+        }
+
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+
+        .error {
+            background: #fef2f2;
+            border: 1px solid #fecaca;
+            color: #991b1b;
+            padding: 16px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="dashboard">
+        <div class="header">
+            <h1>五VIX波动率指数策略看板</h1>
+            <p>沪深300 / 中证1000 / 中证500 ETF / 科创50 ETF 期权波动率指数 | 最后更新: <span id="last-update">加载中...</span></p>
+        </div>
+
+        <div id="error-container"></div>
+
+        <!-- 实时指标卡片 -->
+        <div class="metrics-row" id="metrics-container"></div>
+
+        <!-- 图表网格 -->
+        <div class="charts-grid">
+            <div class="chart-container">
+                <div class="chart-title">① 五指数历史走势</div>
+                <div class="chart-subtitle">日频数据，2023年6月至今</div>
+                <div class="plot-wrapper" id="chart1"></div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">② 1000-300价差与z-score</div>
+                <div class="chart-subtitle">滚动60日标准化，显示分位数带</div>
+                <div class="plot-wrapper" id="chart2"></div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">③ 信号分组后5日相对收益</div>
+                <div class="chart-subtitle">5组分位数上的收益分布（%）</div>
+                <div class="plot-wrapper" id="chart3"></div>
+            </div>
+
+            <div class="chart-container">
+                <div class="chart-title">④ 回测策略对比累计收益</div>
+                <div class="chart-subtitle">策略1:分组持仓 vs 策略2:动态仓位</div>
+                <div class="plot-wrapper" id="chart4"></div>
+            </div>
+
+            <div class="chart-container" style="grid-column: 1 / -1;">
+                <div class="chart-title">⑤ 五指数关联热力图</div>
+                <div class="chart-subtitle">完整数据期间的相关系数矩阵</div>
+                <div class="plot-wrapper" id="chart5" style="height: 450px;"></div>
+            </div>
+        </div>
+
+        <div class="footer">
+            <p>数据源：akshare QVIX 指数 | 方法：上交所方差互换算法 | 仅供研究参考，不构成投资建议</p>
+        </div>
+    </div>
+
+    <script>
+        // 颜色定义（与CSS变量同步）
+        const colors = {
+            series: ['#2a78d6', '#008300', '#e87ba4', '#1baf7a', '#eb6834'],
+            indices: ['VIX50', 'VIX300', 'VIXKC50', 'VIX1000', 'VIX500'],
+            sequential: ['#cde2fb', '#86b6ef', '#3987e5', '#1c5cab', '#0d366b'],
+            diverging: {cool: '#2a78d6', neutral: '#f0efec', warm: '#e34948'},
+            text: {primary: '#0b0b0b', secondary: '#52514e', muted: '#898781'},
+            surface: '#fcfcfb',
+            gridline: '#e1e0d9'
+        };
+
+        // 检测深色模式
+        if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            colors.text.primary = '#ffffff';
+            colors.text.secondary = '#c3c2b7';
+            colors.surface = '#1a1a19';
+            colors.gridline = '#2c2c2a';
+            colors.diverging.neutral = '#383835';
+        }
+
+        const layoutCommon = {
+            paper_bgcolor: colors.surface,
+            plot_bgcolor: colors.surface,
+            font: {family: 'system-ui, -apple-system, "Segoe UI", sans-serif', color: colors.text.primary},
+            xaxis: {showgrid: true, gridcolor: colors.gridline, gridwidth: 1, zeroline: false},
+            yaxis: {showgrid: true, gridcolor: colors.gridline, gridwidth: 1, zeroline: false},
+            margin: {l: 60, r: 20, t: 20, b: 40},
+            hovermode: 'x unified',
+            responsive: true
+        };
+
+        async function loadDashboard() {
+            try {
+                // 加载所有数据文件
+                const vixClean = await fetch('_vix_clean.csv').then(r => r.text()).then(parseCSV);
+                const signals = await fetch('_vix_signals.csv').then(r => r.text()).then(parseCSV);
+                const bt1 = await fetch('_vix_backtest_s1.csv').then(r => r.text()).then(parseCSV);
+                const bt2 = await fetch('_vix_backtest_s2.csv').then(r => r.text()).then(parseCSV);
+
+                // 绘制图表
+                plotChart1(vixClean);
+                plotChart2(vixClean, signals);
+                plotChart3(signals);
+                plotChart4(bt1, bt2);
+                plotChart5(vixClean);
+                updateMetrics(vixClean, signals);
+
+                // 更新最后更新时间
+                const lastDate = vixClean[vixClean.length - 1].date;
+                document.getElementById('last-update').textContent = lastDate;
+
+            } catch (error) {
+                showError('数据加载失败: ' + error.message);
+                console.error(error);
+            }
+        }
+
+        function parseCSV(csv) {
+            const lines = csv.trim().split('\n');
+            const headers = lines[0].split(',');
+            return lines.slice(1).map(line => {
+                const values = line.split(',');
+                const obj = {date: values[0]};
+                for (let i = 1; i < headers.length; i++) {
+                    obj[headers[i]] = parseFloat(values[i]);
+                }
+                return obj;
+            });
+        }
+
+        function plotChart1(data) {
+            const traces = [
+                {name: 'VIX50', x: data.map(d => d.date), y: data.map(d => d.VIX50), line: {color: colors.series[0], width: 2}, hovertemplate: 'VIX50: %{y:.2f}<extra></extra>'},
+                {name: 'VIX300', x: data.map(d => d.date), y: data.map(d => d.VIX300), line: {color: colors.series[1], width: 2}, hovertemplate: 'VIX300: %{y:.2f}<extra></extra>'},
+                {name: 'VIXKC50', x: data.map(d => d.date), y: data.map(d => d.VIXKC50), line: {color: colors.series[2], width: 2}, hovertemplate: 'VIXKC50: %{y:.2f}<extra></extra>'},
+                {name: 'VIX1000', x: data.map(d => d.date), y: data.map(d => d.VIX1000), line: {color: colors.series[3], width: 2}, hovertemplate: 'VIX1000: %{y:.2f}<extra></extra>'},
+                {name: 'VIX500', x: data.map(d => d.date), y: data.map(d => d.VIX500), line: {color: colors.series[4], width: 2}, hovertemplate: 'VIX500: %{y:.2f}<extra></extra>'},
+            ];
+            Plotly.newPlot('chart1', traces, {...layoutCommon, title: ''});
+        }
+
+        function plotChart2(vixData, signalData) {
+            const vixMap = {};
+            vixData.forEach(d => {vixMap[d.date] = d;});
+
+            const dates = signalData.map(d => d.date);
+            const zScores = signalData.map(d => d.z);
+            const p10 = Math.min(...zScores) - 0.5;
+            const p90 = Math.max(...zScores) + 0.5;
+
+            const traces = [
+                {
+                    name: 'p10-p90带',
+                    x: [...dates, ...dates.reverse()],
+                    y: [...Array(dates.length).fill(p90), ...Array(dates.length).fill(p10).reverse()],
+                    fill: 'tozeroy',
+                    fillcolor: 'rgba(240,239,236,0.3)',
+                    line: {color: 'transparent'},
+                    hoverinfo: 'skip',
+                    showlegend: true
+                },
+                {
+                    name: 'z-score',
+                    x: dates,
+                    y: zScores,
+                    line: {color: colors.series[3], width: 2},
+                    hovertemplate: 'z-score: %{y:.3f}<extra></extra>'
+                }
+            ];
+            Plotly.newPlot('chart2', traces, {...layoutCommon, title: ''});
+        }
+
+        function plotChart3(signalData) {
+            const yValues = [];
+            const groups = ['Q1(z最低)', 'Q2', 'Q3', 'Q4', 'Q5(z最高)'];
+            const groupData = {0: [], 1: [], 2: [], 3: [], 4: []};
+
+            signalData.forEach(d => {
+                const q = Math.floor((d.z - Math.min(...signalData.map(s => s.z))) / ((Math.max(...signalData.map(s => s.z)) - Math.min(...signalData.map(s => s.z))) / 5));
+                const bin = Math.min(4, Math.max(0, q));
+                groupData[bin].push(d.fwd5_rel * 100);
+            });
+
+            const meanReturns = Object.values(groupData).map(arr => {
+                if (arr.length === 0) return 0;
+                return arr.reduce((a, b) => a + b) / arr.length;
+            });
+
+            const trace = {
+                x: groups,
+                y: meanReturns,
+                type: 'bar',
+                marker: {
+                    color: colors.sequential,
+                    line: {color: colors.text.muted, width: 1}
+                },
+                hovertemplate: '%{x}: %{y:.3f}%<extra></extra>'
+            };
+            Plotly.newPlot('chart3', [trace], {...layoutCommon, title: '', yaxis: {...layoutCommon.yaxis, title: '相对收益 (%)'}, xaxis: {...layoutCommon.xaxis, title: ''}});
+        }
+
+        function plotChart4(bt1Data, bt2Data) {
+            const dates = bt1Data.map(d => d.date);
+            const s1Returns = bt1Data.map(d => (d.cumulative_pnl_s1 || 0) * 100);
+            const s2Returns = bt2Data.map(d => (d.cumulative_pnl_s2 || 0) * 100);
+
+            const traces = [
+                {
+                    name: '策略1: 分组持仓',
+                    x: dates,
+                    y: s1Returns,
+                    line: {color: colors.series[1], width: 2},
+                    hovertemplate: '累计收益: %{y:.2f}%<extra></extra>'
+                },
+                {
+                    name: '策略2: 动态仓位',
+                    x: dates,
+                    y: s2Returns,
+                    line: {color: colors.series[0], width: 2, dash: 'dash'},
+                    hovertemplate: '累计收益: %{y:.2f}%<extra></extra>'
+                }
+            ];
+            Plotly.newPlot('chart4', traces, {...layoutCommon, title: '', yaxis: {...layoutCommon.yaxis, title: '累计收益 (%)'}, xaxis: {...layoutCommon.xaxis, title: ''}});
+        }
+
+        function plotChart5(data) {
+            // 计算相关系数矩阵
+            const indices = ['VIX50', 'VIX300', 'VIX1000', 'VIX500', 'VIXKC50'];
+            const values = indices.map(idx => data.map(d => d[idx]).filter(v => !isNaN(v)));
+
+            const corrMatrix = [];
+            for (let i = 0; i < indices.length; i++) {
+                const row = [];
+                for (let j = 0; j < indices.length; j++) {
+                    if (i === j) {
+                        row.push(1.0);
+                    } else {
+                        const corr = calculateCorrelation(values[i], values[j]);
+                        row.push(corr);
+                    }
+                }
+                corrMatrix.push(row);
+            }
+
+            const trace = {
+                z: corrMatrix,
+                x: indices,
+                y: indices,
+                type: 'heatmap',
+                colorscale: [
+                    [0, colors.diverging.cool],
+                    [0.5, colors.diverging.neutral],
+                    [1, colors.diverging.warm]
+                ],
+                zmid: 0,
+                zmin: -1,
+                zmax: 1,
+                hovertemplate: '%{y} vs %{x}: %{z:.3f}<extra></extra>',
+                colorbar: {title: '相关系数', len: 0.7}
+            };
+            Plotly.newPlot('chart5', [trace], {...layoutCommon, title: '', xaxis: {side: 'bottom'}, yaxis: {autorange: 'reversed'}});
+        }
+
+        function calculateCorrelation(a, b) {
+            const n = Math.min(a.length, b.length);
+            const meanA = a.reduce((x, y) => x + y) / a.length;
+            const meanB = b.reduce((x, y) => x + y) / b.length;
+            let numerator = 0, denomA = 0, denomB = 0;
+            for (let i = 0; i < n; i++) {
+                const dA = a[i] - meanA, dB = b[i] - meanB;
+                numerator += dA * dB;
+                denomA += dA * dA;
+                denomB += dB * dB;
+            }
+            return numerator / Math.sqrt(denomA * denomB);
+        }
+
+        function updateMetrics(vixData, signalData) {
+            const latest = vixData[vixData.length - 1];
+            const latestSignal = signalData[signalData.length - 1];
+
+            const metrics = [
+                {label: 'VIX50', value: latest.VIX50, unit: '', trend: 'neutral'},
+                {label: 'VIX300', value: latest.VIX300, unit: '', trend: 'neutral'},
+                {label: 'VIX1000', value: latest.VIX1000, unit: '', trend: 'neutral'},
+                {label: 'VIX500', value: latest.VIX500, unit: '', trend: 'neutral'},
+                {label: 'VIXKC50', value: latest.VIXKC50, unit: '', trend: 'neutral'},
+                {label: '1000-300价差', value: (latest.VIX1000 - latest.VIX300).toFixed(2), unit: '', trend: 'neutral'},
+                {label: '价差z-score', value: latestSignal.z.toFixed(3), unit: '', trend: latestSignal.z > 0 ? 'positive' : 'negative'},
+            ];
+
+            const container = document.getElementById('metrics-container');
+            container.innerHTML = metrics.map(m => `
+                <div class="metric-tile ${m.trend}">
+                    <div class="metric-label">${m.label}</div>
+                    <div class="metric-value">${m.value}</div>
+                    <div class="metric-unit">${m.unit}</div>
+                </div>
+            `).join('');
+        }
+
+        function showError(msg) {
+            document.getElementById('error-container').innerHTML = `<div class="error">${msg}</div>`;
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', loadDashboard);
+    </script>
+</body>
+</html>
