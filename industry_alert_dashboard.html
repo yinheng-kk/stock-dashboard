@@ -36,6 +36,11 @@ td.nm{text-align:left;color:#e8e2d0}
 .pt.weak{background:rgba(120,120,120,.14);color:#8a8470;border:1px solid #3a382e}
 .rs-hi{color:#f5d77f;font-weight:800}
 .rs-mid{color:#c9c2a8}
+.vixchip{font-size:10px;padding:1px 6px;border-radius:8px;font-weight:700;white-space:nowrap}
+.vixchip.hi{background:rgba(226,59,59,.18);color:#ff7a6b;border:1px solid #7a2a24}
+.vixchip.mid{background:rgba(245,158,11,.14);color:#f0b24a;border:1px solid #6a4a14}
+.vixchip.lo{background:rgba(74,158,255,.12);color:#6fb0ff;border:1px solid #2a4a7a}
+.vixchip.stale{background:rgba(120,120,120,.14);color:#8a8470;border:1px solid #3a382e}
 .v21box{background:linear-gradient(160deg,#1d1a10,#161922);border:1px solid #5a4a1a;border-radius:10px;padding:14px;margin-bottom:6px}
 .v21hd{display:flex;align-items:center;gap:14px;margin-bottom:8px}
 .v21v{font-size:34px;font-weight:800;color:#f5d77f;line-height:1}
@@ -45,7 +50,7 @@ td.nm{text-align:left;color:#e8e2d0}
 .tbwrap{max-height:560px;overflow:auto;border:1px solid #2a2e3a;border-radius:10px}
 .foot{color:#6a6450;font-size:11px;margin-top:16px;line-height:1.7}
 </style></head><body>
-<h1>通达信 行业III 超额预警 <span style="font-size:13px;color:#b8860b;-webkit-text-fill-color:#b8860b">V2.2</span></h1>
+<h1>通达信 行业III 超额预警 <span style="font-size:13px;color:#b8860b;-webkit-text-fill-color:#b8860b">V2.3</span></h1>
 <div class=sub>数据源：pytdx 直取通达信自编细分行业指数(881xxx) · 基准 中证1000(000852) · 2026-07-16 收盘</div>
 <div class=kpis>
 <div class=kpi><div class=v>-2.38%</div><div class=l>基准 中证1000 当日</div></div>
@@ -53,6 +58,7 @@ td.nm{text-align:left;color:#e8e2d0}
 <div class=kpi><div class=v>26.91</div><div class=l>预警阈值 D(C5极强线)</div></div>
 <div class=kpi><div class=v style="color:#e23b3b">10</div><div class=l>触发预警(C5≥D且C&gt;0)</div></div>
 <div class=kpi><div class=v><span style="color:#ff7a6b">9</span> / <span style="color:#6fb0ff">1</span></div><div class=l>进攻型 / 抗跌型</div></div>
+<div class=kpi title="断更: VIX50截至05-29、VIX300截至05-29、VIX1000截至03-13"><div class=v style="font-size:15px;line-height:1.5"><span style="color:#f0b24a">500 32.2(+2.0σ)</span> · <span style="color:#e23b3b">KC50 58.3(+2.5σ)</span></div><div class=l>波动率环境 QVIX(z)·断更源见悬浮</div></div>
 </div>
 <h2>⚡ 今日预警 · 持续跑赢大盘的强势行业</h2>
 <div class=cards><div class="acard">
@@ -62,6 +68,7 @@ td.nm{text-align:left;color:#e8e2d0}
 <div class="arow"><span>超额C</span><b style="color:#e23b3b">+3.56%</b></div>
 <div class="arow"><span>近5日C5</span><b style="color:#e23b3b">+21.56%</b></div>
 <div class="arow"><span>放量倍数</span><b>1.67x</b></div>
+<div class="arow"><span>VIX风险</span><b><span class="vixchip stale" title="VIX300 数据截至2026-05-29(断更), 不参与RS*调整">VIX300·截至05-29</span></b></div>
 </div><div class="acard">
 <div class="aname">家用器械 <span class="pt atk">进攻型</span></div>
 <div class="acode">881242</div>
@@ -69,6 +76,7 @@ td.nm{text-align:left;color:#e8e2d0}
 <div class="arow"><span>超额C</span><b style="color:#e23b3b">+6.20%</b></div>
 <div class="arow"><span>近5日C5</span><b style="color:#e23b3b">+21.54%</b></div>
 <div class="arow"><span>放量倍数</span><b>2.80x</b></div>
+<div class="arow"><span>VIX风险</span><b><span class="vixchip stale" title="VIX300 数据截至2026-05-29(断更), 不参与RS*调整">VIX300·截至05-29</span></b></div>
 </div><div class="acard">
 <div class="aname">医美耗材 <span class="pt atk">进攻型</span></div>
 <div class="acode">881258</div>
@@ -76,6 +84,7 @@ td.nm{text-align:left;color:#e8e2d0}
 <div class="arow"><span>超额C</span><b style="color:#e23b3b">+6.31%</b></div>
 <div class="arow"><span>近5日C5</span><b style="color:#e23b3b">+20.09%</b></div>
 <div class="arow"><span>放量倍数</span><b>2.79x</b></div>
+<div class="arow"><span>VIX风险</span><b><span class="vixchip stale" title="VIX300 数据截至2026-05-29(断更), 不参与RS*调整">VIX300·截至05-29</span></b></div>
 </div><div class="acard">
 <div class="aname">原料药 <span class="pt atk">进攻型</span></div>
 <div class="acode">881233 · 行业III</div>
@@ -83,6 +92,7 @@ td.nm{text-align:left;color:#e8e2d0}
 <div class="arow"><span>超额C</span><b style="color:#e23b3b">+4.68%</b></div>
 <div class="arow"><span>近5日C5</span><b style="color:#e23b3b">+19.50%</b></div>
 <div class="arow"><span>放量倍数</span><b>1.72x</b></div>
+<div class="arow"><span>VIX风险</span><b><span class="vixchip stale" title="VIX300 数据截至2026-05-29(断更), 不参与RS*调整">VIX300·截至05-29</span></b></div>
 </div><div class="acard">
 <div class="aname">其他生物制药 <span class="pt atk">进攻型</span></div>
 <div class="acode">881240 · 行业III</div>
@@ -90,6 +100,7 @@ td.nm{text-align:left;color:#e8e2d0}
 <div class="arow"><span>超额C</span><b style="color:#e23b3b">+3.10%</b></div>
 <div class="arow"><span>近5日C5</span><b style="color:#e23b3b">+19.47%</b></div>
 <div class="arow"><span>放量倍数</span><b>1.67x</b></div>
+<div class="arow"><span>VIX风险</span><b><span class="vixchip stale" title="VIX300 数据截至2026-05-29(断更), 不参与RS*调整">VIX300·截至05-29</span></b></div>
 </div><div class="acard">
 <div class="aname">血液制品 <span class="pt atk">进攻型</span></div>
 <div class="acode">881235</div>
@@ -97,6 +108,7 @@ td.nm{text-align:left;color:#e8e2d0}
 <div class="arow"><span>超额C</span><b style="color:#e23b3b">+6.04%</b></div>
 <div class="arow"><span>近5日C5</span><b style="color:#e23b3b">+19.34%</b></div>
 <div class="arow"><span>放量倍数</span><b>1.96x</b></div>
+<div class="arow"><span>VIX风险</span><b><span class="vixchip hi" title="VIXKC50=58.3 截至2026-07-16">高 +2.5σ</span></b></div>
 </div><div class="acard">
 <div class="aname">医疗美容 <span class="pt atk">进攻型</span></div>
 <div class="acode">881257</div>
@@ -104,6 +116,7 @@ td.nm{text-align:left;color:#e8e2d0}
 <div class="arow"><span>超额C</span><b style="color:#e23b3b">+5.99%</b></div>
 <div class="arow"><span>近5日C5</span><b style="color:#e23b3b">+19.33%</b></div>
 <div class="arow"><span>放量倍数</span><b>2.71x</b></div>
+<div class="arow"><span>VIX风险</span><b><span class="vixchip stale" title="VIX300 数据截至2026-05-29(断更), 不参与RS*调整">VIX300·截至05-29</span></b></div>
 </div><div class="acard">
 <div class="aname">其他酒类 <span class="pt atk">进攻型</span></div>
 <div class="acode">881134 · 行业III</div>
@@ -111,6 +124,7 @@ td.nm{text-align:left;color:#e8e2d0}
 <div class="arow"><span>超额C</span><b style="color:#e23b3b">+3.06%</b></div>
 <div class="arow"><span>近5日C5</span><b style="color:#e23b3b">+18.86%</b></div>
 <div class="arow"><span>放量倍数</span><b>0.92x</b></div>
+<div class="arow"><span>VIX风险</span><b><span class="vixchip stale" title="VIX300 数据截至2026-05-29(断更), 不参与RS*调整">VIX300·截至05-29</span></b></div>
 </div><div class="acard">
 <div class="aname">医疗服务 <span class="pt def">抗跌型</span></div>
 <div class="acode">881247 · 行业III</div>
@@ -118,6 +132,7 @@ td.nm{text-align:left;color:#e8e2d0}
 <div class="arow"><span>超额C</span><b style="color:#e23b3b">+1.16%</b></div>
 <div class="arow"><span>近5日C5</span><b style="color:#e23b3b">+18.84%</b></div>
 <div class="arow"><span>放量倍数</span><b>1.77x</b></div>
+<div class="arow"><span>VIX风险</span><b><span class="vixchip stale" title="VIX300 数据截至2026-05-29(断更), 不参与RS*调整">VIX300·截至05-29</span></b></div>
 </div><div class="acard">
 <div class="aname">中药 <span class="pt atk">进攻型</span></div>
 <div class="acode">881256</div>
@@ -125,6 +140,7 @@ td.nm{text-align:left;color:#e8e2d0}
 <div class="arow"><span>超额C</span><b style="color:#e23b3b">+4.63%</b></div>
 <div class="arow"><span>近5日C5</span><b style="color:#e23b3b">+18.69%</b></div>
 <div class="arow"><span>放量倍数</span><b>2.15x</b></div>
+<div class="arow"><span>VIX风险</span><b><span class="vixchip stale" title="VIX300 数据截至2026-05-29(断更), 不参与RS*调整">VIX300·截至05-29</span></b></div>
 </div></div>
 <h2>📊 全行业近5日累计超额 C5 排行</h2>
 <div class=tbwrap><table>
@@ -2445,14 +2461,15 @@ td.nm{text-align:left;color:#e8e2d0}
 <td style="color:#16a34a;font-weight:700">-19.99</td>
 <td><span class="rs-mid">60</span></td>
 <td><span class="muted">0.54x</span></td><td><span class="pt weak">弱势</span></td></tr></tbody></table></div>
-<h2>🎯 5日累计超额 C5 排行筛选 <span style="font-size:12px;color:#b8860b;-webkit-text-fill-color:#b8860b">V2.2-A</span></h2>
+<h2>🎯 5日累计超额 C5 排行筛选 <span style="font-size:12px;color:#b8860b;-webkit-text-fill-color:#b8860b">V2.3</span></h2>
 <div class="v21note" style="border-top:none;padding-top:0;margin-bottom:8px">
 <b>D(筛选) ＝ 26.91</b>（近33日极强C5参考线 = 逐日取全行业C5最强3名(C&gt;0)攒99样本→top10均值）；
 入选规则：<b>C5 ≥ 26.91 且 当日超额 C&gt;0</b>，按 C5 降序。【A方案：严口径，接受多数日空表】
-「相对强度」＝C5 / 极强线26.91，=100% 即触及阈值，≥100% 入选。
+「相对强度」＝C5 / 极强线26.91，=100% 即触及阈值，≥100% 入选。<br>
+<b>RS*</b>＝VIX调整后强度分（V2.3新增，权重15%）：RS* = RS − z<sub>VIX</sub>×10×0.15；对应指数恐慌越高，强度分被拉低越多。断更指数不调整（RS*＝—）。<b>入选规则不变，RS*仅作参考排序。</b>
 当日共 <b style="color:#f5d77f">0</b> 个行业入选。</div>
 <div class=tbwrap><table>
-<thead><tr><th>#</th><th>代码</th><th style="text-align:left">行业</th><th>今日%</th><th>超额C%</th><th>近5日C5%</th><th>RS</th><th>相对强度</th><th>放量</th><th>分型</th></tr></thead>
+<thead><tr><th>#</th><th>代码</th><th style="text-align:left">行业</th><th>今日%</th><th>超额C%</th><th>近5日C5%</th><th>RS</th><th>RS*</th><th>VIX风险</th><th>相对强度</th><th>放量</th><th>分型</th></tr></thead>
 <tbody></tbody></table></div>
 <h2>📈 近33日极强 C5 参考线 <span style="font-size:12px;color:#b8860b;-webkit-text-fill-color:#b8860b">V2.1</span></h2>
 <div class="v21box">
@@ -2475,6 +2492,11 @@ td.nm{text-align:left;color:#e8e2d0}
 口径：A=行业当日涨幅，B=中证1000当日涨幅，C=A−B(当日超额)，C5=近5日累计超额，D=横截面C5前20名均值(当日阈值)；预警=C5≥D 且当日超额C&gt;0。<br>
 「III」标记=与通达信细分行业三级叶子名匹配(138/463)；881xxx 为通达信自编细分行业指数，非申万。<br>
 生成时间 2026-07-16 · pytdx 公网直连，无需登录。
+<br><br><b style="color:#f5d77f">V2.3版本更新内容（VIX融合Phase2·用户定版权重15%）</b>：<br>
+① <b>行业→VIX指数映射</b>：463个细分行业按名称关键词映射到五个QVIX恐慌指数——半导体/芯片/生物→科创50VIX，电子/计算机/通信/软件→中证500VIX，银行/保险/地产/白酒→上证50VIX，医药/食品/家电/电力→沪深300VIX，其余中小盘缺省→中证1000VIX。<br>
+② <b>VIX风险chip</b>（预警卡+筛选表）：显示对应指数恐慌水平，|z|&gt;2σ红「高」，|z|&gt;1σ橙「中」，其余蓝「低」；<b>断更指数灰显「截至MM-DD」不冒充新鲜数据</b>（akshare股指期权QVIX断更：50/300停05-29、1000停03-13，现仅500/科创50鲜活）。<br>
+③ <b>RS*（VIX调整强度分）</b>：RS* = RS − z×10×0.15（VIX权重15%），恐慌越高强度分拉低越多（z=+2.5σ≈扣3.7分）；断更指数不调整。<b>预警/入选规则完全不变</b>——VIX只做风险提示层与参考排序，不改变触发口径。<br>
+④ <b>波动率环境KPI</b>：顶部新增鲜活QVIX现值(z)速览，断更源收进悬浮提示。VIX数据缺失时全部VIX元素自动降级隐藏，主链路不受影响。
 <br><br><b style="color:#f5d77f">本次改动(V1→当前·P1)</b>：① 新增「放量倍数」=行业指数今日成交额 / 前20日均额，≥1.3x标红为放量确认；② 新增「有效天数 n/5」=该行业近5个基准交易日里实际有数据的天数，不足5天标橙「数据不足」(过去缺失日按0计入C5会虚高，现予以提示)。<br>
 【📍V2.2A版本确定】预警阈值 D 已改为 <b>D_v21(近33日极强C5参考线)</b>，用户拍板 A 方案（严口径，接受多数日空表，只在行业触及历史极强时报警）。<span class="muted">V2.2-P95版本已存档备回退。</span>
 <br><br><b style="color:#f5d77f">V2版本更新内容</b>：<br>
