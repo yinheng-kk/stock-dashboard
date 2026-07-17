@@ -31,6 +31,8 @@
         .risk-tag { font-size: 10px; padding: 2px 6px; border-radius: 3px; border: 1px solid #b4651e; color: #ffaa00; background: rgba(255,170,0,0.08); }
         .risk-tag.market { border-color: #555; color: #999; background: rgba(255,255,255,0.04); }
         .diff-chip { font-size: 10px; padding: 2px 6px; border-radius: 3px; border: 1px solid #2a6da3; color: #5fb0e8; background: rgba(0,150,255,0.08); }
+        .vix-chip { font-size: 10px; padding: 2px 6px; border-radius: 3px; border: 1px solid; background: rgba(255,255,255,0.03); }
+        .vix-strip { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; font-size: 11px; color: #9fb3c8; margin: -6px 0 16px; }
         .sc-board { font-size: 11px; color: #777; margin-left: auto; }
         .watch-sec { margin-top: 22px; }
         .watch-sec h3 { font-size: 14px; color: #ffaa00; margin: 0 0 4px; }
@@ -98,8 +100,11 @@
             <b>可参与性</b>由风控标签聚合(<span style="color:#16a34a;">可跟踪</span>/<span style="color:#ffaa00;">偏拥挤·偏弱</span>/<span style="color:#ff6b6b;">高风险</span>);
             龙头按 <b>相对板块超额RS20(ρ≥0.5跟随门槛)</b> 择强;每只标<b>趋势状态</b>
             (<span style="color:#16a34a;">主升</span>/<span style="color:#3b82f6;">趋势向上</span>/<span style="color:#ffaa00;">低位反弹⚠</span>/<span style="color:#888;">弱势</span>/<span style="color:#ff6b6b;">下行</span>,
-            由60日对数回归斜率+R²+区间位置判定)+迷你K线(MA20黄/MA60紫),专避"低位反弹冒充多头"。
+            由60日对数回归斜率+R²+区间位置判定)+迷你K线(MA20黄/MA60紫),专避"低位反弹冒充多头";
+            板块卡片<b>波动率chip</b>=该板块挂钩的QVIX恐慌指数热度(z-score,
+            <span style="color:#ff6b6b;">过热≥1.5σ</span>/<span style="color:#ffaa00;">偏热≥1σ</span>/<span style="color:#999;">正常</span>/<span style="color:#5fb0e8;">偏冷≤-1σ</span>,断更源灰显标截至日)。
         </div>
+        <div class="vix-strip"><b>波动率环境(QVIX)</b><span class="vix-chip" style="color:#667;border-color:#445;" title="源断更, 数据截至2026-05-29">上证50 19.0 截至05-29</span><span class="vix-chip" style="color:#667;border-color:#445;" title="源断更, 数据截至2026-05-29">沪深300 21.2 截至05-29</span><span class="vix-chip" style="color:#667;border-color:#445;" title="源断更, 数据截至2026-03-13">中证1000 17.8 截至03-13</span><span class="vix-chip" style="color:#ff6b6b;border-color:#ff6b6b;" title="z=+1.96σ, 处历史97分位, 数据2026-07-16">中证500 32.2 过热(+2.0σ)</span><span class="vix-chip" style="color:#ff6b6b;border-color:#ff6b6b;" title="z=+2.48σ, 处历史98分位, 数据2026-07-16">科创50 58.3 过热(+2.5σ)</span><a href="vix_dashboard.html" style="color:#00d4ff;font-size:10px;">详情→</a></div>
 
         <div class="sector-card">
           <div class="sc-head">
@@ -111,6 +116,7 @@
           <div class="sc-meta">
             <span class="status-badge" style="background:#ff6b6b;">高风险</span>
             <span class="diff-chip" title="通过硬过滤的强叶子数 / 板块总叶子数(扩散度)">扩散 14/21叶 · 67%</span>
+            <span class="vix-chip" style="color:#ff6b6b;border-color:#ff6b6b;" title="VIXKC50恐慌指数 z=+2.48σ, 处历史98分位, 数据2026-07-16">波动率过热 +2.5σ</span>
             <span class="risk-tag">末端拥挤</span><span class="risk-tag">加速过热</span><span class="risk-tag market">大盘逆风</span><span class="risk-tag">量价背离</span>
             <span class="sc-board">东财板块 · 诊断服务</span>
           </div>
@@ -166,6 +172,7 @@
           <div class="sc-meta">
             <span class="status-badge" style="background:#ffaa00;">偏拥挤</span>
             <span class="diff-chip" title="通过硬过滤的强叶子数 / 板块总叶子数(扩散度)">扩散 5/8叶 · 62%</span>
+            <span class="vix-chip" style="color:#667;border-color:#445;" title="VIX1000恐慌指数源断更, 数据截至2026-03-13, 仅供参考">VIX1000 截至03-13</span>
             <span class="risk-tag">加速过热</span><span class="risk-tag market">大盘逆风</span>
             <span class="sc-board">东财板块 · 生猪养殖</span>
           </div>
@@ -182,6 +189,7 @@
           <div class="sc-meta">
             <span class="status-badge" style="background:#ffaa00;">偏拥挤</span>
             <span class="diff-chip" title="通过硬过滤的强叶子数 / 板块总叶子数(扩散度)">扩散 2/6叶 · 33%</span>
+            <span class="vix-chip" style="color:#667;border-color:#445;" title="VIX300恐慌指数源断更, 数据截至2026-05-29, 仅供参考">VIX300 截至05-29</span>
             <span class="risk-tag">加速过热</span><span class="risk-tag market">大盘逆风</span>
             <span class="sc-board">东财板块 · 综合电商</span>
           </div>
@@ -198,6 +206,7 @@
           <div class="sc-meta">
             <span class="status-badge" style="background:#ffaa00;">偏拥挤</span>
             <span class="diff-chip" title="通过硬过滤的强叶子数 / 板块总叶子数(扩散度)">扩散 5/20叶 · 25%</span>
+            <span class="vix-chip" style="color:#667;border-color:#445;" title="VIX300恐慌指数源断更, 数据截至2026-05-29, 仅供参考">VIX300 截至05-29</span>
             <span class="risk-tag">加速过热</span><span class="risk-tag market">大盘逆风</span>
             <span class="sc-board">东财板块 · 宠物食品</span>
           </div>
@@ -214,6 +223,7 @@
           <div class="sc-meta">
             <span class="status-badge" style="background:#ffaa00;">偏拥挤</span>
             <span class="diff-chip" title="通过硬过滤的强叶子数 / 板块总叶子数(扩散度)">扩散 4/8叶 · 50%</span>
+            <span class="vix-chip" style="color:#667;border-color:#445;" title="VIX300恐慌指数源断更, 数据截至2026-05-29, 仅供参考">VIX300 截至05-29</span>
             <span class="risk-tag">加速过热</span><span class="risk-tag market">大盘逆风</span>
             <span class="sc-board">东财板块 · 专业连锁Ⅲ</span>
           </div>
@@ -230,6 +240,7 @@
           <div class="sc-meta">
             <span class="status-badge" style="background:#ffaa00;">偏拥挤</span>
             <span class="diff-chip" title="通过硬过滤的强叶子数 / 板块总叶子数(扩散度)">扩散 2/9叶 · 22%</span>
+            <span class="vix-chip" style="color:#ff6b6b;border-color:#ff6b6b;" title="VIX500恐慌指数 z=+1.96σ, 处历史97分位, 数据2026-07-16">波动率过热 +2.0σ</span>
             <span class="risk-tag">加速过热</span><span class="risk-tag market">大盘逆风</span>
             <span class="sc-board">东财板块 · 教育出版</span>
           </div>
@@ -246,6 +257,7 @@
           <div class="sc-meta">
             <span class="status-badge" style="background:#ffaa00;">偏拥挤</span>
             <span class="diff-chip" title="通过硬过滤的强叶子数 / 板块总叶子数(扩散度)">扩散 2/8叶 · 25%</span>
+            <span class="vix-chip" style="color:#667;border-color:#445;" title="VIX1000恐慌指数源断更, 数据截至2026-03-13, 仅供参考">VIX1000 截至03-13</span>
             <span class="risk-tag">加速过热</span><span class="risk-tag market">大盘逆风</span>
             <span class="sc-board">东财板块 · 清洁小家电</span>
           </div>
@@ -262,6 +274,7 @@
           <div class="sc-meta">
             <span class="status-badge" style="background:#ffaa00;">偏拥挤</span>
             <span class="diff-chip" title="通过硬过滤的强叶子数 / 板块总叶子数(扩散度)">扩散 1/6叶 · 17%</span>
+            <span class="vix-chip" style="color:#667;border-color:#445;" title="VIX300恐慌指数源断更, 数据截至2026-05-29, 仅供参考">VIX300 截至05-29</span>
             <span class="risk-tag">加速过热</span><span class="risk-tag market">大盘逆风</span>
             <span class="sc-board">东财板块 · 餐饮</span>
           </div>
@@ -278,6 +291,7 @@
           <div class="sc-meta">
             <span class="status-badge" style="background:#ffaa00;">偏拥挤</span>
             <span class="diff-chip" title="通过硬过滤的强叶子数 / 板块总叶子数(扩散度)">扩散 2/20叶 · 10%</span>
+            <span class="vix-chip" style="color:#ff6b6b;border-color:#ff6b6b;" title="VIX500恐慌指数 z=+1.96σ, 处历史97分位, 数据2026-07-16">波动率过热 +2.0σ</span>
             <span class="risk-tag">加速过热</span><span class="risk-tag market">大盘逆风</span>
             <span class="sc-board">东财板块 · 电子</span>
           </div>
@@ -294,6 +308,7 @@
           <div class="sc-meta">
             <span class="status-badge" style="background:#ffaa00;">偏拥挤</span>
             <span class="diff-chip" title="通过硬过滤的强叶子数 / 板块总叶子数(扩散度)">扩散 1/3叶 · 33%</span>
+            <span class="vix-chip" style="color:#667;border-color:#445;" title="VIX300恐慌指数源断更, 数据截至2026-05-29, 仅供参考">VIX300 截至05-29</span>
             <span class="risk-tag">加速过热</span><span class="risk-tag">量价背离</span><span class="risk-tag market">大盘逆风</span>
             <span class="sc-board">东财板块 · 石油石化</span>
           </div>
@@ -345,13 +360,19 @@
                 <p><span style="color:#16a34a;">主升趋势</span>=斜率≥30%&amp;R²≥0.35&amp;pos≥0.6&amp;RS≥0;<span style="color:#3b82f6;">趋势向上</span>=斜率≥10%&amp;R²≥0.2&amp;pos≥0.35;<span style="color:#ffaa00;">低位反弹</span>=斜率向上但pos&lt;0.35(刚离底未站稳,醒目警示);<span style="color:#888;">弱势相关</span>=斜率&lt;10%或RS弱;<span style="color:#ff6b6b;">下行风险</span>=斜率≤-10%&amp;R²≥0.2。</p>
                 <p style="color:#888;">注:趋势仅作标注,不改谁被选中(选股门槛=相关性);用均线排列做生死判据太滞后,故改用回归斜率+R²。趋势强≠能买,位置风险见各板块风控标签。</p>
 
+                <h4>波动率热度(VIX融合层 · Phase1)</h4>
+                <p>① 数据源 = 五个QVIX恐慌指数(上交所方差互换算法): 上证50/沪深300/中证1000股指期权 + 中证500ETF/科创50ETF期权</p>
+                <p>② 板块→指数映射 = 关键词规则(半导体·芯片→科创50, 电子·计算机→中证500, 银行·地产→上证50, 化工·机械→中证1000, 其余→沪深300)</p>
+                <p>③ 热度 = 该指数当前值相对自身全历史的z-score: ≥1.5σ过热(隐含波动率极端,追高风险大) / ≥1σ偏热 / ≤-1σ偏冷(市场自满,或有埋伏机会)</p>
+                <p style="color:#888;">注: akshare三个股指期权QVIX源已断更(50/300停于05-29,1000停于03-13),断更指数灰显"截至"日期,只有ETF期权两条(500/科创50)是活数据;VIX是风险维度参考,不参与板块强度打分。独立看板: <a href="vix_dashboard.html" style="color:#00d4ff;">五VIX策略看板</a></p>
+
                 <h4>局限</h4>
                 <p>个股按东财行业板块名匹配通达信细分行业,极少数无对应板块会标注;相关性/RS为20日窗口、趋势为60日窗口,均周度重算;个股不含基本面深扒,实盘前请结合基本面与风控标签。</p>
-                <p style="color:#666;margin-top:6px;">版本: v6(扩散门槛+相对板块超额选股) · 旧版生成器/产物留 .pre-diffusion.bak 可回滚。</p>
+                <p style="color:#666;margin-top:6px;">版本: v7(v6扩散门槛 + VIX波动率融合层Phase1) · 旧版生成器/产物留 .pre-diffusion.bak 可回滚。</p>
             </div>
         </details>
 
-        <div class="footer">© 2026 Sector Fusion Dashboard v4 · 生成 2026-07-16 16:01:04</div>
+        <div class="footer">© 2026 Sector Fusion Dashboard v4 · 生成 2026-07-17 12:19:26</div>
     </div>
 
     <script>
