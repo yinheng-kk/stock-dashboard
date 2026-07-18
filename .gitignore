@@ -1,0 +1,49 @@
+# ══════════════════════════════════════════════════════════════
+# DEFAULT-DENY：本仓库 origin 是【公开仓库】yinheng-kk/stock-dashboard
+# 默认忽略一切；只有下面显式白名单的文件才可被 git add。
+# 新增公开文件必须逐个加 !/ 白名单，严禁放宽为通配。
+# ══════════════════════════════════════════════════════════════
+/*
+
+# ── 白名单：仓库自身 ──
+!/.gitignore
+
+# ── 白名单：公开看板页面（现有 tracked 集合）──
+!/fundflow-live.html
+!/fundflow-nocoxchun.html
+!/fundflow_replay_core.html
+!/_fundflow_replay_core.html
+!/sector_fusion_dashboard.html
+!/huatian_002185.html
+!/zhenhua_000733.html
+!/eston_002747.html
+
+# ── 白名单：随站点提交的归档与脚本（现有 tracked 集合）──
+!/_fundflow_archive/
+!/_archive_fundflow_daily.py
+!/_pub_fundflow_archive.py
+!/_sector_fusion_daily.ps1
+
+# ── 二级防线：即使误加白名单，密钥类文件永远忽略 ──
+gh_pat.txt
+gh_token_page.html
+github_pat_debug.html
+*pat*.txt
+*.pem
+*.key
+*_token*.txt
+*credential*
+*.credentials.json
+.env
+.env.*
+*.secret
+wechat_summary.py
+
+# ── 运行时/媒体/日志 ──
+media/inbound/
+*.log
+*.jsonl
+__pycache__/
+*.pyc
+*.bak
+*.clobbered.*
