@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="zh-CN"><head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>英维克 002837 · 股票分析</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  :root{--bg:#0d1117;--panel:#161b22;--panel2:#1c2230;--line:#293040;
+    --gold:#e8b84b;--gold2:#f5d27a;--txt:#e6edf3;--sub:#9aa7b8;--muted:#6b7689;
+    --up:#ff5b5b;--down:#2ecc71;--warn:#ffb454;--good:#5ad1a0;--bad:#ff6b6b}
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7;font-size:15px;padding:0 0 60px}
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{text-align:center;padding:38px 16px 26px;border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent)}
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{display:flex;justify-content:center;gap:22px;flex-wrap:wrap;margin-top:18px;padding:14px;
+    border:1px solid var(--line);border-radius:12px;background:var(--panel);max-width:640px;margin-left:auto;margin-right:auto}
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .up{color:var(--up)} .dn{color:var(--down)}
+  .caveat{margin:22px 0;padding:14px 16px;border-radius:10px;background:rgba(255,180,84,.08);
+    border:1px solid rgba(255,180,84,.3);font-size:13px;color:#ffd9a3}
+  .caveat b{color:var(--warn)}
+  section.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 20px;margin:16px 0}
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px}
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  b.hl{color:var(--gold2)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:19px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .fusion{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel));border-color:rgba(232,184,75,.35)}
+  #kchart{width:100%;height:440px;margin-top:4px}
+  @media(max-width:560px){#kchart{height:360px}}
+  .lgd{display:flex;gap:12px;flex-wrap:wrap;font-size:11px;color:var(--muted);margin:8px 2px 2px}
+  .lgd i{display:inline-block;width:11px;height:11px;border-radius:2px;margin-right:4px;vertical-align:-1px}
+  .projbox{background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:12px;margin-top:10px;font-size:12.5px;line-height:1.85}
+  .projbox b{color:var(--gold2)}
+  .scen{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}
+  .scen div{flex:1;min-width:210px;background:var(--panel2);border:1px solid var(--line);border-radius:10px;padding:11px}
+  .scen h4{font-size:13px;margin-bottom:5px}
+  .s1{color:var(--up)} .s2{color:var(--gold2)} .s3{color:var(--down)}
+  .vp-tab{width:100%;border-collapse:collapse;font-size:12.5px;margin:8px 0;overflow-x:auto;display:block}
+  .vp-tab th,.vp-tab td{padding:7px 5px;border-bottom:1px solid var(--line);text-align:center;white-space:nowrap}
+  .vp-tab td.l{text-align:left}
+  .updn{color:var(--up)} .dndn{color:var(--down)}
+  .topbar{max-width:860px;margin:0 auto;padding:10px 16px 0}
+  .topbar a{color:var(--gold);font-size:12px;text-decoration:none}
+  /* 人工深扒(9段)用到的扩展类 */
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  table.compare,table.logic{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  table.compare th,table.compare td,table.logic th,table.logic td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line)}
+  table.compare th,table.logic th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  table.compare td.l,table.compare th.l,table.logic td.l,table.logic th.l{text-align:left}
+  table.compare tr.self td{background:rgba(232,184,75,.09);font-weight:600}
+  .pos{color:var(--up)} .negc{color:var(--down)}
+  .compare th:first-child,.compare td:first-child{text-align:left}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .ddhead{background:linear-gradient(180deg,rgba(232,184,75,.12),var(--panel));border-color:rgba(232,184,75,.4);text-align:center}
+  .ddhead .sec-t{color:var(--gold2);font-size:18px}
+</style></head><body>
+<div class="topbar"><a href="/">‹ 返回股票分析首页</a></div>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 股 票 分 析</div>
+  <h1>英维克<span class="code">002837</span></h1>
+  <div class="meta">截至 2026-07-17 收盘 ｜ 专用设备 ｜ 生成 2026-07-19 01:18</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">现价(真实价)</div><div class="val dn">¥61.57</div></div>
+    <div class="item"><div class="lbl">涨跌幅</div><div class="val dn">-9.27%</div></div>
+    <div class="item"><div class="lbl">PE / PB</div><div class="val" style="font-size:16px">2265.69 / 23.78</div></div>
+    <div class="item"><div class="lbl">换手 / 市值</div><div class="val" style="font-size:16px">4.64% / 784.6亿</div></div>
+    <div class="item"><div class="lbl">技术研判</div><div class="val" style="color:var(--down);font-size:15px">空头排列·弱势</div></div>
+  </div>
+</header>
+<div class="wrap">
+  <div class="caveat"><b>⚠ 数据口径：</b>① K线为<b>真实可交易价</b>（2026-06-01 已实施 10转3派1.7 除权，本页全部价位为除权后口径——4月新闻里的"108元跌停"对应除权后约83.7元，勿混用）；
+    ② 顶部 PE <b>2265</b> 为行情快照的 26Q1 单季年化口径，<b>严重失真</b>，真实估值见第⑦段（静态约150倍 / 2026E约73倍）；
+    ③ 本页=量化技术面自动分析 + <b>人工联网深扒（截至 2026-07-19）</b>，非投资建议。</div>
+
+  <section class="card fusion">
+    <div class="sec-h"><div class="sec-t">📈 预测性K线 · 多路径推演</div><div class="sec-tag">真实日K + bootstrap 5000 路径</div></div>
+    <div id="kchart"></div>
+    <div class="lgd">
+      <span><i style="background:#ff5b5b"></i>实体阳线</span>
+      <span><i style="background:#2ecc71"></i>实体阴线</span>
+      <span><i style="background:rgba(232,184,75,.55)"></i>预测蜡烛(中性p50)</span>
+      <span><i style="background:rgba(232,184,75,.20)"></i>概率带(p10~p90)</span>
+      <span><i style="background:#ff5b5b"></i>乐观p90</span>
+      <span><i style="background:#2ecc71"></i>谨慎p10</span>
+    </div>
+    <div class="projbox"><b>近一月手法量化（预测依据）：</b>日均振幅 <b>7.58%</b>、日收益波动σ <b>4.7%</b>、近25日 <b>阳14阴11</b>（均涨3.37% / 均跌-4.82%，区间-9.27%~6.73%）。<br><b>推演方法：</b>bootstrap 重采样该股近月真实日收益 5000 条路径，叠加「动量衰减 + 向 MA20(74.31) 均值回归」漂移，逐日取 10/50/90 分位 → 中性蜡烛取 p50、概率带 = p10~p90 不确定性锥（seed=42 可复现）。<br><b>未来8日中性收盘推演：</b>61.65 → 61.99 → 62.5 → 63.21 → 63.95 → 64.49 → 65.22 → 65.89。</div>
+    <div class="scen">
+      <div><h4 class="s1">▲ 乐观 p90</h4><span style="font-size:12.5px;color:var(--sub)">情绪延续 + 放量续攻，8日上沿冲 <b>75.71</b>（约 +23.0%）。</span></div>
+      <div><h4 class="s2">● 中性 p50（概率最高）</h4><span style="font-size:12.5px;color:var(--sub)">震荡消化，8日落 <b>65.89</b>（约 +7.0%）；预测蜡烛即此路径。</span></div>
+      <div><h4 class="s3">▼ 谨慎 p10</h4><span style="font-size:12.5px;color:var(--sub)">题材退潮/放量破位，下看 <b>56.65</b>（约 -8.0%）。</span></div>
+    </div>
+    <p class="small" style="margin-top:10px">蜡烛/概率带为基于该股近月<b>真实</b>K线的 bootstrap 多路径推演，<b>非真实成交、非投资建议</b>，越远越不可信。</p>
+  </section>
+
+  
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n" style="background:linear-gradient(135deg,#7aa2ff,#3a5bbf)">量</div><div class="sec-t">近6日量价节奏（自动）</div><div class="sec-tag">日级口径</div></div>
+    <table class="vp-tab">
+      <thead><tr><th class="l">日期</th><th>涨跌</th><th>日内(收-开)</th><th>最高</th><th>量(万手)</th><th>量比20</th><th>手法判读</th></tr></thead>
+      <tbody><tr><td class="l">07-10</td><td class="dndn">-3.07%</td><td class="dndn">-1.78%</td><td>78.5</td><td>72.0</td><td>1.06</td><td class="l">高开低走/盘中派发</td></tr><tr><td class="l">07-13</td><td class="dndn">-8.92%</td><td class="dndn">-7.89%</td><td>74.81</td><td>58.2</td><td>0.86</td><td class="l">高开低走/盘中派发</td></tr><tr><td class="l">07-14</td><td class="updn">+4.70%</td><td class="updn">+4.89%</td><td>71.59</td><td>54.3</td><td>0.8</td><td class="l">低开高走/盘中拉抬</td></tr><tr><td class="l">07-15</td><td class="dndn">-3.41%</td><td class="dndn">-3.23%</td><td>70.89</td><td>36.2</td><td>0.53</td><td class="l">高开低走/盘中派发</td></tr><tr><td class="l">07-16</td><td class="updn">+0.18%</td><td class="updn">+2.05%</td><td>70.77</td><td>45.7</td><td>0.67</td><td class="l">低开高走/盘中拉抬</td></tr><tr style="background:rgba(232,184,75,.09)"><td class="l">07-17</td><td class="dndn">-9.27%</td><td class="dndn">-9.99%</td><td>68.85</td><td>52.4</td><td>0.77</td><td class="l">高开低走/盘中派发</td></tr></tbody>
+    </table>
+    <p class="small">⚠ 口径：分钟级分时（VWAP/站均价）受东财风控不稳定，本表为<b>真实日级量价</b>（东财日K）自动判读，非分钟分时。</p>
+  </section>
+
+  <section class="card fusion" style="text-align:center;padding:14px">
+    <div class="sec-h" style="justify-content:center"><div class="sec-t">📚 人工深度基本面深扒 · 阿波罗9段</div></div>
+    <p class="small">以下为人工联网深扒（撰写于 2026-07-19，基准价 ¥61.57 / 07-17 收盘），数据来自年报/一季报、权威财经媒体与公司公告，标注来源口径。</p>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">量能</div><div class="sec-tag">两周两根9%级长阴 · 跌是缩量跌 · 弹是更缩量弹</div></div>
+    <p>近5日均量/近20日均量 = <b class="hl">0.73</b>（缩量）。7月两根标志性长阴：<b>07-13 -8.92%</b>（58.2万手，量比0.86）、<b>07-17 -9.27%</b>（52.4万手，量比0.77）——都<b>不是放量恐慌抛售</b>，更像系统性杀跌中的被动下跌，个股筹码未见崩塌式出逃。</p>
+    <p>但反过来看，唯一像样的反弹日 07-14（+4.70%）量能更小（54.3万手，量比0.80），07-15 缩到 36.2 万手——<b class="x">下方承接同样疲弱</b>，多头无力是现阶段主要矛盾。</p>
+    <div class="takeaway">缩量阴跌+缩量弱反弹：没有恐慌盘，也没有承接盘，量能层面处于"等外力"状态（等市场β止跌或等公司催化）。</div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金流向</div><div class="sec-tag">7月主力连续净流出 · 融资盘90%分位是放大器</div></div>
+    <ul>
+      <li>07-07 主力净流出 <b class="x">3.60亿</b>（占成交额9.72%）；07-10 净流出 <b class="x">2.31亿</b>；07-13 净流出 <b class="x">5.55亿</b>（其中超大单 -3.47亿，当日成交23.07亿）——7月主力资金持续单边撤退。</li>
+      <li>融资余额 <b class="x">43.90亿</b>（07-06），占流通市值 <b>4.65%</b>，超过近一年 <b>90%分位</b>——杠杆资金高位聚集。07-17 全市场两融净流出近1500亿的连环平仓日，这类高融资盘个股天然被放大跌幅（当日 -9.27% vs 创业板 -7.15%）。</li>
+    </ul>
+    <div class="takeaway">主力出、杠杆挤、散户接（见④）——7月的下跌是资金结构恶化的集中兑现，判断底部先看两融余额何时去化到位。</div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">板块 / 同业对比</div><div class="sec-tag">07-17 年内最强无差别杀跌 · AI硬件高β领跌</div></div>
+    <p><b>07-17 是全市场事件，不是个股事件：</b>沪指失守3800（-3%+）、创业板指 <b class="x">-7.15%</b>、超5000只个股下跌、近200只跌停、A股总市值单日蒸发逾4.5万亿；主力资金净流出超1600亿、两融净流出近1500亿、北向流出超1500亿。触发因素：全球AI硬件恐慌传导 + 杠杆资金连环踩踏 + 巨量IPO抽血。</p>
+    <p>领跌的正是前期涨幅最大的<b>算力硬件链</b>：通信ETF收盘跌停，存储/半导体设备/芯片指数跌7~10个点。英维克作为 A股液冷绝对龙头（唯一 NVIDIA NPN Tier 1 认证的液冷方案商，详见⑧），是这条链里的高β标的，-9.27% 属于板块β放大，<b>未见个股独立利空</b>。</p>
+    <div class="takeaway">行业地位没变（液冷份额、认证卡位仍是A股同业第一梯队断层领先），变的是市场给高估值成长的容忍度。</div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">股东户数</div><div class="sec-tag">爆雷前散户激增32% · 21万户高位套牢盘</div></div>
+    <p>截至 <b>2026-03-31</b> 股东户数 <b class="x">21.03万户</b>，较2月底单月激增 <b class="x">+5.13万户（+32.26%）</b>；户均持股降至约4043股、户均市值34.1万元（降幅41%）——筹码急剧散化。每日经济新闻当时点评：<b>"业绩爆雷前散户集中涌入"</b>，4月一季报双跌停正好砸在这批新进散户头上。</p>
+    <p>2月至今股价从高点回撤超三成，这21万户中相当比例在70元（除权后口径）上方，上方套牢盘密集，反弹到66~74区间会持续遭遇解套抛压。</p>
+    <div class="takeaway">典型的"顶部散化"结构，需要时间或深度换手消化；这也是⑨技术面均线全空头的筹码注脚。</div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">十大流通股东</div><div class="sec-tag">2026-03-31 · 外资底仓仍在 · 公募边际换手</div></div>
+    <ul>
+      <li><b>香港中央结算（陆股通）</b>：第二大流通股东，持股3813.50万股——外资底仓仍在，但一财此前报道2025Q3业绩环比转跌后陆股通已有阶段性减持动作。</li>
+      <li><b>中航机遇领航混合A</b>：第五大流通股东，持股1000万股（主动公募代表）。</li>
+      <li><b>易方达国证新能源电池ETF</b>：新进第九，510.07万股；<b>南方中证500ETF 退出</b>十大——被动资金随指数纳入/权重调整边际进出。</li>
+    </ul>
+    <div class="takeaway">机构没有集体出逃的证据，Q1变化以被动ETF调仓为主；真正的观察点是中报披露的Q2持仓（8月底）——爆雷+腰斩之后主动公募是否离场。</div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑥</div><div class="sec-t">财务</div><div class="sec-tag">2025高增收官 · 26Q1增收不增利-82%</div></div>
+    <table class="compare">
+      <thead><tr><th class="l">期间</th><th>营收</th><th>同比</th><th>归母净利</th><th>同比</th></tr></thead>
+      <tbody>
+        <tr><td class="l">2025年报</td><td>60.68亿</td><td class="updn">+32.23%</td><td>5.22亿</td><td class="updn">+15.3%</td></tr>
+        <tr><td class="l">2026Q1</td><td>11.75亿</td><td class="updn">+26.03%</td><td class="x">865.76万</td><td class="dndn">-81.97%</td></tr>
+      </tbody>
+    </table>
+    <p><b>Q1利润被四把刀同时砍：</b>①<b>汇兑损失</b>——海外项目以当地币种结算，人民币升值产生汇损；②<b>利息支出</b>——海外扩张借款规模加大；③<b>信用减值</b>——国内IDC建设节奏放缓、项目实施与回款周期拉长，坏账计提增加；④<b>价格战</b>压毛利率 + 研发/扩产投入激增。公司口径：Q1<b>订单充沛</b>，但发货与收入确认延迟。</p>
+    <p>结构上要分清：收入端 +26% 说明<b>需求没有崩</b>，利润端是费用/减值/汇兑的集中兑现；但其中"价格战毛利率下滑"是真实的经营性恶化项，不是一次性科目，这是中报最需要验证的一条。</p>
+    <div class="takeaway">2025年净利率已仅8.6%（利润增速跑输营收），26Q1进一步被击穿——"以收入换卡位"阶段的报表阵痛，成色好坏要等8月底中报的毛利率与减值走向。</div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑦</div><div class="sec-t">估值</div><div class="sec-tag">口径差异巨大 · 静态~150倍 vs 2026E约73倍</div></div>
+    <table class="logic">
+      <thead><tr><th class="l">口径</th><th>净利基数</th><th>对应PE（市值784.6亿）</th></tr></thead>
+      <tbody>
+        <tr><td class="l">行情快照（26Q1单季年化）</td><td>~0.35亿</td><td class="x">~2266倍（失真，勿用）</td></tr>
+        <tr><td class="l">静态（2025年报）</td><td>5.22亿</td><td>~150倍</td></tr>
+        <tr><td class="l">TTM（滚动四季）</td><td>~4.8亿</td><td>~162倍</td></tr>
+        <tr><td class="l">2026E（机构一致预期）</td><td>10.68亿</td><td class="ok">~73倍</td></tr>
+      </tbody>
+    </table>
+    <p>估值分歧的本质是对Q1的定性：若Q1只是<b>利润坑</b>（订单Q2-Q3集中确认、汇兑/减值不再重演），2026E兑现10.7亿则73倍对"全球AI液冷卡位第一梯队+营收年增30%+"尚可辩护；若价格战与减值是<b>新常态</b>，则150倍静态无从支撑。注：一季报后近20家券商此前的乐观预判集体落空（每经语），卖方预测的可信度本身也要打折；某AI量化组合07-01给出看空目标价51元，市场分歧极大。</p>
+    <div class="takeaway">现价定价介于两种剧本之间：比"故事完好"便宜了35%，比"故事证伪"仍贵一倍。它是一只用中报验证真伪的期权。</div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑧</div><div class="sec-t">催化剂 / 产业链</div><div class="sec-tag">NVIDIA NPN Tier 1 · GB300液冷核心供应商</div></div>
+    <ul>
+      <li><b>英伟达卡位（已证实）</b>：通过 NVIDIA <b>NPN Tier 1</b> 认证、GB300 液冷解决方案领先供应商；UQD/CDU 产品进入 NVIDIA MGX 与 Intel 生态体系，CDU 已获 Google 认证——A股液冷公司中独一档。</li>
+      <li><b>产业节奏</b>：3月GTC发布 GB300 / Vera Rubin NVL72 后液冷需求正式落地；Q2 Google 第五代 CDU 进入交付周期（市场预期海外收入环比+25%以上）；公司自述新增海外客户需求"可能今年三季度集中开始"——<b>Q3海外订单是下一个硬验证点</b>。</li>
+      <li><b>市场空间</b>：高盛测算全球AI服务器液冷市场 2025年约89亿美元 → 2026年超170亿美元，近翻倍扩容；市场憧憬公司全球份额从~1%向10%迈进（含微软/亚马逊合作传闻，<b class="x">未证实，勿当事实</b>）。</li>
+      <li><b>股本事件</b>：2025年度 10转3派1.7 已于 06-01 实施完毕，总股本 9.80亿→12.74亿股（本页价格均为除权后口径）。</li>
+    </ul>
+    <div class="takeaway">催化剂日历清晰：8月底中报（利润真伪）→ Q3海外订单（成长真伪）→ Q4海外云厂合作（估值天花板）。故事线完好，等兑现。</div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n" style="background:linear-gradient(135deg,#7aa2ff,#3a5bbf)">息</div><div class="sec-t">联网消息面 · 基本面速览</div><div class="sec-tag">2026-07-19 更新 · 无中报预告 · 高β撞上系统性杀跌</div></div>
+    <ul>
+      <li><b>7月无个股利空公告</b>：截至07-19未见半年度业绩预告、未见新的减持公告。7月暴跌（07-13 -8.92%、07-17 -9.27%）主因是<b>系统性</b>：07-17 A股年内最强无差别杀跌（全球AI硬件恐慌+杠杆踩踏+巨量IPO抽血三重共振），算力硬件链全线重挫。</li>
+      <li><b>4月业绩雷复盘</b>：04-21/22 一季报后连续两日一字跌停（当时未除权价108.97元≈现口径83.8元），近20家券商乐观预判集体落空；公司随后回应利润下滑四因素（汇兑/利息/减值/投入），并强调订单充沛。</li>
+      <li><b>液冷业务现况</b>：公司表示液冷相关收入持续快速增长，当前主要来自国内和东南亚；正积极跟踪的新增海外客户需求可能<b>今年Q3集中开始</b>。5月获 NVIDIA NPN Tier 1 认证成为 GB300 液冷领先供应商。</li>
+      <li><b>筹码警示</b>：融资余额43.9亿处近一年90%分位、股东户数21万+高位散化——消息面真空期里，筹码结构比基本面更主导短线波动。</li>
+    </ul>
+    <div class="takeaway">一句话：<b>需求和卡位没坏，坏的是利润表和筹码结构</b>。61.57已回到4月/6月双底区域（61.2/62.2），能否守住取决于市场β止跌 + 8月中报验证，而非新的故事。</div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑨</div><div class="sec-t">技术指标</div><div class="sec-tag">空头排列 · MA20下方-17% · 距120日高-34%</div></div>
+    <p>现价 61.57 位于 MA20(74.31) 下方（偏离 <b class="x">-17.1%</b>）、MA60(74.22) 下方；距 120 日高点 93.52 回撤 <b class="x">-34.2%</b>。MA5/10/20/60 = 66.86/70.12/74.31/74.22，全空头排列。</p>
+    <p><b>关键位置：</b>61.57 恰为近120日区间下沿——4月低点 63.3、6月低点 62.2、07-17 低点 61.2 构成<b>三次探底区（61~63）</b>，是全图最重要的支撑带；跌破则进入 bootstrap 谨慎带 56~57。上方 66.9（MA5）为第一反抽位，70~74（MA10/MA20+7月跳空缺口区）为强压力带。</p>
+    <div class="takeaway">超跌但未见底部信号：短线偏离均线-17%有技术性反抽需求（推演中性8日看65.9），中期趋势反转需放量收复70一线。</div>
+  </section>
+
+  <section class="card">
+    <div class="sec-h"><div class="sec-t">⚖ 矛盾逻辑链 —— 「全球液冷卡位第一梯队」vs「连环失血的利润表 + 高位杠杆筹码」</div></div>
+    <table class="logic">
+      <thead><tr><th class="l">多头逻辑</th><th class="l">空头逻辑</th></tr></thead>
+      <tbody>
+        <tr><td class="l ok">NVIDIA NPN Tier 1 唯一认证 + Google CDU 认证，A股断层卡位</td><td class="l x">26Q1净利-82%，价格战毛利率下滑是经营性恶化非一次性</td></tr>
+        <tr><td class="l ok">收入+26%仍在高增，公司称订单充沛、Q3海外需求集中启动</td><td class="l x">汇兑/利息/减值三座大山与海外扩张伴生，短期难消</td></tr>
+        <tr><td class="l ok">全球液冷市场2026年近翻倍（$89亿→$170亿+），2026E仅73倍</td><td class="l x">静态150倍；券商集体看走眼后预测可信度打折，AI量化看空至51</td></tr>
+        <tr><td class="l ok">7月暴跌为系统性β杀，个股无新利空，61~63三次探底支撑带</td><td class="l x">融资盘90%分位+21万户散户高位套牢，反弹即抛压，β未止跌</td></tr>
+      </tbody>
+    </table>
+    <p class="small" style="margin-top:8px">本质：这是一只"卡位领先但利润暂时看不见"的高β期权股——中报（8月底）与Q3海外订单是决定期权价值的两次开牌。</p>
+  </section>
+
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-t">🎯 操作策略（深扒撰写时基准价 ¥61.57 / 截至 7-17）</div></div>
+    <div class="lvl">
+      <div class="chip sup"><div class="k">生死支撑带（4月/6月/7月三次探底）</div><div class="v">61.2 ~ 63.3</div></div>
+      <div class="chip stop"><div class="k">破位下看（bootstrap p10带）</div><div class="v">56 ~ 57</div></div>
+      <div class="chip res"><div class="k">第一反抽压力（MA5）</div><div class="v">66.9</div></div>
+      <div class="chip res"><div class="k">强压力带（MA10-20+缺口）</div><div class="v">70 ~ 74</div></div>
+    </div>
+    <ul style="margin-top:12px">
+      <li><b>空仓者</b>：不接飞刀。07-17是系统性杀跌，β未确认止跌前61~63支撑带随时可能被动跌破；右侧信号=放量阳线站回66.9以上，或大盘企稳后该股缩量不再创新低3日以上。</li>
+      <li><b>持仓者</b>：61.2（07-17低点）为硬止损参考——破位即三重底失效，下一站56~57；反抽70~74强压区（套牢盘+缺口）宜先减部分仓，等中报开牌再决定去留。</li>
+      <li><b>验证时间表</b>：①两融余额去化（周度看）②8月底中报毛利率/减值是否止血 ③公司口径的Q3海外订单是否落地。三个都好，73倍的2026E剧本才开始成立。</li>
+    </ul>
+    <p class="small" style="margin-top:10px">以上为分析框架非投资建议；价位均为除权后真实价口径。</p>
+  </section>
+
+  <footer>阿波罗 · 股票分析 ｜ 数据源：东方财富公开行情 ｜ 真实价口径 ｜ 推演为统计模拟非真实成交 ｜ 本页不构成投资建议</footer>
+</div>
+
+<script>
+var dates=["2025-12-31", "2026-01-05", "2026-01-06", "2026-01-07", "2026-01-08", "2026-01-09", "2026-01-12", "2026-01-13", "2026-01-14", "2026-01-15", "2026-01-16", "2026-01-19", "2026-01-20", "2026-01-21", "2026-01-22", "2026-01-23", "2026-01-26", "2026-01-27", "2026-01-28", "2026-01-29", "2026-01-30", "2026-02-02", "2026-02-03", "2026-02-04", "2026-02-05", "2026-02-06", "2026-02-09", "2026-02-10", "2026-02-11", "2026-02-12", "2026-02-13", "2026-02-24", "2026-02-25", "2026-02-26", "2026-02-27", "2026-03-02", "2026-03-03", "2026-03-04", "2026-03-05", "2026-03-06", "2026-03-09", "2026-03-10", "2026-03-11", "2026-03-12", "2026-03-13", "2026-03-16", "2026-03-17", "2026-03-18", "2026-03-19", "2026-03-20", "2026-03-23", "2026-03-24", "2026-03-25", "2026-03-26", "2026-03-27", "2026-03-30", "2026-03-31", "2026-04-01", "2026-04-02", "2026-04-03", "2026-04-07", "2026-04-08", "2026-04-09", "2026-04-10", "2026-04-13", "2026-04-14", "2026-04-15", "2026-04-16", "2026-04-17", "2026-04-20", "2026-04-21", "2026-04-22", "2026-04-23", "2026-04-24", "2026-04-27", "2026-04-28", "2026-04-29", "2026-04-30", "2026-05-06", "2026-05-07", "2026-05-08", "2026-05-11", "2026-05-12", "2026-05-13", "2026-05-14", "2026-05-15", "2026-05-18", "2026-05-19", "2026-05-20", "2026-05-21", "2026-05-22", "2026-05-25", "2026-05-26", "2026-05-27", "2026-05-28", "2026-05-29", "2026-06-01", "2026-06-02", "2026-06-03", "2026-06-04", "2026-06-05", "2026-06-08", "2026-06-09", "2026-06-10", "2026-06-11", "2026-06-12", "2026-06-15", "2026-06-16", "2026-06-17", "2026-06-18", "2026-06-22", "2026-06-23", "2026-06-24", "2026-06-25", "2026-06-26", "2026-06-29", "2026-06-30", "2026-07-01", "2026-07-02", "2026-07-03", "2026-07-06", "2026-07-07", "2026-07-08", "2026-07-09", "2026-07-10", "2026-07-13", "2026-07-14", "2026-07-15", "2026-07-16", "2026-07-17", "2026-07-20", "2026-07-21", "2026-07-22", "2026-07-23", "2026-07-24", "2026-07-27", "2026-07-28", "2026-07-29"],ohlc=[[85.38, 82.09, 81.41, 86.02], [82.33, 81.41, 79.87, 83.33], [82.1, 78.72, 77.95, 82.39], [77.31, 80.25, 77.31, 81.87], [80.25, 77.99, 77.22, 81.02], [77.65, 78.48, 75.87, 79.82], [77.56, 76.85, 75.52, 78.33], [76.68, 74.25, 73.87, 78.84], [75.16, 76.02, 73.35, 78.46], [75.38, 79.35, 75.11, 80.64], [80.64, 78.82, 77.5, 80.79], [76.88, 78.63, 76.87, 80.64], [77.95, 73.95, 73.48, 78.85], [73.72, 76.31, 72.95, 77.08], [76.5, 76.41, 75.11, 77.56], [76.41, 74.75, 74.25, 76.52], [74.1, 74.75, 73.91, 77.38], [74.0, 75.19, 72.23, 75.86], [75.31, 80.05, 74.48, 82.1], [77.57, 76.29, 75.92, 78.72], [74.48, 82.17, 74.48, 82.42], [82.57, 79.72, 79.49, 84.41], [81.41, 84.31, 77.65, 84.48], [84.32, 81.65, 79.78, 85.55], [79.88, 76.23, 75.39, 82.02], [74.41, 76.55, 74.13, 79.62], [78.85, 79.73, 77.45, 80.64], [80.04, 79.71, 79.2, 82.18], [79.95, 76.41, 76.07, 81.79], [80.72, 84.06, 80.72, 84.06], [84.11, 86.9, 83.72, 89.48], [86.03, 83.79, 81.2, 86.79], [84.48, 84.27, 82.64, 84.89], [85.32, 87.33, 81.58, 88.88], [83.72, 83.33, 82.42, 84.87], [81.02, 85.29, 80.66, 86.58], [85.76, 78.64, 78.44, 85.87], [77.67, 78.7, 77.32, 81.02], [80.29, 78.41, 77.2, 80.89], [77.47, 77.79, 77.47, 79.3], [75.64, 74.48, 71.41, 75.82], [76.72, 76.18, 75.63, 77.55], [76.48, 76.95, 75.72, 78.98], [77.33, 75.23, 74.65, 78.2], [73.72, 74.65, 73.72, 75.79], [75.55, 80.7, 74.1, 81.02], [82.18, 77.78, 76.79, 82.56], [78.57, 81.93, 77.87, 82.43], [79.1, 79.92, 79.1, 81.78], [80.64, 80.64, 79.1, 83.3], [77.3, 75.25, 74.95, 78.64], [76.02, 75.56, 73.33, 76.41], [76.42, 75.64, 75.25, 77.72], [74.88, 73.34, 73.0, 74.98], [71.41, 71.51, 69.78, 72.4], [69.1, 68.92, 67.57, 69.74], [68.25, 64.75, 64.33, 68.72], [66.72, 66.93, 65.49, 67.1], [66.08, 63.54, 63.33, 66.51], [64.49, 64.2, 63.56, 65.63], [64.49, 65.13, 64.26, 66.29], [68.24, 70.25, 67.52, 70.46], [69.1, 71.48, 68.72, 72.85], [72.91, 76.06, 72.68, 78.64], [76.07, 78.99, 76.06, 79.33], [79.22, 84.32, 77.95, 85.79], [84.49, 80.88, 80.15, 84.55], [82.1, 81.55, 80.02, 82.11], [81.16, 85.0, 80.18, 86.51], [86.95, 93.01, 85.78, 93.52], [83.69, 83.69, 83.69, 83.69], [75.31, 80.02, 75.31, 83.69], [76.79, 77.32, 76.25, 79.1], [76.13, 73.11, 72.18, 76.77], [72.34, 73.72, 72.3, 75.21], [73.56, 71.28, 70.76, 74.48], [70.85, 72.56, 70.85, 73.56], [72.96, 72.64, 71.45, 74.01], [73.74, 75.08, 73.56, 77.1], [75.64, 78.74, 74.49, 79.48], [77.56, 78.55, 76.03, 80.12], [78.64, 78.45, 74.71, 79.1], [78.45, 76.78, 76.47, 78.79], [76.02, 81.7, 75.1, 82.33], [83.64, 78.48, 78.48, 85.48], [79.87, 77.17, 76.51, 80.64], [77.18, 78.42, 76.11, 80.53], [77.57, 78.64, 74.48, 79.45], [77.56, 83.26, 76.02, 84.85], [83.25, 77.2, 77.05, 84.06], [78.67, 80.59, 77.38, 81.68], [81.66, 81.48, 79.1, 81.66], [81.41, 75.69, 73.98, 81.41], [74.87, 72.96, 72.26, 76.28], [72.96, 74.88, 71.79, 75.08], [74.88, 69.87, 67.58, 75.08], [68.51, 66.06, 65.66, 70.59], [66.3, 67.49, 64.4, 68.0], [67.5, 68.32, 67.28, 70.92], [67.49, 69.22, 67.18, 69.89], [68.6, 65.9, 65.58, 68.6], [62.4, 63.38, 62.2, 65.8], [64.0, 69.72, 63.55, 69.72], [70.88, 68.9, 68.25, 72.69], [68.9, 67.14, 66.21, 69.5], [68.5, 66.08, 66.08, 70.0], [67.3, 70.53, 66.27, 70.68], [70.56, 73.19, 70.41, 75.14], [72.0, 74.62, 72.0, 75.48], [75.03, 74.37, 73.54, 76.13], [74.55, 77.3, 72.8, 77.5], [85.03, 81.48, 79.0, 85.03], [79.0, 82.86, 76.88, 83.56], [85.0, 86.99, 84.1, 89.69], [84.39, 82.57, 81.0, 85.58], [80.91, 76.7, 75.2, 82.82], [75.68, 79.56, 74.49, 80.68], [79.56, 74.73, 74.0, 80.49], [72.0, 71.4, 69.8, 75.27], [71.38, 71.43, 70.5, 74.41], [71.01, 74.06, 71.0, 76.99], [72.0, 71.29, 71.05, 76.88], [72.0, 72.12, 70.5, 74.79], [73.44, 75.87, 68.24, 76.55], [74.87, 73.54, 73.38, 78.5], [72.72, 66.98, 66.4, 74.81], [66.86, 70.13, 65.35, 71.59], [70.0, 67.74, 67.02, 70.89], [66.5, 67.86, 64.0, 70.77], [68.4, 61.57, 61.2, 68.85], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"]],fcands=[["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], ["-", "-", "-", "-"], [61.57, 61.65, 59.24, 63.99], [61.65, 61.99, 59.31, 64.34], [61.99, 62.5, 59.64, 64.87], [62.5, 63.21, 60.13, 65.61], [63.21, 63.95, 60.81, 66.37], [63.95, 64.49, 61.53, 66.93], [64.49, 65.22, 62.05, 67.69], [65.22, 65.89, 62.75, 68.39]],vols=[[0, 642509.0, -1], [1, 571816.0, -1], [2, 643243.0, -1], [3, 630988.0, 1], [4, 441093.0, -1], [5, 499786.0, 1], [6, 554258.0, -1], [7, 543643.0, -1], [8, 637491.0, 1], [9, 772247.0, 1], [10, 525397.0, -1], [11, 415887.0, 1], [12, 584234.0, -1], [13, 381041.0, 1], [14, 280675.0, -1], [15, 301277.0, -1], [16, 282635.0, 1], [17, 310352.0, 1], [18, 811240.0, 1], [19, 496759.0, -1], [20, 860329.0, 1], [21, 506127.0, -1], [22, 781412.0, 1], [23, 550545.0, -1], [24, 498362.0, -1], [25, 428204.0, 1], [26, 386432.0, 1], [27, 303555.0, -1], [28, 401853.0, -1], [29, 804932.0, 1], [30, 806493.0, 1], [31, 497112.0, -1], [32, 327931.0, -1], [33, 671956.0, 1], [34, 455663.0, -1], [35, 508525.0, 1], [36, 518034.0, -1], [37, 283674.0, 1], [38, 350792.0, -1], [39, 239704.0, 1], [40, 410048.0, -1], [41, 369976.0, -1], [42, 387836.0, 1], [43, 282610.0, -1], [44, 224015.0, 1], [45, 635011.0, 1], [46, 483651.0, -1], [47, 596461.0, 1], [48, 363878.0, 1], [49, 496953.0, 1], [50, 437379.0, -1], [51, 283828.0, -1], [52, 323763.0, -1], [53, 281134.0, -1], [54, 402133.0, 1], [55, 368093.0, -1], [56, 518033.0, -1], [57, 343814.0, 1], [58, 340067.0, -1], [59, 281810.0, -1], [60, 263604.0, 1], [61, 443835.0, 1], [62, 421797.0, 1], [63, 759554.0, 1], [64, 610063.0, 1], [65, 657688.0, 1], [66, 590692.0, -1], [67, 366240.0, -1], [68, 575430.0, 1], [69, 847987.0, 1], [70, 59793.0, 1], [71, 1594477.0, 1], [72, 935120.0, 1], [73, 690246.0, -1], [74, 431158.0, 1], [75, 349188.0, -1], [76, 297154.0, 1], [77, 292123.0, -1], [78, 509090.0, 1], [79, 587315.0, 1], [80, 445573.0, 1], [81, 599579.0, -1], [82, 443211.0, -1], [83, 693245.0, 1], [84, 540480.0, -1], [85, 436866.0, -1], [86, 400614.0, 1], [87, 475088.0, 1], [88, 705894.0, 1], [89, 670459.0, -1], [90, 401763.0, 1], [91, 411091.0, -1], [92, 796747.0, -1], [93, 475454.0, -1], [94, 406566.0, 1], [95, 647705.0, -1], [96, 653410.0, -1], [97, 514809.0, 1], [98, 652871.0, 1], [99, 475321.0, 1], [100, 468850.0, -1], [101, 402509.0, 1], [102, 678232.0, 1], [103, 715816.0, -1], [104, 386019.0, -1], [105, 597179.0, -1], [106, 541686.0, 1], [107, 706865.0, 1], [108, 562031.0, 1], [109, 553636.0, -1], [110, 861948.0, 1], [111, 1358566.0, -1], [112, 1052507.0, 1], [113, 1030943.0, 1], [114, 760726.0, -1], [115, 712064.0, -1], [116, 605399.0, 1], [117, 633253.0, -1], [118, 524778.0, -1], [119, 432840.0, 1], [120, 651907.0, 1], [121, 505101.0, -1], [122, 544177.0, 1], [123, 745033.0, 1], [124, 720017.0, -1], [125, 582259.0, -1], [126, 543450.0, 1], [127, 362258.0, -1], [128, 457153.0, 1], [129, 524069.0, -1]];
+var ma5=[null, null, null, null, 80.09, 79.37, 78.46, 77.56, 76.72, 76.99, 77.06, 77.41, 77.35, 77.41, 76.82, 76.01, 75.23, 75.48, 76.23, 76.21, 77.69, 78.68, 80.51, 80.83, 80.82, 79.69, 79.69, 78.77, 77.73, 79.29, 81.36, 82.17, 83.09, 85.27, 85.12, 84.8, 83.77, 82.66, 80.87, 79.77, 77.6, 77.11, 76.76, 76.13, 75.5, 76.74, 77.06, 78.06, 79.0, 80.19, 79.1, 78.66, 77.4, 76.09, 74.26, 72.99, 70.83, 69.09, 67.13, 65.67, 64.91, 66.01, 66.92, 69.42, 72.38, 76.22, 78.35, 80.36, 82.15, 84.95, 84.83, 84.65, 83.81, 81.43, 77.57, 75.09, 73.6, 72.66, 73.06, 74.06, 75.51, 76.69, 77.52, 78.84, 78.79, 78.52, 78.51, 78.88, 79.19, 78.94, 79.62, 80.23, 79.64, 77.58, 77.12, 74.98, 71.89, 70.25, 69.32, 68.19, 67.4, 66.86, 67.31, 67.42, 67.01, 67.04, 68.47, 69.17, 70.31, 71.76, 74.0, 76.19, 78.13, 80.6, 82.24, 82.12, 81.74, 80.11, 76.99, 74.76, 74.24, 72.58, 72.06, 72.95, 73.38, 71.96, 71.73, 70.85, 69.25, 66.86, null, null, null, null, null, null, null, null],ma20=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 77.53, 77.53, 77.45, 77.73, 77.8, 77.71, 77.61, 77.76, 78.03, 78.05, 78.28, 78.69, 78.95, 79.46, 80.01, 80.36, 80.89, 81.08, 81.26, 81.17, 81.25, 80.86, 80.69, 80.32, 80.0, 79.92, 80.13, 80.03, 80.14, 80.32, 80.15, 79.56, 79.15, 78.72, 78.02, 77.43, 76.61, 75.92, 75.33, 74.58, 73.91, 73.44, 73.14, 72.87, 72.91, 73.13, 73.31, 73.46, 73.44, 73.7, 74.32, 74.74, 74.96, 75.04, 75.03, 75.14, 75.26, 75.65, 75.94, 76.51, 77.24, 77.91, 78.32, 78.59, 78.87, 78.84, 78.49, 78.36, 78.22, 78.13, 77.34, 77.19, 77.26, 77.18, 77.17, 77.23, 77.16, 76.83, 76.57, 76.24, 75.76, 75.13, 74.37, 74.02, 73.38, 72.81, 72.26, 71.87, 71.59, 71.16, 71.02, 70.85, 70.85, 71.21, 71.91, 72.3, 72.64, 73.32, 73.68, 73.83, 73.94, 74.35, 74.75, 74.87, 75.21, 75.53, 75.58, 75.56, 75.29, 74.95, 74.31, null, null, null, null, null, null, null, null],ma60=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 77.56, 77.28, 77.09, 76.97, 76.9, 76.92, 77.02, 77.08, 77.2, 77.35, 77.58, 77.66, 77.69, 77.74, 77.69, 77.64, 77.59, 77.55, 77.51, 77.42, 77.47, 77.41, 77.38, 77.26, 77.26, 77.3, 77.31, 77.29, 77.27, 77.38, 77.27, 77.16, 77.12, 76.98, 76.74, 76.6, 76.34, 76.13, 75.95, 75.78, 75.64, 75.49, 75.28, 75.16, 75.05, 74.93, 74.68, 74.56, 74.42, 74.33, 74.23, 74.26, 74.36, 74.48, 74.71, 74.89, 75.02, 75.27, 75.4, 75.53, 75.65, 75.8, 75.81, 75.83, 75.82, 75.73, 75.44, 75.26, 75.03, 74.75, 74.22, null, null, null, null, null, null, null, null],optS=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 64.28, 66.58, 68.11, 69.92, 71.45, 72.89, 74.35, 75.71],cauS=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 57.84, 57.21, 56.83, 56.62, 56.71, 56.51, 56.63, 56.65];
+var bandLow=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 57.84, 57.21, 56.83, 56.62, 56.71, 56.51, 56.63, 56.65],bandUp=[null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, null, 6.44, 9.37, 11.28, 13.3, 14.74, 16.38, 17.72, 19.06],nHist=130;
+var HI=93.52,M20=74.31,M60=74.22;
+var ch=echarts.init(document.getElementById('kchart'),'dark');
+ch.setOption({
+ backgroundColor:'transparent',
+ legend:{data:['日K','预测蜡烛','MA5','MA20','MA60','乐观p90','谨慎p10'],textStyle:{color:'#9aa7b8'},top:0,type:'scroll'},
+ tooltip:{trigger:'axis',axisPointer:{type:'cross'}},
+ axisPointer:{link:[{xAxisIndex:'all'}]},
+ grid:[{left:48,right:14,top:30,height:260},{left:48,right:14,top:310,height:64}],
+ xAxis:[
+  {type:'category',data:dates,boundaryGap:true,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#9aa7b8',fontSize:10},splitLine:{show:false},
+   markLine:{symbol:'none',silent:true,lineStyle:{color:'#e8b84b',type:'dashed',opacity:.55},data:[{xAxis:nHist-1,label:{formatter:'今日',color:'#e8b84b',fontSize:10}}]}},
+  {type:'category',gridIndex:1,data:dates,axisLabel:{show:false},axisLine:{lineStyle:{color:'#293040'}}}],
+ yAxis:[
+  {scale:true,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#9aa7b8'},splitLine:{lineStyle:{color:'#1b2230'}}},
+  {gridIndex:1,axisLabel:{show:false},axisLine:{show:false},splitLine:{show:false}}],
+ dataZoom:[{type:'inside',xAxisIndex:[0,1],start:50,end:100},{type:'slider',xAxisIndex:[0,1],bottom:2,height:15,start:50,end:100}],
+ series:[
+  {name:'谨慎下界',type:'line',data:bandLow,stack:'band',symbol:'none',lineStyle:{opacity:0},silent:true,z:1},
+  {name:'概率带',type:'line',data:bandUp,stack:'band',symbol:'none',lineStyle:{opacity:0},areaStyle:{color:'rgba(232,184,75,.18)'},silent:true,z:1},
+  {name:'日K',type:'candlestick',data:ohlc,itemStyle:{color:'#ff5b5b',color0:'#2ecc71',borderColor:'#ff5b5b',borderColor0:'#2ecc71'},
+   markLine:{symbol:'none',precision:2,data:[
+    {yAxis:HI,lineStyle:{color:'#ff5b5b',type:'dotted'},label:{formatter:'前高 '+HI,color:'#ff5b5b',fontSize:10}},
+    {yAxis:M20,lineStyle:{color:'#7aa2ff',type:'dotted'},label:{formatter:'MA20 '+M20,color:'#7aa2ff',fontSize:10}},
+    {yAxis:M60,lineStyle:{color:'#bc8cff',type:'dotted'},label:{formatter:'MA60 '+M60,color:'#bc8cff',fontSize:10}}]}},
+  {name:'预测蜡烛',type:'candlestick',data:fcands,barWidth:'60%',
+   itemStyle:{color:'rgba(255,91,91,.45)',color0:'rgba(46,204,113,.45)',borderColor:'rgba(255,91,91,.7)',borderColor0:'rgba(46,204,113,.7)'},z:3},
+  {name:'MA5',type:'line',data:ma5,smooth:true,symbol:'none',lineStyle:{width:1,color:'#e8b84b'}},
+  {name:'MA20',type:'line',data:ma20,smooth:true,symbol:'none',lineStyle:{width:1,color:'#7aa2ff'}},
+  {name:'MA60',type:'line',data:ma60,smooth:true,symbol:'none',lineStyle:{width:1.4,color:'#bc8cff'}},
+  {name:'乐观p90',type:'line',data:optS,smooth:true,symbol:'none',connectNulls:true,lineStyle:{width:1.5,type:'dashed',color:'#ff5b5b',opacity:.85}},
+  {name:'谨慎p10',type:'line',data:cauS,smooth:true,symbol:'none',connectNulls:true,lineStyle:{width:1.5,type:'dashed',color:'#2ecc71',opacity:.85}},
+  {name:'量',type:'bar',xAxisIndex:1,yAxisIndex:1,data:vols.map(function(v){return{value:v[1],itemStyle:{color:v[2]>0?'#ff5b5b':'#2ecc71'}}})}
+ ]
+});
+window.addEventListener('resize',function(){ch.resize()});
+</script>
+
+</body></html>
