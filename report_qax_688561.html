@@ -1,0 +1,300 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 阿波罗看板 CORS 约定：sandbox（源=null）；本页所有数据已内嵌，无运行时跨域取数 -->
+<meta http-equiv="Content-Security-Policy" content="sandbox allow-scripts allow-popups allow-popups-to-escape-sandbox">
+<title>奇安信-U 688561 · 阿波罗个股看板</title>
+<script src="https://cdn.jsdelivr.net/npm/echarts@5/dist/echarts.min.js"></script>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#293040;
+    --gold:#e8b84b; --gold2:#f5d27a; --txt:#e6edf3; --sub:#9aa7b8; --muted:#6b7689;
+    --up:#ff5b5b; --down:#2ecc71; --warn:#ffb454; --good:#5ad1a0; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;line-height:1.7;font-size:15px;padding:0 0 60px}
+  .wrap{max-width:900px;margin:0 auto;padding:0 14px}
+  header.hero{text-align:center;padding:38px 16px 26px;border-bottom:1px solid var(--line);background:linear-gradient(180deg,rgba(232,184,75,.06),transparent)}
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin:18px auto 0;padding:14px;border:1px solid var(--line);border-radius:12px;background:var(--panel);max-width:640px}
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .caveat{margin:22px 0;padding:14px 16px;border-radius:10px;background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);font-size:13px;color:#ffd9a3}
+  .caveat b{color:var(--warn)}
+  section.card{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px;margin:16px 0}
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px;flex-wrap:wrap}
+  .sec-n{min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px}
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{margin:6px 0}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  b.hl{color:var(--gold2)}
+  .x{color:var(--bad)} .ok{color:var(--good)} .w{color:var(--warn)}
+  .tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{padding:8px 6px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  td.l,th.l{text-align:left}
+  td.wrap,th.wrap{white-space:normal}
+  tr.self td{background:rgba(232,184,75,.09);font-weight:600}
+  .pos{color:var(--up)} .negc{color:var(--down)}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic td{white-space:normal}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:130px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:18px;font-weight:700;margin-top:3px}
+  .lvl .chip .d{font-size:11px;color:var(--sub);margin-top:2px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)} .chip.tp .v{color:var(--gold2)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  .chart{width:100%;height:420px}
+  .chart.s{height:240px}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 个 股 看 板</div>
+  <h1>奇安信-U<span class="code">688561</span></h1>
+  <div class="meta">截至 2026-10-30 收盘（11-02 周一开盘前） ｜ 科创板 · 网络安全 ｜ 总股本 6.82亿（已全流通） ｜ 总市值 165.65亿</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">10-30 收盘</div><div class="val" style="color:var(--down)">¥24.28 <span style="font-size:13px">-5.67%</span></div></div>
+    <div class="item"><div class="lbl">近5日 / 近20日</div><div class="val" style="color:var(--down);font-size:17px">-19.1% / -15.1%</div></div>
+    <div class="item"><div class="lbl">PB / PE(TTM)</div><div class="val" style="font-size:17px">2.64 / <span class="x">亏损</span></div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--warn);font-size:16px">利空未落地·不抄底</div></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="caveat">
+    <b>⚠ 关键时点 + 数据口径：</b>
+    ① <b>三季报 10-30（周五）16:02 盘后才披露</b>，10-29/10-30 两日 -14.5% 是报告前的下跌，<b>11-02 周一是三季报首个反应日</b>；
+    ② PE(TTM)：腾讯口径 -9.0（已含Q3），东财估值库仍为 -17.8（未更新Q3），本页以已含Q3的口径为准；亏损股 PE 无意义，估值主看 PB/PS；
+    ③ 北向日度数据 2024-08 起停披露，改用十大股东「香港中央结算」季度口径；
+    ④ 研报接口最新一篇停在 2024-09，近两年一致预期<b>未取到</b>；新闻接口报错<b>未取到</b>，消息面以交易所公告标题为准。
+  </div>
+
+  <!-- 同行横向对比（置顶） -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n" style="background:linear-gradient(135deg,#7aa2ff,#3a5bbf);color:#fff">比</div><div class="sec-t">同行横向对比 · 网络安全</div><div class="sec-tag">10-30 收盘口径</div></div>
+    <p class="small">选样：深信服（网安+云，行业营收/市值龙一）、启明星辰（老牌网安龙头，中国移动系）、天融信（防火墙龙头）、安恒信息（同为科创板，数据/云安全）。绿盟科技体量偏小，未纳入。数据：腾讯实时（价/涨幅/PE/PB/换手/成交额/市值）+ 东财资金流（10-26~10-30 五日主力）+ 新浪财务（2026前三季）。</p>
+    <div class="tscroll">
+    <table>
+      <thead><tr>
+        <th class="l">公司</th><th>价</th><th>涨幅</th><th>PE(TTM)</th><th>PB</th><th>PB 3年<br>分位</th><th>换手</th><th>成交额</th><th>总市值</th><th>5日主力</th><th>前三季<br>营收增速</th><th>前三季<br>净利率</th>
+      </tr></thead>
+      <tbody>
+        <tr class="self"><td class="l">奇安信-U 688561<br><span class="small">本体·政企网安</span></td><td>24.28</td><td class="negc">-5.67%</td><td><span class="x">亏损</span><br><span class="small">-9.0</span></td><td>2.64</td><td>50.3%</td><td>1.43%</td><td>2.45亿</td><td>165.7亿</td><td class="negc">-0.97亿</td><td class="negc">-20.2%</td><td class="negc">-51.6%</td></tr>
+        <tr><td class="l">深信服 300454<br><span class="small">网安+云·营收龙一</span></td><td>122.75</td><td class="negc">-0.95%</td><td>50.5</td><td>4.56</td><td>57.5%</td><td>4.06%</td><td>14.45亿</td><td>529.7亿</td><td class="negc">-1.80亿</td><td class="pos">+32.3%</td><td class="pos">8.5%</td></tr>
+        <tr><td class="l">启明星辰 002439<br><span class="small">老牌网安·中国移动系</span></td><td>13.47</td><td class="negc">-2.32%</td><td><span class="x">亏损</span><br><span class="small">-51.3</span></td><td>1.50</td><td>13.5%</td><td>6.70%</td><td>6.84亿</td><td>163.2亿</td><td class="negc">-1.93亿</td><td class="pos">+12.2%</td><td class="pos">2.2%</td></tr>
+        <tr><td class="l">安恒信息 688023<br><span class="small">科创板·数据/云安全</span></td><td>40.20</td><td class="negc">-8.11%</td><td><span class="x">亏损</span><br><span class="small">-56.8</span></td><td>1.90</td><td>25.3%</td><td>5.36%</td><td>2.30亿</td><td>41.0亿</td><td class="negc">-0.36亿</td><td class="negc">-2.6%</td><td class="negc">-18.8%</td></tr>
+        <tr><td class="l">天融信 002212<br><span class="small">防火墙龙头</span></td><td>5.53</td><td class="negc">-9.93%</td><td><span class="x">亏损</span><br><span class="small">-37.2</span></td><td>0.72</td><td>14.7%</td><td>9.09%</td><td>6.07亿</td><td>65.2亿</td><td class="negc">-3.13亿</td><td class="negc">-29.3%</td><td class="negc">-57.0%</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="takeaway">
+      <b>相对位置：</b>① 五家里只有<b class="hl">深信服</b>既增收又像样地赚钱（营收 +32%、净利率 8.5%）；启明营收 +12% 但只是微利（2.2%）；安恒、天融信、奇安信都在亏损，行业整体还没走出来。但<b class="hl">奇安信营收 -20% 在五家里倒数第二（仅好于天融信 -29%）</b>，这是公司自身的问题，不能全推给行业；
+      ② 估值上，奇安信 PB 2.64 只低于深信服（4.56），<b class="hl">明显高于启明 1.50、安恒 1.90、天融信 0.72</b>——它在"亏损扩大"的情况下还享受第二高的 PB，溢价来自"国家队+龙头"身份；
+      ③ 资金面五家 5 日主力<b class="hl">全部净流出</b>（板块整体被卖，天融信 -3.13亿最多），奇安信 -0.97亿在五家里流出偏少，但它的三季报是 10-30 盘后才发的，<b class="hl">还没被这几天的资金反映进去</b>。
+      <br><b style="color:var(--gold)">结论：</b>奇安信属于"<b class="hl">基本面偏弱、估值偏高</b>"那一档。PB 要往同行靠（1.5~1.9），价格对应约 14~17 元，所以现在不能光凭"跌多了"就买。
+    </div>
+  </section>
+
+  <!-- K线 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n" style="background:linear-gradient(135deg,#7aa2ff,#3a5bbf);color:#fff">K</div><div class="sec-t">近120日K线 + 均线 + 主力资金</div><div class="sec-tag">不复权真实价</div></div>
+    <div id="kchart" class="chart"></div>
+    <div id="ffchart" class="chart s"></div>
+  </section>
+
+  <!-- ① 基本面 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">基本面</div><div class="sec-tag">营收下滑·Q3单季由盈转亏（核心）</div></div>
+    <div class="tscroll">
+    <table>
+      <thead><tr><th class="l">科目（新浪利润表）</th><th>2026前三季</th><th>2025前三季</th><th>同比</th><th>2026Q3单季</th><th>2025Q3单季</th></tr></thead>
+      <tbody>
+        <tr><td class="l">营业收入</td><td>22.66亿</td><td>28.39亿</td><td class="negc">-20.2%</td><td>7.70亿</td><td>10.96亿 <span class="negc">(-29.8%)</span></td></tr>
+        <tr><td class="l">归母净利润</td><td class="negc">-11.69亿</td><td class="negc">-6.17亿</td><td class="x">亏损扩大89%</td><td class="negc">-7.58亿</td><td class="pos">+1.53亿</td></tr>
+        <tr><td class="l">毛利率（推算）</td><td>51.8%</td><td>52.3%</td><td>-0.5pct</td><td>53.2%</td><td>—</td></tr>
+        <tr><td class="l">研发 / 销售 / 管理费用</td><td>8.67 / 8.98 / 2.68亿</td><td>8.35 / 10.10 / 3.44亿</td><td>+3.9% / -11.1% / -21.9%</td><td colspan="2" class="small">三费合计 -7.1%，降得比营收慢</td></tr>
+        <tr><td class="l">信用减值损失</td><td>-2.46亿</td><td>-2.30亿</td><td>多计提</td><td>-0.78亿</td><td>—</td></tr>
+        <tr><td class="l">经营现金流净额</td><td>-9.16亿</td><td>-10.42亿</td><td class="ok">改善12%</td><td>-1.93亿</td><td>+1.01亿</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <ul>
+      <li>每股净资产 <b class="hl">9.18元</b>（2025年末 10.92，<b class="x">9个月 -16%</b>）；资产负债率 <b class="hl">52.1%</b>（一年前 44.5%）；应收账款周转天数 <b class="hl">572天</b></li>
+      <li>2025 全年：营收 43.92亿（+1.0%）、归母 -12.87亿；<b class="hl">Q4 一个季度占全年营收 35%</b>（15.53亿），网安行业典型的四季度旺季</li>
+      <li>8-28 公告：2022年期权第四期、2023年期权第三期<b class="x">行权条件未成就并注销</b>（业绩考核没达标）</li>
+      <li><span class="w">⚠ 存疑项：</span>按利润表科目倒推，Q3 单季除毛利、三费、减值之外的其他科目合计约 <b class="hl">-4.8亿</b>（H1 同口径约 +3.9亿），可能来自投资收益、公允价值变动等，<b>明细未取到</b>，要看三季报原文确认是不是一次性的</li>
+    </ul>
+    <div class="takeaway">H1 看着减亏（-4.1亿 vs -7.7亿），但 <b>Q3 一个季度收入 -30%、单季亏 7.6亿</b>，前三季亏损直接扩大近九成。<b>降本见效了（三费 -7%、现金流改善），但收入掉得更快</b>，经营杠杆在反向放大亏损。</div>
+  </section>
+
+  <!-- ② 资金面 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金面</div><div class="sec-tag">主力连续出·散户接</div></div>
+    <ul>
+      <li>主力净流入：<b class="x">5日 -0.97亿 ／ 20日 -1.02亿 ／ 30日 -1.97亿</b>（东财口径）</li>
+      <li>10-29：主力 <b class="x">-0.39亿</b>（净占比 -11.5%），小单 <b class="pos">+0.20亿</b>；10-30：主力 <b class="x">-0.31亿</b>（-12.7%），小单 <b class="pos">+0.24亿</b> —— <b class="hl">主力在卖、散户在接</b></li>
+      <li>筹码（东财日线+换手衰减模型自算）：<b class="hl">获利盘仅 4.4%</b>，平均成本 <b class="hl">27.87</b>，90% 筹码在 24.36~30.62（集中度 11.4%），70% 在 25.41~30.01</li>
+      <li>北向：日度数据已停披露；季度口径「香港中央结算」0.67%，Q3 <b class="x">-12.4万股（-2.66%）</b></li>
+      <li>量能：5日均量/20日均量 = 0.89，<b class="hl">缩量下跌</b>，还没出现恐慌放量</li>
+    </ul>
+    <div class="takeaway">现价 24.28 已经低于 90% 筹码的下沿，<b>几乎所有持股人都套着</b>；25.4~30 是密集套牢区，反弹上去就有解套盘砸下来。不过获利盘只有 4%，也说明<b>想割肉的人已经割得差不多</b>，这是后面能见底的条件之一，但现在还没出现见底的放量信号。</div>
+  </section>
+
+  <!-- ③ 股东结构 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">股东结构</div><div class="sec-tag">国家队+创始人锁仓·散户Q3追高</div></div>
+    <ul>
+      <li>十大股东（2026-09-30）：<b class="hl">中电金投控股 23.19%</b>（中国电子系，第一大股东）、<b class="hl">齐向东 21.92%</b>、安源创志 7.28%、奇安叁号 3.26%、国投科技成果转化基金 3.06%、产业投资基金 1.84%，前十合计 <b>63.5%</b>，全部"不变"</li>
+      <li><span class="ok">✅ 全国社保基金118组合 0.97%（新进）</span></li>
+      <li><span class="ok">✅ 10-28 公告：控股股东、实际控制人<b>自愿承诺特定期间不减持</b></span>（具体期限未取到）</li>
+      <li><span class="x">❌ 股东户数 9-30：2.81万户，环比 +6.45%</span>（Q3 区间股价 +24.7%，散户在反弹里追进）；6-30 为 2.64万户</li>
+    </ul>
+    <div class="takeaway">上层很稳：国资和创始人锁仓、承诺不减持、社保新进。<b>麻烦在下层</b>：Q3 追进来的散户（成本大约 27~30）现在全被套。大股东不卖，股价也能下跌——<b>不减持承诺只能说明供给端不会再加压，不等于股价有支撑</b>。</div>
+  </section>
+
+  <!-- ④ 估值 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">估值</div><div class="sec-tag">PB 中位·但净资产在缩</div></div>
+    <ul>
+      <li>PE(TTM) <b class="x">-9.0</b>（TTM 归母约 -18.4亿，亏损，PE 失效）</li>
+      <li>PB <b class="hl">2.64</b>：近3年分位 <b>50.3%</b>，上市以来分位 <b>24.8%</b></li>
+      <li>PS(TTM) ≈ <b class="hl">4.3倍</b>（TTM 营收约 38.2亿，推算）</li>
+      <li>历史坐标：上市以来最低 <b>20.15</b>（2024-09-18），近一年最低 21.98（2026-06-29），最高 44.88（2026-01-15）</li>
+      <li>研报：最新一篇停在 2024-09（中银·买入）。当时各家给 2026 年 EPS 的预测是 0.80~0.94元，<b class="x">实际 TTM EPS 约 -2.69元，预期完全落空</b>；近两年一致预期未取到</li>
+    </ul>
+    <div class="takeaway">PB 分位看着不贵，但有个坑：<b>每股净资产 9 个月少了 16%</b>。就算 PB 不变，净资产每缩一块，股价也得跟着掉；PB 要是再往同行 1.5~1.9 靠，价格就是 14~17 元。所以真正的估值底，要等到<b>亏损止住、净资产不再缩</b>的时候。</div>
+  </section>
+
+  <!-- ⑤ 期货关联 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">期货关联</div><div class="sec-tag">不适用</div></div>
+    <p>网络安全属于软件和服务行业，<b class="hl">没有直接定价的大宗商品期货</b>，这一段不适用。真正的外部变量是<b>政府和政企客户的 IT 预算节奏</b>（地方财政和招投标），这方面本次没有取到可以量化的数据。</p>
+  </section>
+
+  <!-- ⑥ 技术面 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑥</div><div class="sec-t">技术面</div><div class="sec-tag">破位·超卖·未止跌</div></div>
+    <ul>
+      <li>收盘 24.28，<b class="x">跌破全部均线</b>：MA5 27.23 / MA10 27.76 / MA20 28.61 / MA60 27.59 / MA120 26.93 / MA250 31.10</li>
+      <li>布林（20,2）：上轨 31.92 / 中轨 28.61 / 下轨 25.29，<b class="x">收盘跌破下轨</b></li>
+      <li>MACD：DIF -0.408 &lt; DEA 0.081，死叉状态下 <b class="x">DIF 在 10-29 跌破零轴</b>，绿柱 -0.98 正在快速放大</li>
+      <li>RSI14 <b class="hl">28.3（进入超卖区 &lt;30）</b></li>
+      <li>形态：9 月下旬到 10-28 在 26.6~31.9 区间震荡，<b class="x">10-29 收盘跌破区间下沿</b>，60 日低点 24.25 就是 10-30 当天的盘中低点</li>
+    </ul>
+    <div class="takeaway">超卖是真的，但 MACD 绿柱在加速、DIF 刚破零轴，跌破布林下轨、又是缩量，三季报利空也还没被交易。<b>技术上只能叫"超卖"，还不能叫"见底"</b>。</div>
+  </section>
+
+  <!-- ⑦ 催化剂 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑦</div><div class="sec-t">催化剂</div><div class="sec-tag">近端偏空·远端看Q4</div></div>
+    <ul>
+      <li><b class="x">[近·偏空] 11-02 周一：三季报首个交易日。</b>Q3 单季收入 -30%、由盈转亏 7.6亿，这次是首次被交易；科创板涨跌幅 ±20%，理论下限 19.42</li>
+      <li><b class="ok">[近·偏多] 控股股东、实控人自愿不减持承诺（10-28）</b>，相当于托底姿态；另外 7-18 原董秘离任，10-30 公告新聘董秘</li>
+      <li><b class="hl">[中·验证] Q4 旺季 + 2026 年报预告</b>：Q4 通常占全年营收约 35%，按上交所规则，亏损公司要在 2027-01-31 前发业绩预告，这是下一个能证实或证伪的节点</li>
+      <li><b class="hl">[背景·政策]</b> 修订后的《网络安全法》2026-01-01 起施行（公开信息，不是本次取数）；目前看还没有转化成收入</li>
+      <li><span class="small">其他公告：6-16 公司提起仲裁（细节未取到）；8-28 发布《提质增效重回报》半年度评估；关联方中国电子财务公司风险持续评估</span></li>
+    </ul>
+  </section>
+
+  <!-- ⑧ 矛盾链 -->
+  <section class="card logic">
+    <div class="sec-h"><div class="sec-n">⑧</div><div class="sec-t">矛盾链 —— "国家队龙头"遇上"收入失速"</div></div>
+    <div class="tscroll">
+    <table>
+      <thead><tr><th class="l good-col">利好</th><th class="l bad-col">利空 / 风险</th></tr></thead>
+      <tbody>
+        <tr><td class="l">中国电子系第一大股东 + 创始人 21.9%，承诺不减持</td><td class="l">前三季营收 -20%、Q3 单季 -30%，同行深信服却 +32%，是公司自身问题</td></tr>
+        <tr><td class="l">毛利率稳在 52% 左右，三费 -7%，经营现金流同比改善 12%</td><td class="l">亏损扩大 89%，Q3 单季由盈转亏 7.6亿；还有约 -4.8亿其他损益明细不明</td></tr>
+        <tr><td class="l">社保 118 新进 0.97%</td><td class="l">主力 5 日 -0.97亿、30 日 -1.97亿；散户户数 +6.5% 在接盘</td></tr>
+        <tr><td class="l">RSI 28 超卖，获利盘仅 4%，割肉盘接近出尽</td><td class="l">MACD 绿柱加速、DIF 破零轴、跌破布林下轨，三季报利空周一才第一次被交易</td></tr>
+        <tr><td class="l">PB 在上市以来 25% 分位，离历史最低 20.15 已不远</td><td class="l">每股净资产 9 个月 -16%；PB 仍是同行第二高，有向 1.5~1.9 靠拢的压力</td></tr>
+        <tr><td class="l">Q4 旺季（占全年 35%）可能修复全年数据</td><td class="l">期权行权条件未达成，研报覆盖断档，市场对它的预期很低</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="takeaway"><b>本质矛盾：</b>"国家队 + 赛道龙头"的身份撑着 PB 溢价，可收入在失速、净资产在缩，这份溢价正在被一点点拿走。技术上超卖，基本面利空却还没定价，<b>两者的时间差就是风险</b>。真正的拐点要看收入什么时候止跌，不是看股价跌了多少。</div>
+  </section>
+
+  <!-- ⑨ 操作策略 -->
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-n">⑨</div><div class="sec-t">操作策略（基准价 ¥24.28 · 10-30 收盘）</div></div>
+    <ul>
+      <li><b class="hl">空仓：不抄底，先观望。</b>周一先看三季报的反应。左侧不接；要进场，得等右侧信号——<b>放量站回 MA20（≈28.6）且主力连续 3 日净流入</b>，或者年报预告显示亏损明显收窄。</li>
+      <li><b class="hl">激进试错（≤1成仓）：</b>只在<b>回踩 21.98~22.5（年内低点）并缩量企稳</b>时考虑，<b>收盘跌破 21.0 无条件止损</b>。</li>
+      <li><b class="hl">持仓：借反弹分批减，不在急跌里割。</b>第一止盈/减仓位 25.3（布林下轨 + 筹码下沿），第二位 27.8~28.6（平均成本 + MA20），第三位 30.0~30.6（筹码上沿 / 箱体顶）。</li>
+      <li><b class="hl">周一应对：</b>如果低开放量杀到 22 附近、尾盘收回，是第一个能看的止跌迹象；如果缩量阴跌、收在 22 以下，就继续等。</li>
+      <li><b class="hl">中期（1~2季）：</b>胜负手在 Q4 收入能不能止跌（同比转正）、亏损能不能收窄。证实了再按 PB 修复的逻辑做波段；证伪的话，PB 会往同行 1.5~1.9 回归。</li>
+    </ul>
+    <div class="lvl">
+      <div class="chip tp"><div class="k">止盈①</div><div class="v">25.3</div><div class="d">布林下轨/筹码下沿</div></div>
+      <div class="chip tp"><div class="k">止盈②</div><div class="v">27.8~28.6</div><div class="d">平均成本/MA20</div></div>
+      <div class="chip res"><div class="k">止盈③ · 强压</div><div class="v">30.0~30.6</div><div class="d">筹码上沿/箱顶</div></div>
+      <div class="chip sup"><div class="k">关键支撑</div><div class="v">21.98 / 20.15</div><div class="d">年内低/上市最低</div></div>
+      <div class="chip stop"><div class="k">止损线</div><div class="v">收盘破 21.0</div><div class="d">试错仓离场</div></div>
+    </div>
+  </section>
+
+  <footer>
+    以上是基于公开行情、财报和公告数据的客观梳理，<b>不构成投资建议，市场有风险</b>。<br>
+    数据：腾讯行情 / 东方财富（资金流、筹码、股东、估值、公告）/ 新浪财报 / akshare。没取到的字段（近两年研报一致预期、新闻、Q3 其他损益明细、不减持承诺期限）已在文中标出。<br>
+    <span class="small">阿波罗框架 · 生成于 2026-11-02</span>
+  </footer>
+
+</div>
+<script>
+var K={"d": ["05-07", "05-08", "05-11", "05-12", "05-13", "05-14", "05-15", "05-18", "05-19", "05-20", "05-21", "05-22", "05-25", "05-26", "05-27", "05-28", "05-29", "06-01", "06-02", "06-03", "06-04", "06-05", "06-08", "06-09", "06-10", "06-11", "06-12", "06-15", "06-16", "06-17", "06-18", "06-22", "06-23", "06-24", "06-25", "06-26", "06-29", "06-30", "07-01", "07-02", "07-03", "07-06", "07-07", "07-08", "07-09", "07-10", "07-13", "07-14", "07-15", "07-16", "07-17", "07-20", "07-21", "07-22", "07-23", "07-24", "07-27", "07-28", "07-29", "07-30", "07-31", "08-03", "08-04", "08-05", "08-06", "08-07", "08-10", "08-11", "08-12", "08-13", "08-14", "08-17", "08-18", "08-19", "08-20", "08-21", "08-24", "08-25", "08-26", "08-27", "08-28", "08-31", "09-01", "09-02", "09-03", "09-04", "09-07", "09-08", "09-09", "09-10", "09-11", "09-14", "09-15", "09-16", "09-17", "09-18", "09-21", "09-22", "09-23", "09-24", "09-28", "09-29", "09-30", "10-08", "10-09", "10-12", "10-13", "10-14", "10-15", "10-16", "10-19", "10-20", "10-21", "10-22", "10-23", "10-26", "10-27", "10-28", "10-29", "10-30"], "k": [[30.86, 30.75, 30.4, 30.98], [31.5, 31.18, 31.06, 32.25], [31.42, 31.65, 30.91, 31.84], [31.63, 30.59, 30.56, 31.66], [30.55, 30.73, 30.17, 30.78], [30.78, 29.81, 29.69, 31.19], [30.04, 29.3, 29.14, 30.25], [29.2, 29.86, 29.0, 30.29], [29.91, 30.89, 29.77, 30.94], [30.7, 30.56, 30.34, 30.97], [30.75, 29.7, 29.45, 31.2], [29.68, 29.54, 29.21, 29.89], [29.65, 29.6, 29.29, 30.13], [29.4, 29.87, 28.61, 29.9], [29.83, 29.1, 28.88, 29.95], [28.86, 28.01, 27.41, 29.09], [28.12, 26.79, 26.66, 28.36], [26.92, 27.69, 26.34, 28.58], [27.75, 26.88, 26.78, 28.18], [26.73, 26.29, 26.14, 27.1], [25.98, 25.77, 25.53, 26.47], [25.7, 25.8, 25.32, 26.25], [25.18, 25.47, 25.03, 26.23], [25.6, 25.46, 25.11, 25.78], [25.22, 24.77, 24.5, 25.68], [24.76, 23.9, 23.79, 24.76], [24.48, 24.11, 23.95, 24.59], [24.55, 24.32, 24.14, 24.66], [24.1, 24.3, 23.8, 24.54], [24.25, 24.12, 23.78, 24.25], [24.3, 24.46, 23.86, 25.12], [24.31, 24.7, 23.46, 24.74], [24.52, 24.62, 24.36, 25.25], [24.65, 23.75, 23.7, 24.77], [23.53, 23.4, 23.0, 23.81], [23.1, 22.31, 22.23, 23.38], [22.38, 22.9, 21.98, 22.99], [22.95, 23.98, 22.76, 24.28], [23.99, 24.15, 23.82, 24.68], [24.6, 23.96, 23.87, 25.4], [23.65, 23.8, 23.55, 24.11], [23.41, 23.52, 23.21, 23.84], [23.54, 23.0, 22.9, 23.73], [23.0, 25.6, 22.89, 25.78], [25.01, 25.3, 24.56, 25.32], [25.06, 25.89, 24.91, 26.24], [25.5, 25.71, 25.41, 26.4], [25.44, 25.08, 24.55, 25.98], [25.3, 25.6, 25.1, 26.49], [25.43, 25.64, 25.01, 26.19], [25.88, 25.41, 24.63, 26.1], [25.41, 25.23, 24.48, 25.9], [24.98, 25.65, 24.68, 25.87], [25.55, 26.79, 24.98, 27.14], [26.2, 25.94, 25.75, 26.6], [25.53, 24.0, 24.0, 25.53], [23.97, 24.62, 23.61, 24.76], [24.4, 24.72, 24.28, 25.28], [24.9, 25.2, 24.52, 25.68], [25.0, 24.78, 24.73, 25.88], [25.13, 27.03, 25.1, 27.8], [26.88, 26.59, 26.42, 27.36], [26.95, 27.05, 26.7, 27.3], [27.01, 27.17, 26.85, 27.78], [26.79, 28.0, 26.69, 28.33], [28.0, 26.96, 26.2, 28.0], [26.8, 26.73, 26.53, 27.1], [27.0, 27.47, 26.73, 28.0], [27.2, 26.85, 26.53, 27.23], [26.8, 26.29, 26.27, 27.17], [26.33, 26.66, 26.0, 26.87], [26.67, 26.3, 26.0, 26.75], [26.15, 26.14, 25.32, 26.28], [25.69, 25.33, 25.2, 25.89], [25.35, 25.54, 25.23, 25.6], [25.28, 25.45, 25.03, 25.5], [25.49, 24.63, 24.51, 25.49], [24.6, 24.94, 24.5, 25.03], [24.82, 24.96, 24.82, 25.28], [25.02, 25.28, 24.92, 25.34], [27.0, 27.13, 26.78, 29.29], [26.34, 26.84, 26.3, 27.18], [26.7, 27.73, 26.45, 27.88], [27.18, 27.07, 26.95, 27.66], [26.96, 27.21, 26.8, 27.34], [27.79, 27.81, 27.4, 28.15], [27.68, 27.15, 27.09, 28.0], [27.2, 27.54, 26.99, 27.8], [27.35, 26.85, 26.72, 27.4], [26.58, 27.1, 26.5, 27.7], [27.61, 27.6, 26.7, 27.99], [30.11, 29.51, 28.99, 30.98], [30.6, 28.68, 28.6, 30.9], [28.54, 27.62, 27.27, 29.25], [27.41, 27.19, 27.11, 28.2], [27.49, 27.78, 27.33, 28.78], [28.0, 28.94, 27.71, 29.46], [28.99, 29.99, 28.95, 30.35], [29.98, 29.36, 29.29, 29.98], [29.72, 28.61, 28.6, 29.75], [29.6, 29.77, 28.31, 30.3], [30.49, 29.86, 29.49, 31.88], [29.71, 29.9, 28.85, 30.37], [29.61, 27.93, 27.83, 29.68], [28.05, 31.06, 27.84, 31.37], [30.85, 30.54, 30.04, 31.3], [30.0, 29.99, 29.4, 30.37], [29.9, 29.36, 29.24, 30.59], [28.6, 28.57, 28.31, 29.8], [28.97, 27.5, 27.2, 29.19], [27.19, 27.25, 26.58, 27.83], [27.08, 28.46, 26.65, 28.8], [28.49, 28.23, 28.1, 28.9], [29.97, 27.57, 27.5, 30.19], [27.0, 30.0, 27.0, 30.4], [30.0, 29.75, 29.44, 30.88], [29.87, 27.97, 27.89, 30.4], [28.0, 28.4, 27.58, 28.94], [28.0, 25.74, 25.65, 28.0], [25.12, 24.28, 24.25, 26.08]], "c": [30.75, 31.18, 31.65, 30.59, 30.73, 29.81, 29.3, 29.86, 30.89, 30.56, 29.7, 29.54, 29.6, 29.87, 29.1, 28.01, 26.79, 27.69, 26.88, 26.29, 25.77, 25.8, 25.47, 25.46, 24.77, 23.9, 24.11, 24.32, 24.3, 24.12, 24.46, 24.7, 24.62, 23.75, 23.4, 22.31, 22.9, 23.98, 24.15, 23.96, 23.8, 23.52, 23.0, 25.6, 25.3, 25.89, 25.71, 25.08, 25.6, 25.64, 25.41, 25.23, 25.65, 26.79, 25.94, 24.0, 24.62, 24.72, 25.2, 24.78, 27.03, 26.59, 27.05, 27.17, 28.0, 26.96, 26.73, 27.47, 26.85, 26.29, 26.66, 26.3, 26.14, 25.33, 25.54, 25.45, 24.63, 24.94, 24.96, 25.28, 27.13, 26.84, 27.73, 27.07, 27.21, 27.81, 27.15, 27.54, 26.85, 27.1, 27.6, 29.51, 28.68, 27.62, 27.19, 27.78, 28.94, 29.99, 29.36, 28.61, 29.77, 29.86, 29.9, 27.93, 31.06, 30.54, 29.99, 29.36, 28.57, 27.5, 27.25, 28.46, 28.23, 27.57, 30.0, 29.75, 27.97, 28.4, 25.74, 24.28], "v": [597.9, 1266.4, 890.2, 733.1, 762.5, 812.8, 737.7, 602.9, 842.1, 705.1, 745.9, 581.6, 582.1, 845.1, 856.2, 1003.2, 755.1, 965.1, 627.9, 647.7, 529.0, 504.8, 696.9, 530.7, 684.2, 634.7, 638.5, 533.6, 534.0, 539.5, 833.0, 880.5, 724.1, 673.6, 793.4, 848.8, 818.6, 842.3, 748.4, 922.4, 622.8, 528.1, 480.9, 1702.3, 1181.9, 1307.2, 1063.8, 956.7, 1023.1, 1003.6, 1239.5, 1097.3, 1038.3, 1643.0, 1098.6, 1073.5, 651.8, 886.4, 901.5, 839.2, 1845.1, 1015.3, 855.8, 1051.5, 1598.8, 1486.3, 742.0, 1198.7, 894.4, 704.0, 793.2, 682.0, 865.0, 603.0, 455.8, 343.8, 463.2, 276.0, 301.8, 356.5, 2301.4, 1361.6, 1455.4, 688.3, 719.3, 1108.6, 678.6, 715.0, 527.6, 711.2, 916.8, 1842.4, 2049.3, 1588.4, 885.7, 1393.4, 1289.3, 1502.7, 795.1, 713.3, 1899.6, 2189.6, 1509.0, 1191.9, 2236.5, 1480.8, 1029.8, 1095.1, 1137.8, 1138.1, 731.0, 1053.2, 609.1, 1178.0, 1783.2, 1475.6, 1139.0, 942.7, 1283.3, 974.1]};
+var FF={"d": ["09-11", "09-14", "09-15", "09-16", "09-17", "09-18", "09-21", "09-22", "09-23", "09-24", "09-28", "09-29", "09-30", "10-08", "10-09", "10-12", "10-13", "10-14", "10-15", "10-16", "10-19", "10-20", "10-21", "10-22", "10-23", "10-26", "10-27", "10-28", "10-29", "10-30"], "v": [416.5, 4535.5, -2787.5, -5929.2, -1311.9, -2435.2, 2590.0, -1784.7, -4156.0, 1349.9, 5357.7, 309.8, -1968.8, -3216.9, 2726.1, 1610.8, -1734.2, 572.2, -3195.5, -3403.4, -1453.4, 180.4, -769.7, 3148.1, 1381.9, 245.7, -3293.9, 319.1, -3880.8, -3111.3]};
+function ma(n){var r=[];for(var i=0;i<K.c.length;i++){if(i<n-1){r.push('-');continue}var s=0;for(var j=0;j<n;j++)s+=K.c[i-j];r.push(+(s/n).toFixed(2))}return r}
+if(window.echarts){
+var ch=echarts.init(document.getElementById('kchart'),'dark');
+ch.setOption({backgroundColor:'transparent',animation:false,
+ tooltip:{trigger:'axis',axisPointer:{type:'cross'}},
+ legend:{data:['K线','MA5','MA20','MA60'],textStyle:{color:'#9aa7b8'},top:0},
+ grid:[{left:48,right:12,top:30,height:'58%'},{left:48,right:12,top:'74%',height:'16%'}],
+ xAxis:[{type:'category',data:K.d,boundaryGap:true,axisLine:{lineStyle:{color:'#293040'}},axisLabel:{color:'#6b7689'}},
+        {type:'category',gridIndex:1,data:K.d,axisLabel:{show:false}}],
+ yAxis:[{scale:true,splitLine:{lineStyle:{color:'#1f2633'}},axisLabel:{color:'#6b7689'}},
+        {scale:true,gridIndex:1,splitNumber:2,axisLabel:{show:false},splitLine:{show:false}}],
+ dataZoom:[{type:'inside',xAxisIndex:[0,1],start:40,end:100}],
+ series:[
+  {name:'K线',type:'candlestick',data:K.k,itemStyle:{color:'#ff5b5b',color0:'#2ecc71',borderColor:'#ff5b5b',borderColor0:'#2ecc71'},
+   markLine:{symbol:'none',label:{color:'#f5d27a',formatter:'{b} {c}'},data:[
+     {name:'止盈③',yAxis:30.0,lineStyle:{color:'#ff5b5b',type:'dashed'}},
+     {name:'平均成本',yAxis:27.87,lineStyle:{color:'#e8b84b',type:'dashed'}},
+     {name:'止盈①',yAxis:25.3,lineStyle:{color:'#f5d27a',type:'dashed'}},
+     {name:'年内低',yAxis:21.98,lineStyle:{color:'#2ecc71',type:'dashed'}}]}},
+  {name:'MA5',type:'line',data:ma(5),smooth:true,showSymbol:false,lineStyle:{width:1,color:'#f5d27a'}},
+  {name:'MA20',type:'line',data:ma(20),smooth:true,showSymbol:false,lineStyle:{width:1,color:'#7aa2ff'}},
+  {name:'MA60',type:'line',data:ma(60),smooth:true,showSymbol:false,lineStyle:{width:1,color:'#c678dd'}},
+  {name:'成交量',type:'bar',xAxisIndex:1,yAxisIndex:1,data:K.v.map(function(v,i){return {value:v,itemStyle:{color:K.k[i][1]>=K.k[i][0]?'#ff5b5b':'#2ecc71'}}})}
+ ]});
+var fc=echarts.init(document.getElementById('ffchart'),'dark');
+fc.setOption({backgroundColor:'transparent',animation:false,
+ title:{text:'近30日主力净流入（万元）',textStyle:{color:'#9aa7b8',fontSize:12},left:0,top:0},
+ tooltip:{trigger:'axis'},grid:{left:56,right:12,top:30,bottom:24},
+ xAxis:{type:'category',data:FF.d,axisLabel:{color:'#6b7689'}},
+ yAxis:{type:'value',splitLine:{lineStyle:{color:'#1f2633'}},axisLabel:{color:'#6b7689'}},
+ series:[{type:'bar',data:FF.v.map(function(v){return {value:v,itemStyle:{color:v>=0?'#ff5b5b':'#2ecc71'}}})}]});
+window.addEventListener('resize',function(){ch.resize();fc.resize()});
+}
+</script>
+</body>
+</html>
