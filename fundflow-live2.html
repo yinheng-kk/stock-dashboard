@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>阿波策略 1/2 · 三指数 + 5x3 先锋 + 一字板 · 实时（东财直连版）</title>
+<style>
+  html, body { margin: 0; padding: 0; height: 100%; background: #0a0e1a; }
+  iframe { display: block; border: 0; width: 100%; height: 100vh; height: 100dvh; }
+</style>
+</head>
+<body>
+<!--
+  看板正文运行在 sandbox（无 allow-same-origin）的 iframe 中，源为 opaque "null"。
+  板块资金流与强势先锋改为浏览器直连东方财富 push2（对 null 源返回 CORS 允许头）；
+  一字板、三指数仍走 stock-live API。东财直连失败时回落到 ./fundflow-data/live2.json 静态快照并标注非实时。
+-->
+<iframe src="./fundflow-live2-core.html"
+        sandbox="allow-scripts allow-popups"
+        referrerpolicy="no-referrer"
+        title="资金流实时看板（东财直连版）"></iframe>
+</body>
+</html>
