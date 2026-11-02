@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<!-- 阿波罗看板 CORS 约定：sandbox（源=null）；本页所有数据已内嵌，无运行时跨域取数 -->
+<meta http-equiv="Content-Security-Policy" content="sandbox allow-scripts allow-popups allow-popups-to-escape-sandbox">
+<title>浪潮信息 000977 · 阿波罗个股看板</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#293040;
+    --gold:#e8b84b; --gold2:#f5d27a; --txt:#e6edf3; --sub:#9aa7b8; --muted:#6b7689;
+    --up:#ff5b5b; --down:#2ecc71; --warn:#ffb454; --good:#5ad1a0; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; font-size:15px; padding:0 0 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{
+    text-align:center;padding:38px 16px 26px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent);
+  }
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{
+    display:flex;justify-content:center;gap:26px;flex-wrap:wrap;
+    margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);max-width:620px;margin-left:auto;margin-right:auto;
+  }
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .caveat{
+    margin:22px 0;padding:14px 16px;border-radius:10px;
+    background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);
+    font-size:13px;color:#ffd9a3;
+  }
+  .caveat b{color:var(--warn)}
+  section.card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:16px 0;
+  }
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{
+    min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px;
+  }
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  b.hl{color:var(--gold2)}
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  .tw{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{padding:9px 7px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  td.l,th.l{text-align:left}
+  tr.self td{background:rgba(232,184,75,.09);font-weight:600}
+  .pos{color:var(--up)} .negc{color:var(--down)}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic td{white-space:normal}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:120px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:18px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)} .chip.tp .v{color:var(--gold2)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 个 股 看 板</div>
+  <h1>浪潮信息<span class="code">000977</span></h1>
+  <div class="meta">数据截至 2026-10-30（周五）收盘 ｜ 生成于 2026-11-02 周一盘前 ｜ AI服务器 / 算力基础设施 ｜ 总股本 14.68亿 ｜ 总市值 795.6亿</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">分析基准价(10-30收)</div><div class="val negc">¥54.18 <span style="font-size:13px">-3.56%</span></div></div>
+    <div class="item"><div class="lbl">PE-TTM / PB</div><div class="val">16.4 / 3.12</div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--warn);font-size:16px">估值见底·趋势未止跌<br>左侧观察·不抄第一脚</div></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="caveat">
+    <b>⚠ 数据口径：</b>
+    ① 行情/估值/资金均为 <b>2026-10-30 收盘</b>（今天 11-02 周一尚未开盘）；
+    ② 北向日度数据自 2024-08 起停更，北向口径改用十大流通股东「香港中央结算」季度变动；
+    ③ 筹码分布：东财K线接口本机被重置，改用新浪前复权日线(含换手)按同一三角分布+换手衰减模型自算；
+    ④ 新闻接口报错，个股新闻<b>暂缺</b>，催化剂以研报与财报为准；
+    ⑤ 财务接口不给毛利率，文中毛利率由利润表「营收−营业成本」自算，单季数据由累计值相减得出。
+  </div>
+
+  <!-- 置顶：同行横向对比 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">★</div><div class="sec-t">同行横向对比（置顶）</div><div class="sec-tag">AI服务器 / 算力硬件</div></div>
+    <p class="small">数据：腾讯行情(10-30收) + 东财估值 + 东财主力资金(10-26~10-30) + 新浪 2026Q3 财务指标。</p>
+    <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th class="l">公司</th><th>价</th><th>涨幅</th><th>PE-TTM</th><th>PB</th><th>换手</th><th>成交额</th><th>市值</th><th>5日主力</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="self">
+          <td class="l">浪潮信息 000977</td><td>54.18</td><td class="negc">-3.56%</td><td>16.4</td><td>3.12</td><td>3.12%</td><td>25.3亿</td><td>796亿</td><td class="negc">-1.73亿</td>
+        </tr>
+        <tr>
+          <td class="l">中科曙光 603019</td><td>71.29</td><td class="negc">-5.40%</td><td>35.5</td><td>4.38</td><td>2.03%</td><td>21.7亿</td><td>1043亿</td><td class="negc">-4.30亿</td>
+        </tr>
+        <tr>
+          <td class="l">工业富联 601138</td><td>45.00</td><td class="negc">-0.49%</td><td>16.8</td><td>4.69</td><td>0.52%</td><td>46.3亿</td><td>8930亿</td><td class="negc">-9.48亿</td>
+        </tr>
+        <tr>
+          <td class="l">紫光股份 000938</td><td>23.03</td><td class="negc">-4.12%</td><td>21.6</td><td>3.56</td><td>3.54%</td><td>23.8亿</td><td>659亿</td><td class="negc">-6.49亿</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="tw">
+    <table>
+      <thead><tr><th class="l">补充维度</th><th>浪潮信息</th><th>中科曙光</th><th>工业富联</th><th>紫光股份</th></tr></thead>
+      <tbody>
+        <tr><td class="l">PE 近3年分位</td><td class="ok"><b>0.0%</b></td><td>25.2%</td><td>19.2%</td><td>0.3%</td></tr>
+        <tr><td class="l">PB 近3年分位</td><td>24.7%</td><td>35.7%</td><td>60.5%</td><td>32.9%</td></tr>
+        <tr><td class="l">20日涨跌</td><td class="negc">-22.5%</td><td class="negc">-13.2%</td><td class="negc">-26.2%</td><td class="negc">-31.1%</td></tr>
+        <tr><td class="l">前三季营收增速</td><td>+7.2%</td><td>+38.8%</td><td>+55.9%</td><td>+32.1%</td></tr>
+        <tr><td class="l">前三季净利增速</td><td class="pos"><b>+164.9%</b></td><td>+79.3%</td><td>+79.4%</td><td>+87.1%</td></tr>
+        <tr><td class="l">销售净利率</td><td>3.05%</td><td class="ok">13.51%</td><td>4.29%</td><td>3.16%</td></tr>
+        <tr><td class="l">加权ROE(前三季)</td><td>16.64%</td><td>7.48%</td><td class="ok">21.77%</td><td>16.55%</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="takeaway">
+      <b>相对位置：</b>① <b class="hl">估值四家最便宜</b>——PB 3.12 全组最低，PE-TTM 16.4 与富联并列最低，且 PE 处于自身近3年 <b>0 分位</b>；
+      ② <b class="hl">资金出逃最轻</b>——5日主力 -1.73亿，远小于富联 -9.48亿、紫光 -6.49亿、曙光 -4.30亿；20日跌幅居中；
+      ③ <b class="hl">短板是"规模不增、靠利润率"</b>——营收增速 +7.2% 四家垫底，净利 +165% 主要来自毛利率修复，净利率 3% 仍是薄利组装型。
+      <br><b style="color:var(--gold)">结论：</b>板块集体杀跌中，浪潮是「最便宜 + 资金最抗跌」的一档，属<b class="hl">板块内防守型配置位</b>；但其进攻弹性取决于利润率能否继续抬升，而非订单规模。
+    </div>
+  </section>
+
+  <!-- ① 基本面 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">基本面</div><div class="sec-tag">利润高弹性·Q3环比回落</div></div>
+    <div class="tw">
+    <table>
+      <thead><tr><th class="l">单季</th><th>营收</th><th>同比</th><th>归母净利</th><th>同比</th><th>毛利率(自算)</th><th>净利率</th></tr></thead>
+      <tbody>
+        <tr><td class="l">2026Q1</td><td>354.7亿</td><td class="negc">-24.3%</td><td>6.05亿</td><td class="pos">+30.7%</td><td>6.64%</td><td>1.71%</td></tr>
+        <tr><td class="l">2026Q2</td><td>489.1亿</td><td class="pos">+46.7%</td><td><b>23.47亿</b></td><td class="pos">+598%</td><td><b>10.28%</b></td><td>4.80%</td></tr>
+        <tr><td class="l">2026Q3</td><td>449.5亿</td><td class="pos">+11.0%</td><td>9.80亿</td><td class="pos">+43.5%</td><td>8.35%</td><td>2.18%</td></tr>
+        <tr><td class="l">前三季累计</td><td>1293.3亿</td><td class="pos">+7.2%</td><td>39.32亿</td><td class="pos">+165.3%</td><td>8.61%</td><td>3.05%</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <ul>
+      <li>前三季 EPS <b class="hl">2.68 元</b>（去年同期 1.01），已超 2025 全年 1.64；TTM EPS ≈ 3.31</li>
+      <li>毛利率由 2025 全年 <b>4.88%</b> → 前三季 <b class="hl">8.61%</b>，是利润暴增的主引擎（营收只 +7%）</li>
+      <li>研发费用前三季 39.0亿（同比 +57.8%），超节点/液冷持续加码</li>
+      <li><span class="x">⚠ Q3 单季净利 9.80亿，环比 Q2 的 23.47亿 回落约 58%</span>，毛利率 10.3%→8.4%</li>
+      <li><span class="x">⚠ 资产负债率 85.4%</span>（H1 77.2%）、<span class="x">存货周转天数 188.7天</span>（H1 115.9天）、每股经营现金流 <span class="x">-4.36元</span>（约 -64亿）</li>
+    </ul>
+    <p>本质：<b class="hl">利润端是"毛利率修复"的故事，不是"规模扩张"的故事</b>。存货大增+负债率抬升可读为「为高能见度订单备货」（研报观点），也可能是垫资风险——Q4 能否把存货转成收入和现金流是验证点。</p>
+  </section>
+
+  <!-- ② 资金面 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金面</div><div class="sec-tag">持续流出·流速放缓</div></div>
+    <ul>
+      <li>近30日（9-11~10-30）主力净流入 <b class="x">-27.74亿</b>，仅 7 天净流入</li>
+      <li>近20日 <b class="x">-21.02亿</b>；近10日 <b>-1.84亿</b>；近5日 <b>-1.73亿</b> —— <b class="hl">流出主要集中在 10 月中上旬，近两周明显放缓</b></li>
+      <li>10-30 当日主力 -0.48亿（净占比 -1.89%），10-29 曾 +1.82亿、10-23 +1.89亿，出现零星承接</li>
+      <li>近5日超大单 -0.74亿 / 小单 +1.38亿：仍是大资金出、散户接</li>
+      <li>北向：日度数据停更（暂缺），季度口径见③（Q3 香港中央结算 <b class="ok">+32.2%</b>）</li>
+    </ul>
+    <p>结论：<b class="hl">杀跌主力流出已过峰值</b>，但尚未出现连续净流入的扭转信号。</p>
+  </section>
+
+  <!-- ③ 股东结构 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">股东结构</div><div class="sec-tag">机构Q3加仓 · 散户近期涌入</div></div>
+    <p class="small">十大流通股东（2026-09-30）</p>
+    <ul>
+      <li>控股 浪潮集团 <b>32.12%</b>（不变）</li>
+      <li><span class="ok">✅ 香港中央结算 3.28%，增持 1175.8万股（+32.2%）</span>——北向Q3明显加仓</li>
+      <li><span class="ok">✅ 瑞众人寿 0.72%（+53.9%）；新华人寿两个账户 0.63%+0.49%（均新进）；兴业收益增强债基 +8.9%</span></li>
+      <li><span class="ok">✅ 易方达中证人工智能ETF 0.47%（+7.0%）</span></li>
+      <li><span class="x">❌ 华商信用增强债基 -4.8%、中国人寿传统险 -5.3%</span>（小幅减）</li>
+    </ul>
+    <p class="small">股东户数（东财口径，部分节点为公司互动平台回复的约数）</p>
+    <ul>
+      <li>8-31：26.0万 → 9-28：33.0万（<b class="x">+26.9%</b>，区间股价 -21.3%）</li>
+      <li>9-30：34.0万（+3.0%）→ 10-09：33.0万（-2.9%）</li>
+    </ul>
+    <p>结论：<b class="hl">Q3 是"保险+北向"在进，9 月下旬后是"散户抄底"在进</b>。下跌中户数暴增 27%，筹码由集中转分散，属偏空信号；与②"超大单出、小单进"互相印证。</p>
+  </section>
+
+  <!-- ④ 估值 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">估值</div><div class="sec-tag">PE 近3年最低</div></div>
+    <ul>
+      <li>PE-TTM <b class="hl">16.36</b>：近3年分位 <b class="ok">0.0%</b>（即3年最低），全历史分位 5.0%；历史区间 12.84~167.29</li>
+      <li>PB <b class="hl">3.12</b>：近3年分位 24.7%，全历史 25.9%</li>
+      <li>静态PE（2025年报口径）32.97</li>
+      <li>一致预期（东财研报，最新 11-01 华龙）：2026E EPS 3.92 → <b class="hl">13.8 倍</b>；2027E 5.04 → <b class="hl">10.7 倍</b>；较保守的开源 2026E 3.49 → 15.5 倍</li>
+    </ul>
+    <p>估值已压到"<b class="hl">按利润看极便宜</b>"的区域。但要注意：PE 低是因为分母（利润）暴涨而非价格便宜到离谱——若市场认为 Q2 的 10% 毛利率不可持续（Q3 已回落），E 会下修，PE 就没那么低了。按 Q3 单季年化（9.80亿×4≈39亿 → EPS≈2.67）算，PE 约 20 倍，仍处偏低区间。</p>
+  </section>
+
+  <!-- ⑤ 期货关联 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">期货 / 外盘关联</div><div class="sec-tag">无直接期货·看美股AI硬件</div></div>
+    <ul>
+      <li>服务器核心成本（GPU/CPU/存储）国内<b>无对应期货</b>；沪铜主力（散热/线缆/PCB 弱关联）10-30 收 108050，20日 -1.9%、60日 +2.5%，影响有限</li>
+      <li>美股 10-30（周五）AI 硬件链集体下挫：<b class="x">戴尔 -10.77%、超微电脑 -4.30%、英伟达 -4.22%</b>——对 A 股服务器板块周一开盘构成情绪压力</li>
+      <li>纳斯达克指数期货 11-02 盘前 08:51 报 28720，较前结算 28534 <b class="ok">+0.65%</b>，外盘情绪有所修复</li>
+    </ul>
+    <p>结论：浪潮的"期货锚"实际是<b class="hl">美股 AI 服务器同行（戴尔/超微）与英伟达</b>。周五美股服务器股大跌，周一开盘大概率承压，关注能否守住 54.07 前低。</p>
+  </section>
+
+  <!-- ⑥ 技术面 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑥</div><div class="sec-t">技术面</div><div class="sec-tag">超卖+空头排列</div></div>
+    <ul>
+      <li>收盘 54.18，盘中 54.07 <b class="x">创近250日新低</b>；距60日高点 89.18 回撤 <b class="x">-39%</b>；5日 -7.4%、20日 -22.5%、60日 -21.6%</li>
+      <li>均线：MA5 55.68 / MA10 56.65 / MA20 59.62 / MA60 70.09 / MA120 70.72 / MA250 67.12 —— <b class="x">全线压在价格上方，标准空头排列</b></li>
+      <li>RSI14 <b class="hl">28.2（超卖区）</b></li>
+      <li>MACD：DIF -4.012 / DEA -4.069，柱 +0.112 —— <b class="ok">零轴下方刚出现底部金叉苗头</b>，力度弱，需放量确认</li>
+      <li>量能：5日/20日均量 1.05，杀跌未见恐慌放量，也未见缩量止跌</li>
+      <li>筹码（自算）：平均成本 <b class="hl">68.77</b>，获利盘 <b class="x">≈0%</b>；70% 筹码区 57.04~79.93、90% 区 55.81~86.20 —— <b class="hl">几乎全部持仓被套，上方 57~60 是第一道密集解套抛压</b></li>
+    </ul>
+  </section>
+
+  <!-- ⑦ 催化剂 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑦</div><div class="sec-t">催化剂</div><div class="sec-tag">业绩兑现 vs 外部扰动</div></div>
+    <ul>
+      <li><span class="ok">正向：</span>11-01 华龙证券三季报点评「利润高弹性延续，下游需求能见度高」，维持增持，2026E EPS 3.92；近半年研报 2026E EPS 从 ~2.3 上修至 3.5~3.9</li>
+      <li><span class="ok">正向：</span>超节点服务器、液冷持续放量（多家研报一致提及），研发投入 +58% 保障产品迭代</li>
+      <li><span class="ok">正向：</span>2027 年 1 月前后年度业绩预告——若 Q4 环比回升，可修复市场对 Q3 环比下滑的担忧</li>
+      <li><span class="x">负向：</span>美股 AI 服务器链 10-30 大跌（戴尔 -10.8%），若外盘继续调整，A 股算力硬件板块情绪难独立走强</li>
+      <li><span class="x">负向：</span>高存货（周转 189 天）+ 高负债（85%）+ 经营现金流为负，若下游交付/回款节奏放缓，将直接冲击利润与估值</li>
+      <li><span class="x">长期风险：</span>浪潮集团部分子公司 2023 年被列入美国实体清单，上游高端芯片供给受政策影响</li>
+      <li class="small">个股新闻接口本次报错，公告类催化（回购/增持等）<b>暂缺</b>，未纳入</li>
+    </ul>
+  </section>
+
+  <!-- ⑧ 矛盾链 -->
+  <section class="card logic">
+    <div class="sec-h"><div class="sec-n">⑧</div><div class="sec-t">矛盾链 —— 一只「利润翻倍、股价回撤四成」的背离股</div></div>
+    <table>
+      <thead><tr><th class="l good-col">利好</th><th class="l bad-col">利空 / 风险</th></tr></thead>
+      <tbody>
+        <tr><td class="l">前三季净利 +165%，EPS 2.68 已超去年全年</td><td class="l">股价 60 日 -21.6%、距高点 -39%，创 250 日新低——市场在交易"利润见顶"</td></tr>
+        <tr><td class="l">PE-TTM 近3年 0 分位，2026E 仅 13.8 倍</td><td class="l">Q3 单季净利环比 -58%、毛利率 10.3%→8.4%，E 有下修风险</td></tr>
+        <tr><td class="l">存货大增 = 订单能见度高（研报口径）</td><td class="l">存货周转 189 天、负债率 85%、经营现金流约 -64亿，垫资压力</td></tr>
+        <tr><td class="l">Q3 北向 +32%、保险新进/加仓</td><td class="l">10 月主力 -27.7亿流出，股东户数 +27%（散户接盘）</td></tr>
+        <tr><td class="l">RSI 28 超卖，MACD 底部金叉苗头，主力流出放缓</td><td class="l">均线空头排列，获利盘≈0%，57~60 元密集套牢</td></tr>
+        <tr><td class="l">同行中估值最低、资金流出最少</td><td class="l">营收增速四家垫底，净利率 3% 薄利，美股 AI 硬件外溢利空</td></tr>
+      </tbody>
+    </table>
+    <div class="takeaway"><b>本质矛盾：</b>基本面"利润率修复"已兑现、估值杀到 3 年最低 ↔ 市场质疑利润率可持续性（Q3 环比回落 + 现金流为负）叠加外盘 AI 硬件情绪退潮。<b>决定胜负的是 Q4 毛利率能否守住 8% 以上、存货能否转化为收入与现金</b>。</div>
+  </section>
+
+  <!-- ⑨ 操作策略 -->
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-n">⑨</div><div class="sec-t">🎯 操作策略（基准价 ¥54.18，10-30 收盘）</div></div>
+    <ul>
+      <li><b class="hl">短期（1~2周）：左侧观察，不抄第一脚。</b>周一受美股戴尔/超微大跌影响大概率承压，先看 54.07 前低能否守住；空头排列下反弹首先面对 MA10 56.65 与 57~60 套牢区。</li>
+      <li><b class="hl">右侧确认信号（满足两条再进）：</b>① 收盘站上 MA10 56.65；② 主力连续 2 日净流入；③ MACD 金叉放量确认（柱体持续放大）。</li>
+      <li><b class="hl">左侧方案（仅激进者）：</b>若回踩 50~52 区（对应 2026E 约 13 倍 PE）缩量企稳，可 ≤2 成仓试错，严格止损。</li>
+      <li><b class="hl">中期（1~2季）：</b>估值已提供安全垫，胜负手在年度业绩预告与 Q4 毛利率；守住 8%+ 且现金流转正 → 可升级为中线配置；毛利率回落到 6% 以下 → 逻辑证伪。</li>
+      <li><b class="hl">仓位：</b>总仓 ≤3 成，分两到三笔，不追涨。</li>
+    </ul>
+    <div class="lvl">
+      <div class="chip sup"><div class="k">支撑</div><div class="v">54.07 / 50~52</div></div>
+      <div class="chip res"><div class="k">压力</div><div class="v">56.65 / 57~60</div></div>
+      <div class="chip tp"><div class="k">止盈①（减1/3）</div><div class="v">59.6</div></div>
+      <div class="chip tp"><div class="k">止盈②（再减1/3）</div><div class="v">63.6</div></div>
+      <div class="chip tp"><div class="k">止盈③（清/留底仓）</div><div class="v">69.5~70</div></div>
+      <div class="chip stop"><div class="k">止损</div><div class="v">收盘破 50.0</div></div>
+    </div>
+    <p class="small" style="margin-top:10px">止盈依据：① 59.6 = MA20 与 69.5→54.07 跌段 0.382 回撤（59.96）重叠区；② 63.6 = 该跌段 0.618 回撤；③ 69.5~70 = 20 日高点 + MA60（70.09）+ 筹码平均成本 68.77 的强压区。止损 50.0 = 2026E 约 12.8 倍 PE，跌破说明市场在定价盈利下修。</p>
+  </section>
+
+  <footer>
+    以上基于公开行情 / 财报 / 研报 / 资金数据的客观梳理，<b>非投资建议，市场有风险</b>。<br>
+    行情、估值、资金截至 2026-10-30 收盘；财务为 2026 三季报；十大股东为 2026-09-30；纳指期货为 11-02 08:51。<br>
+    暂缺项：北向日度（停更）、个股新闻（接口报错）、毛利率官方口径（已自算替代）。<br>
+    <span class="small">阿波罗框架 · 生成于 2026-11-02</span>
+  </footer>
+
+</div>
+</body>
+</html>
