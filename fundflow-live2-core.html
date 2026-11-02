@@ -523,7 +523,7 @@ main > *:nth-child(4) { animation-delay: 0.24s; }
    纯函数、无 DOM 依赖：页面与 node 校验/快照脚本共用同一份代码。
    板块列表：push2 clist（主力净流入 f62、涨跌幅 f3），分时：fflow/kline klt=1（主力净流入累计）。
    东财 push2 对 Origin:null 回 Access-Control-Allow-Origin，sandbox iframe 可直接 fetch。 */
-const EM_HOSTS = ['29.push2.eastmoney.com','push2.eastmoney.com','8.push2.eastmoney.com','23.push2.eastmoney.com',
+const EM_HOSTS = ['40.push2.eastmoney.com','29.push2.eastmoney.com','push2.eastmoney.com','8.push2.eastmoney.com','23.push2.eastmoney.com',
   '25.push2.eastmoney.com','31.push2.eastmoney.com','34.push2.eastmoney.com','39.push2.eastmoney.com',
   '40.push2.eastmoney.com','46.push2.eastmoney.com','50.push2.eastmoney.com','74.push2.eastmoney.com',
   '78.push2.eastmoney.com','83.push2.eastmoney.com','89.push2.eastmoney.com','98.push2.eastmoney.com',
@@ -533,7 +533,7 @@ const EM_PICK = { conceptIn: 10, conceptOut: 10, industryIn: 8 };   /* 合计约
 const EM_SKIP = /^(昨日|融资融券|沪股通|深股通|标准普尔|富时罗素|MSCI|HS300|上证50|上证180|上证380|深证100|深成500|创业板综|央视50)/;
 const EM_POINTS_TTL = 20000;   /* 分时曲线缓存 20s（分钟级数据，无需每 2s 重拉 28 条） */
 const EM_VG_TTL = 30000;
-const emState = { hostIdx: 0, pts: {}, vg: {} };
+const emState = { hostIdx: 0, pts: {}, vg: {}, getUniverse: null, via: {} };
 
 function emFetchJson(url, ms) {
   const ctl = (typeof AbortController !== 'undefined') ? new AbortController() : null;
@@ -546,11 +546,11 @@ function emFetchJson(url, ms) {
 async function emGet(path, params) {
   const qs = Object.keys(params).map(k => k + '=' + encodeURIComponent(params[k])).join('&');
   let lastErr = null;
-  const tries = Math.min(8, EM_HOSTS.length);
+  const tries = EM_HOSTS.length;   /* push2 节点断连通常是即时 reset，轮完全部节点也很快 */
   for (let k = 0; k < tries; k++) {
     const idx = (emState.hostIdx + k) % EM_HOSTS.length;
     try {
-      const j = await emFetchJson('https://' + EM_HOSTS[idx] + path + '?' + qs, 5000);
+      const j = await emFetchJson('https://' + EM_HOSTS[idx] + path + '?' + qs, 4000);
       if (!j || !j.data) throw new Error('empty data');
       emState.hostIdx = idx;
       return j.data;
@@ -564,6 +564,44 @@ async function emClist(fs, fid, po, pz) {
   const d = await emGet('/api/qt/clist/get', { pn: 1, pz: pz, po: po, np: 1, fltt: 2, invt: 2, fid: fid, fs: fs,
     fields: 'f12,f14,f2,f3,f62,f124' });
   return (d.diff || []);
+}
+/* 板块排行：优先 clist；clist 全节点失败时，用 ulist 对全量板块代码取实时值后本地排序（仍是实时数据） */
+async function emBoardList(group, po, pz) {
+  const fs = group === 'industry' ? 'm:90+t:2' : 'm:90+t:3';
+  try {
+    /* 熔断：clist 刚全部失败过，60s 内直接走 ulist，避免每轮都轮一遍节点 */
+    if (Date.now() < (emState.clistDownUntil || 0)) throw new Error('clist circuit open');
+    const rows = await emClist(fs, 'f62', po, pz);
+    emState.via[group] = 'clist';
+    return rows;
+  } catch (e) {
+    if (e.message !== 'clist circuit open') emState.clistDownUntil = Date.now() + 60000;
+    if (!emState.getUniverse) throw e;
+    const uni = await emState.getUniverse();
+    const codes = uni && uni[group];
+    if (!codes || !codes.length) throw e;
+    const d = await emGet('/api/qt/ulist.np/get', { fltt: 2, secids: codes.map(c => '90.' + c).join(','),
+      fields: 'f12,f14,f2,f3,f62,f124' });
+    const rows = (d.diff || []).filter(x => emNum(x.f62) !== null);
+    rows.sort((a, b) => po === 1 ? b.f62 - a.f62 : a.f62 - b.f62);
+    emState.via[group] = 'ulist';
+    return rows.slice(0, pz);
+  }
+}
+/* 全量板块代码（生成快照时写入 universe，供 ulist 兜底用） */
+async function emFetchUniverse() {
+  const out = {};
+  for (const [g, fs] of [['concept', 'm:90+t:3'], ['industry', 'm:90+t:2']]) {
+    let codes = [];
+    for (let pn = 1; pn <= 15; pn++) {
+      const d = await emGet('/api/qt/clist/get', { pn: pn, pz: 100, po: 1, np: 1, fltt: 2, invt: 2, fid: 'f62', fs: fs, fields: 'f12' });
+      const diff = d.diff || [];
+      codes = codes.concat(diff.map(x => x.f12));
+      if (!diff.length || codes.length >= d.total) break;
+    }
+    out[g] = Array.from(new Set(codes));
+  }
+  return out;
 }
 async function emPoints(code) {
   const d = await emGet('/api/qt/stock/fflow/kline/get', { lmt: 0, klt: 1, secid: '90.' + code,
@@ -612,9 +650,9 @@ async function emFetchLive(opts) {
   opts = opts || {};
   const ttl = opts.pointsTtl != null ? opts.pointsTtl : EM_POINTS_TTL;
   const res = await Promise.allSettled([
-    emClist('m:90+t:3', 'f62', 1, 40),
-    emClist('m:90+t:3', 'f62', 0, 40),
-    emClist('m:90+t:2', 'f62', 1, 30),
+    emBoardList('concept', 1, 40),
+    emBoardList('concept', 0, 40),
+    emBoardList('industry', 1, 30),
   ]);
   const pick = (r, n, pred) => r.status === 'fulfilled'
     ? r.value.filter(x => x && x.f14 && !EM_SKIP.test(x.f14) && emNum(x.f62) !== null && pred(emNum(x.f62))).slice(0, n) : [];
@@ -654,14 +692,14 @@ async function emFetchLive(opts) {
   if (!nonZero) throw new Error('东财板块净流入全为 0');
   const d = new Date();
   return { ts: Math.floor(d.getTime() / 1000), generated_at: emNowStr(d), date: date, market_status: emMarketStatus(d),
-    count: sectors.length, with_points: withPts, source: 'eastmoney-direct', sources: sources, sectors: sectors,
+    count: sectors.length, with_points: withPts, source: 'eastmoney-direct', via: Object.assign({}, emState.via), sources: sources, sectors: sectors,
     _industry: res[2].status === 'fulfilled' ? res[2].value : null };
 }
 /* 强势先锋：主力净流入前 5 的行业板块 × 各板块涨幅前 3 个股（与原 vanguard 结构一致） */
 async function emFetchVanguard(industryList, topSec, topStk) {
   topSec = topSec || 5; topStk = topStk || 3;
   let list = industryList;
-  if (!list) list = emDedupeSame(await emClist('m:90+t:2', 'f62', 1, 30));
+  if (!list) list = emDedupeSame(await emBoardList('industry', 1, 30));
   const secs = list.filter(x => x && x.f14 && emNum(x.f62) > 0).slice(0, topSec);
   const now = Date.now();
   const out = await emMapLimit(secs, 5, async x => {
@@ -682,7 +720,7 @@ async function emFetchVanguard(industryList, topSec, topStk) {
   return { ts: Math.floor(d.getTime() / 1000), generated_at: emNowStr(d), market_status: emMarketStatus(d),
     top_sector_n: topSec, top_stock_n: topStk, source: 'eastmoney-direct', sectors: sectors };
 }
-if (typeof module !== 'undefined') module.exports = { emFetchLive, emFetchVanguard, emState, EM_HOSTS };
+if (typeof module !== 'undefined') module.exports = { emFetchLive, emFetchVanguard, emFetchUniverse, emState, EM_HOSTS };
 </script>
 <script>
 /* 一字板 / 三指数：原 stock-live 服务这两个接口仍正常，保持不变 */
@@ -695,6 +733,7 @@ const VG_TOP_SECTORS = 5;
 const VG_TOP_STOCKS = 3;
 let lastIndustryList = null, lastIndustryTs = 0;
 let snapshotCache = null;
+emState.getUniverse = async () => (await loadSnapshot()).universe;
 async function loadSnapshot() {
   if (snapshotCache && Date.now() - snapshotCache.t < 60000) return snapshotCache.data;
   const r = await fetch(SNAPSHOT_URL + '?t=' + Date.now(), { cache: 'no-store' });
