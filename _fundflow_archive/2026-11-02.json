@@ -1,0 +1,383 @@
+{
+  "timestamp": "2026-11-02T16:19:33.303673",
+  "live": {
+    "ts": 1793607566,
+    "generated_at": "2026-11-02 16:19:26",
+    "date": "2026-11-02",
+    "market_status": "closed",
+    "count": 0,
+    "sources": {
+      "inflow": {
+        "n": 25,
+        "ok": true
+      },
+      "outflow": {
+        "n": 25,
+        "ok": true
+      },
+      "industry": {
+        "n": 15,
+        "ok": true
+      }
+    },
+    "sectors": []
+  },
+  "vanguard": null,
+  "yiziban": {
+    "ts": 1793607484,
+    "generated_at": "2026-11-02 16:18:05",
+    "date": "2026-11-02",
+    "yi_zi_total": 7,
+    "broken_total": 28,
+    "seal_prob": 20.0,
+    "yi_zi_list": [
+      {
+        "code": "002827",
+        "name": "高争民爆",
+        "change_pct": 10.0,
+        "seal_amount_yi": 8.89,
+        "sector": "化学制品",
+        "lianban": 1,
+        "first_seal_time": "092500"
+      },
+      {
+        "code": "600261",
+        "name": "阳光照明",
+        "change_pct": 10.02,
+        "seal_amount_yi": 5.64,
+        "sector": "照明设备",
+        "lianban": 3,
+        "first_seal_time": "092501"
+      },
+      {
+        "code": "001230",
+        "name": "劲旅环境",
+        "change_pct": 10.01,
+        "seal_amount_yi": 4.18,
+        "sector": "环境治理",
+        "lianban": 1,
+        "first_seal_time": "092500"
+      },
+      {
+        "code": "002275",
+        "name": "桂林三金",
+        "change_pct": 10.01,
+        "seal_amount_yi": 1.93,
+        "sector": "中药Ⅱ",
+        "lianban": 3,
+        "first_seal_time": "092500"
+      },
+      {
+        "code": "000995",
+        "name": "皇台酒业",
+        "change_pct": 10.01,
+        "seal_amount_yi": 1.6,
+        "sector": "白酒Ⅱ",
+        "lianban": 2,
+        "first_seal_time": "093000"
+      },
+      {
+        "code": "000525",
+        "name": "红太阳",
+        "change_pct": 10.02,
+        "seal_amount_yi": 1.28,
+        "sector": "农化制品",
+        "lianban": 2,
+        "first_seal_time": "092500"
+      },
+      {
+        "code": "000037",
+        "name": "深南电A",
+        "change_pct": 10.03,
+        "seal_amount_yi": 0.49,
+        "sector": "电力",
+        "lianban": 1,
+        "first_seal_time": "093000"
+      }
+    ],
+    "broken_list": [
+      {
+        "code": "002774",
+        "name": "快意电梯",
+        "change_pct": 9.37,
+        "first_seal_time": "112909",
+        "broken_count": 6,
+        "sector": "专用设备"
+      },
+      {
+        "code": "000917",
+        "name": "电广传媒",
+        "change_pct": 10.02,
+        "first_seal_time": "135406",
+        "broken_count": 5,
+        "sector": "电视广播"
+      },
+      {
+        "code": "603179",
+        "name": "新泉股份",
+        "change_pct": 9.2,
+        "first_seal_time": "112840",
+        "broken_count": 4,
+        "sector": "汽车零部"
+      },
+      {
+        "code": "688004",
+        "name": "博汇科技",
+        "change_pct": 10.54,
+        "first_seal_time": "110500",
+        "broken_count": 4,
+        "sector": "IT服务Ⅱ"
+      },
+      {
+        "code": "002474",
+        "name": "榕基软件",
+        "change_pct": 7.49,
+        "first_seal_time": "135200",
+        "broken_count": 3,
+        "sector": "IT服务Ⅱ"
+      },
+      {
+        "code": "603091",
+        "name": "众鑫股份",
+        "change_pct": 7.51,
+        "first_seal_time": "135159",
+        "broken_count": 3,
+        "sector": "包装印刷"
+      },
+      {
+        "code": "300872",
+        "name": "天阳科技",
+        "change_pct": 15.89,
+        "first_seal_time": "134918",
+        "broken_count": 3,
+        "sector": "IT服务Ⅱ"
+      },
+      {
+        "code": "603131",
+        "name": "上海沪工",
+        "change_pct": -1.42,
+        "first_seal_time": "093022",
+        "broken_count": 3,
+        "sector": "通用设备"
+      },
+      {
+        "code": "000813",
+        "name": "德展健康",
+        "change_pct": 5.69,
+        "first_seal_time": "101851",
+        "broken_count": 2,
+        "sector": "化学制药"
+      },
+      {
+        "code": "603860",
+        "name": "中公高科",
+        "change_pct": 6.31,
+        "first_seal_time": "093008",
+        "broken_count": 2,
+        "sector": "工程咨询"
+      },
+      {
+        "code": "600569",
+        "name": "安阳钢铁",
+        "change_pct": 3.51,
+        "first_seal_time": "101650",
+        "broken_count": 1,
+        "sector": "普钢"
+      },
+      {
+        "code": "603276",
+        "name": "恒兴新材",
+        "change_pct": 6.2,
+        "first_seal_time": "103939",
+        "broken_count": 1,
+        "sector": "化学制品"
+      },
+      {
+        "code": "603927",
+        "name": "中科软",
+        "change_pct": 9.23,
+        "first_seal_time": "135217",
+        "broken_count": 1,
+        "sector": "软件开发"
+      },
+      {
+        "code": "000716",
+        "name": "黑芝麻",
+        "change_pct": 4.77,
+        "first_seal_time": "093030",
+        "broken_count": 1,
+        "sector": "休闲食品"
+      },
+      {
+        "code": "002201",
+        "name": "九鼎新材",
+        "change_pct": 4.33,
+        "first_seal_time": "093454",
+        "broken_count": 1,
+        "sector": "玻璃玻纤"
+      },
+      {
+        "code": "000676",
+        "name": "智度股份",
+        "change_pct": 4.24,
+        "first_seal_time": "134933",
+        "broken_count": 1,
+        "sector": "广告营销"
+      },
+      {
+        "code": "301282",
+        "name": "金禄电子",
+        "change_pct": 6.22,
+        "first_seal_time": "093751",
+        "broken_count": 1,
+        "sector": "元件"
+      },
+      {
+        "code": "000400",
+        "name": "许继电气",
+        "change_pct": 8.69,
+        "first_seal_time": "134745",
+        "broken_count": 1,
+        "sector": "电网设备"
+      },
+      {
+        "code": "002313",
+        "name": "日海智能",
+        "change_pct": 7.61,
+        "first_seal_time": "133309",
+        "broken_count": 1,
+        "sector": "通信设备"
+      },
+      {
+        "code": "000919",
+        "name": "金陵药业",
+        "change_pct": 4.75,
+        "first_seal_time": "130721",
+        "broken_count": 1,
+        "sector": "化学制药"
+      },
+      {
+        "code": "300637",
+        "name": "扬帆新材",
+        "change_pct": 10.39,
+        "first_seal_time": "094415",
+        "broken_count": 1,
+        "sector": "化学制品"
+      },
+      {
+        "code": "300892",
+        "name": "品渥食品",
+        "change_pct": 9.79,
+        "first_seal_time": "095900",
+        "broken_count": 1,
+        "sector": "饮料乳品"
+      },
+      {
+        "code": "601869",
+        "name": "长飞光纤",
+        "change_pct": 8.15,
+        "first_seal_time": "112821",
+        "broken_count": 1,
+        "sector": "通信设备"
+      },
+      {
+        "code": "002384",
+        "name": "东山精密",
+        "change_pct": 7.13,
+        "first_seal_time": "112706",
+        "broken_count": 1,
+        "sector": "元件"
+      },
+      {
+        "code": "603198",
+        "name": "迎驾贡酒",
+        "change_pct": 9.13,
+        "first_seal_time": "100544",
+        "broken_count": 1,
+        "sector": "白酒Ⅱ"
+      },
+      {
+        "code": "300920",
+        "name": "润阳科技",
+        "change_pct": 8.06,
+        "first_seal_time": "111630",
+        "broken_count": 1,
+        "sector": "塑料"
+      },
+      {
+        "code": "000020",
+        "name": "深华发Ａ",
+        "change_pct": 3.48,
+        "first_seal_time": "101442",
+        "broken_count": 1,
+        "sector": "光学光电"
+      },
+      {
+        "code": "002708",
+        "name": "光洋股份",
+        "change_pct": 7.99,
+        "first_seal_time": "112218",
+        "broken_count": 1,
+        "sector": "汽车零部"
+      }
+    ],
+    "yi_zi_sectors": {
+      "化学制品": 1,
+      "照明设备": 1,
+      "环境治理": 1,
+      "中药Ⅱ": 1,
+      "白酒Ⅱ": 1,
+      "农化制品": 1,
+      "电力": 1
+    },
+    "broken_sectors": {
+      "IT服务Ⅱ": 3,
+      "汽车零部": 2,
+      "化学制药": 2,
+      "化学制品": 2,
+      "元件": 2,
+      "通信设备": 2,
+      "专用设备": 1,
+      "电视广播": 1,
+      "包装印刷": 1,
+      "通用设备": 1,
+      "工程咨询": 1,
+      "普钢": 1,
+      "软件开发": 1,
+      "休闲食品": 1,
+      "玻璃玻纤": 1,
+      "广告营销": 1,
+      "电网设备": 1,
+      "饮料乳品": 1,
+      "白酒Ⅱ": 1,
+      "塑料": 1,
+      "光学光电": 1
+    }
+  },
+  "indices": {
+    "ts": 1793607573,
+    "generated_at": "2026-11-02 16:19:33",
+    "indices": [
+      {
+        "code": "CN00Y",
+        "secid": "SGX:CN00Y",
+        "name": "A50期指",
+        "price": 12853.0,
+        "open": 12810.0,
+        "high": 13000.0,
+        "low": 12768.0,
+        "prev_close": 12809.0,
+        "change": 44.0,
+        "change_pct": 0.34,
+        "volume": 528874.0,
+        "open_interest": 1036786.0,
+        "kind": "futures"
+      }
+    ],
+    "errors": {
+      "CN1000": "ConnectionError: push2-gate push2delay.eastmoney.com: 非交易时段不打 push2 系",
+      "CN300": "ConnectionError: push2-gate push2delay.eastmoney.com: 非交易时段不打 push2 系"
+    }
+  },
+  "full_boards": []
+}
