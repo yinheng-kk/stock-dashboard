@@ -1,0 +1,426 @@
+{
+  "timestamp": "2026-11-03T16:07:38.844169",
+  "live": {
+    "ts": 1793693249,
+    "generated_at": "2026-11-03 16:07:29",
+    "date": "2026-11-03",
+    "market_status": "closed",
+    "count": 0,
+    "sources": {
+      "inflow": {
+        "n": 25,
+        "ok": true
+      },
+      "outflow": {
+        "n": 25,
+        "ok": true
+      },
+      "industry": {
+        "n": 15,
+        "ok": true
+      }
+    },
+    "sectors": []
+  },
+  "vanguard": null,
+  "yiziban": {
+    "ts": 1793693258,
+    "generated_at": "2026-11-03 16:07:38",
+    "date": "2026-11-03",
+    "yi_zi_total": 8,
+    "broken_total": 34,
+    "seal_prob": 19.0,
+    "yi_zi_list": [
+      {
+        "code": "002827",
+        "name": "高争民爆",
+        "change_pct": 10.0,
+        "seal_amount_yi": 5.5,
+        "sector": "化学制品",
+        "lianban": 2,
+        "first_seal_time": "092500"
+      },
+      {
+        "code": "600892",
+        "name": "大晟文化",
+        "change_pct": 10.07,
+        "seal_amount_yi": 2.49,
+        "sector": "游戏Ⅱ",
+        "lianban": 2,
+        "first_seal_time": "092500"
+      },
+      {
+        "code": "605577",
+        "name": "龙版传媒",
+        "change_pct": 10.0,
+        "seal_amount_yi": 1.58,
+        "sector": "出版",
+        "lianban": 2,
+        "first_seal_time": "092502"
+      },
+      {
+        "code": "601599",
+        "name": "浙文影业",
+        "change_pct": 10.09,
+        "seal_amount_yi": 1.56,
+        "sector": "纺织制造",
+        "lianban": 2,
+        "first_seal_time": "092500"
+      },
+      {
+        "code": "000995",
+        "name": "皇台酒业",
+        "change_pct": 10.0,
+        "seal_amount_yi": 1.38,
+        "sector": "白酒Ⅱ",
+        "lianban": 3,
+        "first_seal_time": "092500"
+      },
+      {
+        "code": "002692",
+        "name": "远程股份",
+        "change_pct": 10.0,
+        "seal_amount_yi": 0.36,
+        "sector": "电网设备",
+        "lianban": 1,
+        "first_seal_time": "093000"
+      },
+      {
+        "code": "605388",
+        "name": "均瑶健康",
+        "change_pct": 10.03,
+        "seal_amount_yi": 0.34,
+        "sector": "饮料乳品",
+        "lianban": 1,
+        "first_seal_time": "092501"
+      },
+      {
+        "code": "603289",
+        "name": "泰瑞机器",
+        "change_pct": 9.97,
+        "seal_amount_yi": 0.34,
+        "sector": "专用设备",
+        "lianban": 1,
+        "first_seal_time": "092501"
+      }
+    ],
+    "broken_list": [
+      {
+        "code": "603533",
+        "name": "掌阅科技",
+        "change_pct": 7.49,
+        "first_seal_time": "093032",
+        "broken_count": 10,
+        "sector": "数字媒体"
+      },
+      {
+        "code": "301311",
+        "name": "昆船智能",
+        "change_pct": 18.08,
+        "first_seal_time": "105130",
+        "broken_count": 5,
+        "sector": "通用设备"
+      },
+      {
+        "code": "002956",
+        "name": "西麦食品",
+        "change_pct": 2.22,
+        "first_seal_time": "131845",
+        "broken_count": 3,
+        "sector": "休闲食品"
+      },
+      {
+        "code": "002112",
+        "name": "三变科技",
+        "change_pct": 7.25,
+        "first_seal_time": "103727",
+        "broken_count": 3,
+        "sector": "电网设备"
+      },
+      {
+        "code": "600259",
+        "name": "中稀有色",
+        "change_pct": 7.21,
+        "first_seal_time": "102127",
+        "broken_count": 3,
+        "sector": "小金属"
+      },
+      {
+        "code": "300426",
+        "name": "华智数媒",
+        "change_pct": 16.28,
+        "first_seal_time": "101212",
+        "broken_count": 3,
+        "sector": "影视院线"
+      },
+      {
+        "code": "002811",
+        "name": "郑中设计",
+        "change_pct": 8.24,
+        "first_seal_time": "100642",
+        "broken_count": 3,
+        "sector": "装修装饰"
+      },
+      {
+        "code": "002172",
+        "name": "澳洋健康",
+        "change_pct": 4.62,
+        "first_seal_time": "093751",
+        "broken_count": 2,
+        "sector": "医疗服务"
+      },
+      {
+        "code": "000819",
+        "name": "岳阳兴长",
+        "change_pct": 3.57,
+        "first_seal_time": "095715",
+        "broken_count": 2,
+        "sector": "炼化及贸"
+      },
+      {
+        "code": "603382",
+        "name": "海阳科技",
+        "change_pct": 7.1,
+        "first_seal_time": "143749",
+        "broken_count": 2,
+        "sector": "化学纤维"
+      },
+      {
+        "code": "001328",
+        "name": "登康口腔",
+        "change_pct": 5.82,
+        "first_seal_time": "111812",
+        "broken_count": 2,
+        "sector": "个护用品"
+      },
+      {
+        "code": "002094",
+        "name": "青岛金王",
+        "change_pct": 0.42,
+        "first_seal_time": "093024",
+        "broken_count": 2,
+        "sector": "家居用品"
+      },
+      {
+        "code": "603330",
+        "name": "天洋新材",
+        "change_pct": 5.11,
+        "first_seal_time": "143055",
+        "broken_count": 2,
+        "sector": "塑料"
+      },
+      {
+        "code": "002047",
+        "name": "宝鹰股份",
+        "change_pct": 2.7,
+        "first_seal_time": "093227",
+        "broken_count": 2,
+        "sector": "装修装饰"
+      },
+      {
+        "code": "002190",
+        "name": "成飞集成",
+        "change_pct": 5.83,
+        "first_seal_time": "094006",
+        "broken_count": 2,
+        "sector": "汽车零部"
+      },
+      {
+        "code": "600278",
+        "name": "东方创业",
+        "change_pct": 5.45,
+        "first_seal_time": "100319",
+        "broken_count": 2,
+        "sector": "贸易Ⅱ"
+      },
+      {
+        "code": "603536",
+        "name": "惠发食品",
+        "change_pct": 2.34,
+        "first_seal_time": "095602",
+        "broken_count": 2,
+        "sector": "食品加工"
+      },
+      {
+        "code": "001396",
+        "name": "誉帆科技",
+        "change_pct": 4.92,
+        "first_seal_time": "111200",
+        "broken_count": 2,
+        "sector": "基础建设"
+      },
+      {
+        "code": "002915",
+        "name": "中欣氟材",
+        "change_pct": 5.31,
+        "first_seal_time": "094118",
+        "broken_count": 2,
+        "sector": "化学制品"
+      },
+      {
+        "code": "002651",
+        "name": "利君股份",
+        "change_pct": 4.32,
+        "first_seal_time": "094103",
+        "broken_count": 2,
+        "sector": "航空装备"
+      },
+      {
+        "code": "002343",
+        "name": "慈文传媒",
+        "change_pct": 5.6,
+        "first_seal_time": "094030",
+        "broken_count": 2,
+        "sector": "影视院线"
+      },
+      {
+        "code": "603628",
+        "name": "清源股份",
+        "change_pct": 3.74,
+        "first_seal_time": "094928",
+        "broken_count": 2,
+        "sector": "光伏设备"
+      },
+      {
+        "code": "002249",
+        "name": "大洋电机",
+        "change_pct": 6.93,
+        "first_seal_time": "142845",
+        "broken_count": 1,
+        "sector": "电机Ⅱ"
+      },
+      {
+        "code": "600506",
+        "name": "统一股份",
+        "change_pct": 2.74,
+        "first_seal_time": "131713",
+        "broken_count": 1,
+        "sector": "炼化及贸"
+      },
+      {
+        "code": "603567",
+        "name": "珍宝岛",
+        "change_pct": 5.6,
+        "first_seal_time": "130710",
+        "broken_count": 1,
+        "sector": "中药Ⅱ"
+      },
+      {
+        "code": "001230",
+        "name": "劲旅环境",
+        "change_pct": -9.52,
+        "first_seal_time": "092500",
+        "broken_count": 1,
+        "sector": "环境治理"
+      },
+      {
+        "code": "002535",
+        "name": "林州重机",
+        "change_pct": 3.61,
+        "first_seal_time": "103336",
+        "broken_count": 1,
+        "sector": "专用设备"
+      },
+      {
+        "code": "605318",
+        "name": "法狮龙",
+        "change_pct": 6.03,
+        "first_seal_time": "103151",
+        "broken_count": 1,
+        "sector": "装修建材"
+      },
+      {
+        "code": "300739",
+        "name": "明阳电路",
+        "change_pct": 12.46,
+        "first_seal_time": "100748",
+        "broken_count": 1,
+        "sector": "元件"
+      },
+      {
+        "code": "002949",
+        "name": "华阳国际",
+        "change_pct": 8.95,
+        "first_seal_time": "092500",
+        "broken_count": 1,
+        "sector": "工程咨询"
+      },
+      {
+        "code": "301487",
+        "name": "盟固利",
+        "change_pct": 13.51,
+        "first_seal_time": "095403",
+        "broken_count": 1,
+        "sector": "电池"
+      },
+      {
+        "code": "002425",
+        "name": "凯撒文化",
+        "change_pct": 6.35,
+        "first_seal_time": "093027",
+        "broken_count": 1,
+        "sector": "游戏Ⅱ"
+      },
+      {
+        "code": "600576",
+        "name": "祥源文旅",
+        "change_pct": -2.67,
+        "first_seal_time": "093011",
+        "broken_count": 1,
+        "sector": "旅游及景"
+      },
+      {
+        "code": "605058",
+        "name": "澳弘电子",
+        "change_pct": 6.35,
+        "first_seal_time": "143759",
+        "broken_count": 1,
+        "sector": "元件"
+      }
+    ],
+    "yi_zi_sectors": {
+      "化学制品": 1,
+      "游戏Ⅱ": 1,
+      "出版": 1,
+      "纺织制造": 1,
+      "白酒Ⅱ": 1,
+      "电网设备": 1,
+      "饮料乳品": 1,
+      "专用设备": 1
+    },
+    "broken_sectors": {
+      "影视院线": 2,
+      "装修装饰": 2,
+      "炼化及贸": 2,
+      "元件": 2,
+      "数字媒体": 1,
+      "通用设备": 1,
+      "休闲食品": 1,
+      "电网设备": 1,
+      "小金属": 1,
+      "医疗服务": 1,
+      "化学纤维": 1,
+      "个护用品": 1,
+      "家居用品": 1,
+      "塑料": 1,
+      "汽车零部": 1,
+      "贸易Ⅱ": 1,
+      "食品加工": 1,
+      "基础建设": 1,
+      "化学制品": 1,
+      "航空装备": 1,
+      "光伏设备": 1,
+      "电机Ⅱ": 1,
+      "中药Ⅱ": 1,
+      "环境治理": 1,
+      "专用设备": 1,
+      "装修建材": 1,
+      "工程咨询": 1,
+      "电池": 1,
+      "游戏Ⅱ": 1,
+      "旅游及景": 1
+    }
+  },
+  "indices": null,
+  "full_boards": []
+}
