@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<!-- 阿波罗看板 CORS 约定：sandbox（源=null）；本页所有数据已内嵌，无运行时跨域取数 -->
+<meta http-equiv="Content-Security-Policy" content="sandbox allow-scripts allow-popups allow-popups-to-escape-sandbox">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>先导基电 600641 · 阿波罗个股看板</title>
+<style>
+  :root{
+    --bg:#0d1117; --panel:#161b22; --panel2:#1c2230; --line:#293040;
+    --gold:#e8b84b; --gold2:#f5d27a; --txt:#e6edf3; --sub:#9aa7b8; --muted:#6b7689;
+    --up:#ff5b5b; --down:#2ecc71; --warn:#ffb454; --good:#5ad1a0; --bad:#ff6b6b;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{
+    background:radial-gradient(1200px 600px at 50% -200px,#1a2233 0%,var(--bg) 60%);
+    color:var(--txt);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Microsoft YaHei",Segoe UI,sans-serif;
+    line-height:1.7; font-size:15px; padding:0 0 60px;
+  }
+  .wrap{max-width:860px;margin:0 auto;padding:0 16px}
+  header.hero{
+    text-align:center;padding:38px 16px 26px;
+    border-bottom:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(232,184,75,.06),transparent);
+  }
+  .brand{letter-spacing:.5em;color:var(--gold);font-size:13px;margin-bottom:10px}
+  h1{font-size:27px;font-weight:700;letter-spacing:.04em}
+  h1 .code{color:var(--gold);font-size:18px;font-weight:500;margin-left:8px}
+  .meta{color:var(--sub);font-size:13px;margin-top:12px}
+  .pricebar{
+    display:flex;justify-content:center;gap:26px;flex-wrap:wrap;
+    margin-top:18px;padding:14px;border:1px solid var(--line);border-radius:12px;
+    background:var(--panel);max-width:620px;margin-left:auto;margin-right:auto;
+  }
+  .pricebar .item{text-align:center}
+  .pricebar .lbl{font-size:11px;color:var(--muted)}
+  .pricebar .val{font-size:20px;font-weight:700;margin-top:2px}
+  .caveat{
+    margin:22px 0;padding:14px 16px;border-radius:10px;
+    background:rgba(255,180,84,.08);border:1px solid rgba(255,180,84,.3);
+    font-size:13px;color:#ffd9a3;
+  }
+  .caveat b{color:var(--warn)}
+  section.card{
+    background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:18px 20px;margin:16px 0;
+  }
+  .sec-h{display:flex;align-items:center;gap:10px;margin-bottom:10px}
+  .sec-n{
+    min-width:30px;height:30px;border-radius:8px;display:grid;place-items:center;
+    background:linear-gradient(135deg,var(--gold),#b8862f);color:#1a1205;font-weight:800;font-size:15px;
+  }
+  .sec-t{font-size:17px;font-weight:700}
+  .sec-tag{margin-left:auto;font-size:11px;color:var(--muted);border:1px solid var(--line);padding:2px 8px;border-radius:20px}
+  section.card p{color:var(--txt);margin:6px 0}
+  section.card ul{margin:6px 0 6px 4px;list-style:none}
+  section.card li{padding:3px 0 3px 16px;position:relative;color:var(--sub)}
+  section.card li::before{content:"›";position:absolute;left:0;color:var(--gold)}
+  b.hl{color:var(--gold2)}
+  .x{color:var(--bad)} .ok{color:var(--good)}
+  .tw{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;margin:10px 0;font-size:13px}
+  th,td{padding:9px 8px;text-align:center;border-bottom:1px solid var(--line);white-space:nowrap}
+  th{color:var(--gold);font-weight:600;background:rgba(232,184,75,.05)}
+  td.l,th.l{text-align:left}
+  tr.self td{background:rgba(232,184,75,.09);font-weight:600}
+  .pos{color:var(--up)} .negc{color:var(--down)}
+  .logic td{white-space:normal}
+  .logic th{background:rgba(46,204,113,.06)}
+  .logic .good-col{color:var(--good)} .logic .bad-col{color:var(--bad)}
+  .strategy{background:linear-gradient(180deg,rgba(232,184,75,.07),var(--panel))}
+  .lvl{display:flex;gap:10px;flex-wrap:wrap;margin-top:10px}
+  .lvl .chip{flex:1;min-width:130px;text-align:center;padding:12px;border-radius:10px;border:1px solid var(--line);background:var(--panel2)}
+  .lvl .chip .k{font-size:11px;color:var(--muted)}
+  .lvl .chip .v{font-size:17px;font-weight:700;margin-top:3px}
+  .chip.res .v{color:var(--up)} .chip.sup .v{color:var(--down)} .chip.stop .v{color:var(--warn)}
+  .takeaway{border-left:3px solid var(--gold);padding:8px 14px;margin:12px 0;color:var(--gold2);background:rgba(232,184,75,.04)}
+  footer{margin-top:26px;padding:18px;text-align:center;color:var(--muted);font-size:12px;border-top:1px solid var(--line)}
+  .small{font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<header class="hero">
+  <div class="brand">阿 波 罗 · 个 股 看 板</div>
+  <h1>先导基电<span class="code">600641</span></h1>
+  <div class="meta">数据截至 2026-11-05（周四）收盘 ｜ 原名「万业企业」(2025-11-12 更名) ｜ 离子注入机 + 铋系新材料 + 精密零部件 ｜ 总股本≈9.48亿 ｜ 总市值 294.1亿</div>
+  <div class="pricebar">
+    <div class="item"><div class="lbl">分析基准价(11-05收·涨停)</div><div class="val pos">￥31.02 <span style="font-size:13px">+10.00%</span></div></div>
+    <div class="item"><div class="lbl">PE-TTM / PB</div><div class="val"><span class="x">亏损</span> / 3.49</div></div>
+    <div class="item"><div class="lbl">综合研判</div><div class="val" style="color:var(--warn);font-size:16px">超跌两连板·反抽性质<br>估值无业绩托底·不追</div></div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="caveat">
+    <b>⚠ 数据口径先说清：</b>
+    ① 行情/估值/资金/筹码均为 <b>2026-11-05 收盘</b>（腾讯行情 + 东财直连）；财务为 <b>2026Q3 季报</b>（10-29 晚披露）；
+    ② <b>PE-TTM 接口值为 −205.2（TTM 归母净利为负）</b>，静态 PE −232.3（2025 年亏损），即<b>当前没有正的市盈率</b>；网传「PE 数百倍」实为按券商 2026 年盈利预测算的<b>动态 PE</b>（见④）；PE 历史分位因亏损无法计算，<b>不写</b>；
+    ③ 北向日度数据自 2024-08 起停更，北向口径改用十大股东「香港中央结算」季度变动；
+    ④ 个股新闻接口报错（ArrowInvalid），催化剂改用证券时报/东财/证券之星公开报道与研报交叉；
+    ⑤ 财务接口不给毛利率，文中毛利率由利润表「营收−营业成本」自算，单季由累计值相减；
+    ⑥ 铋<b>无国内上市期货</b>，第⑤段用现货报价替代；2025 年「铋材料占营收约 71%」仅来自自媒体转引年报，<b>未取到年报原文核实</b>。
+  </div>
+
+  <!-- 置顶：同行横向对比 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">★</div><div class="sec-t">同行横向对比（置顶）</div><div class="sec-tag">半导体设备 / 材料零部件</div></div>
+    <p class="small">数据：腾讯行情(11-05收) + 东财估值 + 东财主力资金(10-30~11-05 五个交易日) + 新浪 2026Q3 财务指标。选股逻辑：北方华创/中微公司=国产前道设备龙头；华海清科=CMP 龙头且布局离子注入机（与凯世通直接同赛道）；江丰电子=半导体靶材+精密零部件（对应公司「材料+零部件」两条线）。</p>
+    <div class="tw">
+    <table>
+      <thead>
+        <tr>
+          <th class="l">公司</th><th>价</th><th>涨幅</th><th>PE-TTM</th><th>PB</th><th>换手</th><th>成交额</th><th>市值</th><th>5日主力</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="self">
+          <td class="l">先导基电 600641</td><td>31.02</td><td class="pos">+10.00%</td><td class="x">亏损(−205)</td><td>3.49</td><td>2.32%</td><td>6.57亿</td><td>294亿</td><td class="pos">+1.57亿</td>
+        </tr>
+        <tr>
+          <td class="l">北方华创 002371</td><td>561.01</td><td class="pos">+4.76%</td><td>70.6</td><td>9.54</td><td>2.53%</td><td>104.0亿</td><td>4084亿</td><td class="pos">+18.15亿</td>
+        </tr>
+        <tr>
+          <td class="l">中微公司 688012</td><td>254.00</td><td class="pos">+5.83%</td><td>48.3</td><td>7.75</td><td>5.11%</td><td>121.0亿</td><td>2433亿</td><td class="pos">+30.82亿</td>
+        </tr>
+        <tr>
+          <td class="l">华海清科 688120</td><td>200.84</td><td class="pos">+2.48%</td><td>79.5</td><td>6.45*</td><td>4.52%</td><td>45.2亿</td><td>1029亿</td><td class="pos">+6.47亿</td>
+        </tr>
+        <tr>
+          <td class="l">江丰电子 300666</td><td>195.40</td><td class="pos">+5.32%</td><td>59.3</td><td>7.11</td><td>12.90%</td><td>55.6亿</td><td>539亿</td><td class="pos">+8.41亿</td>
+        </tr>
+      </tbody>
+    </table>
+    </div>
+    <p class="small">* 华海清科 PB：腾讯口径 6.45，东财口径 8.45，两源不一致，如实并列。</p>
+    <div class="tw">
+    <table>
+      <thead><tr><th class="l">补充维度(2026Q3)</th><th>先导基电</th><th>北方华创</th><th>中微公司</th><th>华海清科</th><th>江丰电子</th></tr></thead>
+      <tbody>
+        <tr><td class="l">PE 近3年分位</td><td class="small">亏损·无法计算</td><td>84.8%</td><td class="ok">4.7%</td><td>85.1%</td><td>64.5%</td></tr>
+        <tr><td class="l">PB 近3年分位</td><td class="x"><b>89.7%</b></td><td>82.1%</td><td>66.0%</td><td>78.9%</td><td>79.6%</td></tr>
+        <tr><td class="l">前三季营收增速</td><td class="pos"><b>+66.8%</b></td><td>+15.3%</td><td>+28.1%</td><td>+31.0%</td><td>+35.7%</td></tr>
+        <tr><td class="l">前三季净利增速</td><td class="x">−89.5%</td><td>+4.3%</td><td class="pos">+245.3%</td><td>+26.6%</td><td>+96.2%</td></tr>
+        <tr><td class="l">销售净利率</td><td class="x">−5.57%</td><td>16.51%</td><td class="ok">39.49%</td><td>23.96%</td><td>15.88%</td></tr>
+        <tr><td class="l">加权ROE(前三季)</td><td class="x">0.02%</td><td>13.43%</td><td class="ok">16.41%</td><td>12.62%</td><td>11.51%</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="takeaway">
+      <b>相对位置：</b>① <b class="hl">体量最小、弹性最大</b>——市值 294 亿仅为北方华创的 1/14，今日板块普涨 2.5%~5.8%，它直接涨停，属于板块里的<b>高 Beta 跟涨品种</b>；
+      ② <b class="hl">营收增速第一，但盈利能力垫底</b>——前三季营收 +66.8% 五家最快，可净利率 −5.6%、ROE≈0，是全组<b>唯一不赚钱</b>的公司；同行 PE 48~80 倍都有真实利润支撑，它的估值只能靠「预期」撑；
+      ③ <b class="hl">资金面同向但量级小</b>——5日主力 +1.57 亿全组最少（中微 +30.8 亿、北方 +18.2 亿），说明这轮半导体资金回流的主战场在龙头，先导是溢出受益者；
+      ④ PB 3.49 绝对值全组最低，但处自身近3年 <b>89.7% 分位</b>——便宜是相对龙头而言，相对自己的历史并不便宜。
+      <br><b style="color:var(--gold)">结论：</b>在同组中处于「<b class="hl">小市值题材弹性位</b>」：涨跌都比龙头猛，基本面质量最弱；适合做板块情绪的交易仓，不适合当半导体设备的底仓。
+    </div>
+  </section>
+
+  <!-- ① 基本面 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">①</div><div class="sec-t">基本面</div><div class="sec-tag">增收不增利·转型投入期</div></div>
+    <p><b class="hl">业务结构（已核实最新口径）：</b>2024-11-28 先导科技集团（经先导汇芯）成为控股股东；2025-10 工商更名、2025-11-12 证券简称改「先导基电」，战略定位「半导体装备 + 新材料 + 精密零部件」平台。</p>
+    <ul>
+      <li><b class="hl">新材料</b>：铋化合物精深加工（子公司安徽万导），用于半导体、TEC 热电制冷、新能源、医药——目前是<b>营收大头</b>（自媒体转引 2025 年报约 71%，未核原文）</li>
+      <li><b class="hl">半导体装备</b>：凯世通离子注入机（低能大束流/中束流/高能/超低温）。截至 2026Q3：与 8 家客户新签订单，<b>新增近 30 台、累计超 90 台、客户 19 家</b>（公司口径，证券时报 10-29）</li>
+      <li><b class="hl">精密零部件 / 电子材料</b>：增资控股「先导微电子」，切入前驱体、电子特气、电子级高纯金属、化合物半导体衬底；合资「元朔基电」布局 SOFC 固态燃料电池核心部件</li>
+      <li>房地产存量业务仍在收尾（申万行业分类此前仍挂房地产，当前分类未取到）</li>
+    </ul>
+    <div class="tw">
+    <table>
+      <thead><tr><th class="l">2026 财务（亿元）</th><th>Q1</th><th>H1</th><th>前三季</th><th>Q3 单季</th></tr></thead>
+      <tbody>
+        <tr><td class="l">营业收入</td><td>5.35</td><td>11.47</td><td><b>17.82 (+66.8%)</b></td><td>6.35 (+71.9%)</td></tr>
+        <tr><td class="l">归母净利润</td><td class="x">−0.17</td><td class="pos">≈+2.1</td><td>0.0196 (−89.5%)</td><td class="x"><b>−2.08</b></td></tr>
+        <tr><td class="l">扣非净利润</td><td class="x">−0.18</td><td class="x">−1.12</td><td class="x">−1.50</td><td class="x">≈−0.38</td></tr>
+        <tr><td class="l">毛利率(自算)</td><td>18.5%</td><td>20.0%</td><td>17.7%</td><td class="x">13.4%</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <ul>
+      <li>H1 归母为正而扣非 −1.12 亿 → H1 含约 3 亿级<b>非经常性收益</b>（具体项目未取到）；Q3 单季归母 −2.08 亿，前三季利润几乎被吃光</li>
+      <li>公司口径：剔除股份支付费用后前三季归母 <b>1.196 亿</b>——股权激励费用约 1.2 亿是账面亏损主因之一，但扣非为负说明主业本身也未盈利</li>
+      <li><b class="x">现金流与存货是硬伤</b>：每股经营现金流 −1.23 元（≈ −11.7 亿），存货同比 +37.7%、存货/营收约 314%（证券之星）；资产负债率 31.2%(Q1) → <b>39.4%</b>(Q3)，负债/权益 47% → 65%</li>
+    </ul>
+    <p>本质：<b class="hl">规模在快速长，利润和现金还没跟上</b>——铋材料备货吃掉大量营运资金，离子注入机订单尚未大规模转化为利润。</p>
+  </section>
+
+  <!-- ② 资金面 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">②</div><div class="sec-t">资金面</div><div class="sec-tag">杀跌后主力两日抄底</div></div>
+    <div class="tw">
+    <table>
+      <thead><tr><th class="l">日期</th><th>收盘</th><th>涨跌</th><th>主力净流入</th><th>主力净占比</th></tr></thead>
+      <tbody>
+        <tr><td class="l">10-27</td><td>34.25</td><td class="pos">+0.62%</td><td class="pos">+3.18亿</td><td>11.5%</td></tr>
+        <tr><td class="l">10-28</td><td>35.20</td><td class="pos">+2.77%</td><td class="pos">+1.78亿</td><td>6.4%</td></tr>
+        <tr><td class="l">10-29（季报夜）</td><td>31.68</td><td class="negc">−10.00%</td><td class="negc">−1.29亿</td><td>−5.8%</td></tr>
+        <tr><td class="l">10-30</td><td>28.73</td><td class="negc">−9.31%</td><td class="negc">−0.45亿</td><td>−1.9%</td></tr>
+        <tr><td class="l">11-02</td><td>28.47</td><td class="negc">−0.90%</td><td class="negc">−0.16亿</td><td>−0.8%</td></tr>
+        <tr><td class="l">11-03</td><td>25.64</td><td class="negc">−9.94%</td><td class="negc">−1.99亿</td><td>−11.3%</td></tr>
+        <tr><td class="l">11-04</td><td>28.20</td><td class="pos">+9.98%</td><td class="pos">+2.18亿</td><td>12.3%</td></tr>
+        <tr><td class="l"><b>11-05</b></td><td><b>31.02</b></td><td class="pos"><b>+10.00%</b></td><td class="pos"><b>+1.99亿</b></td><td><b>30.3%</b></td></tr>
+      </tbody>
+    </table>
+    </div>
+    <ul>
+      <li>5日（10-30~11-05）主力合计 <b class="pos">+1.57 亿</b>；季报后 10-29~11-03 四个交易日主力流出合计约 −3.9 亿，两连板流入 +4.2 亿，<b class="hl">已基本回补</b></li>
+      <li>11-05 封死涨停特征：换手仅 2.32%（前几日 7%~8.7%）、成交 6.57 亿、主力净占比 30%——<b class="hl">缩量封板，惜售明显</b>，次日大概率仍有惯性</li>
+      <li>北向：日度数据停更；季度口径见③（香港中央结算 Q3 大幅加仓）</li>
+    </ul>
+  </section>
+
+  <!-- ③ 股东结构 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">③</div><div class="sec-t">股东结构</div><div class="sec-tag">外资Q3集体进场·老股东减持</div></div>
+    <ul>
+      <li>控股 <b>先导汇芯(上海)科技投资 23.82%</b>（不变）——实控为先导科技集团</li>
+      <li><span class="x">❌ 原控股方 三林万业(上海)企业集团 4.33%，Q3 减持 438 万股（−9.6%）</span>——老股东持续退出，是潜在供给</li>
+      <li><span class="ok">✅ 香港中央结算 4.82%，Q3 +1605 万股（+54%）</span>；高盛国际 2.06%（+97%）；UBS +70%；国泰君安国际专户 +88%</li>
+      <li><span class="ok">✅ 新进：摩根士丹利 0.94%、巴克莱 0.73%、摩根大通 0.56%</span>——外资/QFII 自营盘在 Q3（股价 35~52 区间）集中买入</li>
+      <li>2026 年员工持股计划 1.83%（+156.5 万股）；Q2~Q3 股权激励行权致总股本 9.31 亿 → 9.48 亿</li>
+    </ul>
+    <p><b class="hl">股东户数：</b>3-31 6.85 万 → <b>6-30 9.73 万（+42%）</b> → 9-30 8.87 万（−8.9%）。Q2 股价翻倍时散户大举涌入，Q3 有所撤出、户均持股市值升至 51.9 万。</p>
+    <p class="small">注意：外资（尤其投行自营 / 衍生品对冲账户）进出速度快，Q3 买入成本远高于现价，Q4 是否继续持有<b>未取到</b>（需等年报）。</p>
+  </section>
+
+  <!-- ④ 估值 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">④</div><div class="sec-t">估值</div><div class="sec-tag">无利润托底·PB 近90分位</div></div>
+    <ul>
+      <li><b class="x">PE-TTM −205.2 / 静态 PE −232.3</b>（接口值，均为负）——TTM 归母净利约 −1.4 亿（2025Q4 单季约 −1.46 亿 + 2026 前三季 +0.02 亿），<b>市盈率不适用</b></li>
+      <li><b class="hl">「数百倍」的真实含义 = 预测 PE</b>：研报 2026E EPS 0.11（华鑫）~0.16（中邮）→ 按 31.02 计 <b>194~282 倍</b>；一致预期 2026 净利 1.28 亿 → 约 <b>230 倍</b>；2027E EPS 0.23~0.31 → 仍有 <b>100~135 倍</b></li>
+      <li>PB <b class="hl">3.49</b>（每股净资产 8.89），近3年分位 <b class="x">89.7%</b>、全历史 91.6%</li>
+      <li>市销率（自算）：TTM 营收约 25.7 亿 → PS 约 <b>11.5 倍</b>，而营收主体是毛利率不到 20% 的铋材料</li>
+    </ul>
+    <p><b style="color:var(--warn)">⚠ 风险如实说：</b>同行 PE 48~80 倍都对应 12%~16% 的 ROE；先导 ROE≈0，<b class="hl">294 亿市值几乎全部是「离子注入机国产替代 + 集团资产注入」的预期定价</b>。即使从 52.58 腰斩到 31，估值依然没有业绩安全垫，若 2026 年报 / 2027Q1 利润继续不达预期，PB 向 2~2.5 倍回归（对应 18~22 元）的风险真实存在。</p>
+  </section>
+
+  <!-- ⑤ 期货关联 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑤</div><div class="sec-t">期货 / 商品关联</div><div class="sec-tag">铋价企稳·无期货</div></div>
+    <ul>
+      <li><b>铋无国内上市期货</b>，只能看现货：精铋(≥99.99%) <b class="hl">11-04 报 125,000 元/吨</b>，近一周 +4,000（同花顺 iFinD）</li>
+      <li>Mysteel 铋锭：10-08 132,000 → 10-16 124,000 → 10-23 起持平 122,000 元/吨——<b>10 月下跌约 7.6%，11 月初小幅反弹</b></li>
+      <li>关联逻辑：铋材料是营收主体，铋价↑ = 收入与存货价值↑；但公司存货/营收高达约 314%，<b class="hl">铋价下跌会直接带来存货减值压力</b>，这是双刃剑</li>
+      <li>股价真正的「期货锚」更接近<b>半导体设备板块情绪</b>：11-05 北方华创 +4.8%、中微 +5.8%、江丰 +5.3%，中信证券研报称 AI 驱动全球扩产打开设备需求空间</li>
+    </ul>
+  </section>
+
+  <!-- ⑥ 技术面 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑥</div><div class="sec-t">技术面</div><div class="sec-tag">空头排列中的超跌反抽</div></div>
+    <ul>
+      <li>均线：MA5 28.41 ｜ <b>MA10 31.27</b> ｜ MA20 36.17 ｜ MA60 35.76 ｜ MA120 34.02 ｜ MA250 26.38——现价刚站上 MA5、<b>卡在 MA10 下方</b>，MA20/60 在 36 附近形成压力带</li>
+      <li>MACD：DIF −2.847 &lt; DEA −1.732，柱 −2.23，<b class="negc">零轴下死叉未修复</b>；RSI14 <b>30.9</b>（刚脱离超卖区）</li>
+      <li>区间：60日高 52.58 → 11-03 低 25.62，<b>最大回撤约 51%</b>；20日 −31.6%，5日 −2.1%，60日 +16.7%，250日 +57.4%</li>
+      <li>筹码（东财）：平均成本 <b class="hl">36.07</b>，获利盘仅 <b>31.1%</b>；70% 筹码区 28.2~44.96，90% 区 26.7~49.62（集中度 30%，分散）——<b>近七成筹码套牢在现价上方</b></li>
+      <li>量能：5日/20日均量比 0.96；11-05 缩量封板</li>
+    </ul>
+    <p><b class="hl">结论：</b>年线 26.38 + 60日低点 25.62 构成「双底支撑」，两连板是对季报杀跌的超跌修复；但 34~36 是季报缺口（10-29 开盘 34.6）+ MA20/MA60 + 平均成本三重叠压区，<b>反抽到那里抛压会很重</b>。</p>
+  </section>
+
+  <!-- ⑦ 催化剂 -->
+  <section class="card">
+    <div class="sec-h"><div class="sec-n">⑦</div><div class="sec-t">催化剂</div><div class="sec-tag">订单兑现 vs 利润兑现</div></div>
+    <ul>
+      <li><span class="ok">正向</span>：凯世通离子注入机订单（累计超 90 台、客户 19 家）进入确收期；面向先进制程的低能大束流机型客户验证进展（自媒体口径，未核实）</li>
+      <li><span class="ok">正向</span>：先导微电子并表 → 前驱体 / 电子特气 / 高纯金属 / 化合物衬底，集团半导体资产持续向上市公司归集的预期</li>
+      <li><span class="ok">正向</span>：AI 驱动全球晶圆扩产 + 国产替代，半导体设备板块 β（中信证券 11-05 观点）</li>
+      <li><span class="ok">正向</span>：铋出口管制背景下的资源稀缺性；SOFC 新赛道题材</li>
+      <li><span class="x">负向</span>：Q4 若继续计提股份支付 + 存货跌价，全年可能再亏；老股东三林万业持续减持</li>
+      <li><span class="x">负向</span>：关联方（先导集团）资产注入涉及关联交易定价，需看估值公允性</li>
+      <li><b>时间点</b>：2026 年报预告（通常 2027-01 下旬）、年报（2027-04）是利润兑现的第一个硬验证窗口</li>
+    </ul>
+    <p class="small">研报：华鑫 9-24「买入」、中邮 9-07「买入」、东吴 4-16「增持」；一年内券商对 2026E EPS 的预测已从 0.35（2025-09 东吴）下调至 0.11~0.16——<b>盈利预期在持续下修</b>。</p>
+  </section>
+
+  <!-- ⑧ 矛盾逻辑链 -->
+  <section class="card logic">
+    <div class="sec-h"><div class="sec-n">⑧</div><div class="sec-t">⚖ 矛盾链 —— 一只「订单在长、利润在缩」的预期股</div></div>
+    <div class="tw">
+    <table>
+      <thead><tr><th class="l good-col">利好</th><th class="l bad-col">利空 / 风险</th></tr></thead>
+      <tbody>
+        <tr><td class="l">营收 +66.8%，同行最快；离子注入机累计订单超 90 台</td><td class="l">扣非连续为负，Q3 单季亏 2.08 亿；毛利率 Q3 降到 13.4%</td></tr>
+        <tr><td class="l">剔除股份支付后前三季净利 1.2 亿</td><td class="l">股份支付是真实成本；剔除后仍对应约 180 倍以上 PE</td></tr>
+        <tr><td class="l">Q3 外资集中进场（港股通+54%、高盛/大摩/小摩/巴克莱）</td><td class="l">原控股方三林万业 Q3 继续减持；外资自营盘流动性快</td></tr>
+        <tr><td class="l">季报后杀跌 51% → 年线支撑 + 两连板，主力流入回补</td><td class="l">近七成筹码套牢在上方，平均成本 36.07，34~36 抛压带</td></tr>
+        <tr><td class="l">集团资产注入、平台化扩张故事</td><td class="l">经营现金流 −11.7 亿、存货/营收 314%、负债率升至 39%</td></tr>
+        <tr><td class="l">PB 3.49 在同组最低</td><td class="l">PB 自身近3年 89.7% 分位；预测 PE 194~282 倍，券商预期持续下修</td></tr>
+      </tbody>
+    </table>
+    </div>
+    <div class="takeaway"><b>本质矛盾：</b>市场按「国产离子注入机龙头 + 先导集团半导体平台」给 294 亿估值 ↔ 报表上是一家毛利率不足 20%、现金流大幅流出、靠铋材料撑营收的亏损公司。<b>价格由情绪和预期决定，报表暂时给不了任何下方保护。</b></div>
+  </section>
+
+  <!-- ⑨ 操作策略 -->
+  <section class="card strategy">
+    <div class="sec-h"><div class="sec-n">⑨</div><div class="sec-t">🎯 操作策略（基准价 ￥31.02，11-05 涨停收盘）</div></div>
+    <ul>
+      <li><b class="hl">不追涨停：</b>两连板属超跌反抽，缩量封板次日或有惯性高开，但追高的盈亏比差（上方 34~36 是抛压带）。</li>
+      <li><b class="hl">已持仓：</b>利用反抽分批止盈，不在 34 以上新加仓；收盘跌破止损线严格执行。</li>
+      <li><b class="hl">未持仓：</b>只考虑两种情形——(a) 回踩 28.2~29.5（11-04 涨停价/11-05 跳空缺口）缩量企稳，轻仓（≤1 成）试错；(b) 放量站稳 36.2（MA20+平均成本）后再跟，确认反转。</li>
+      <li><b class="hl">中期（1~2 季）：</b>胜负手是 2026 年报能否扣非转正、经营现金流是否收窄；若继续亏损，估值回归（PB 2~2.5 倍 ≈ 18~22 元）风险大于收益。</li>
+    </ul>
+    <div class="lvl">
+      <div class="chip res"><div class="k">止盈①（缺口下沿）</div><div class="v">34.2 ~ 35.2</div></div>
+      <div class="chip res"><div class="k">止盈②（MA20/成本区）</div><div class="v">35.8 ~ 36.2</div></div>
+      <div class="chip res"><div class="k">止盈③（10月平台）</div><div class="v">39.0 ~ 39.8</div></div>
+    </div>
+    <div class="lvl">
+      <div class="chip sup"><div class="k">支撑</div><div class="v">28.2 / 26.4 / 25.6</div></div>
+      <div class="chip stop"><div class="k">止损①</div><div class="v">收盘破 28.2 减半</div></div>
+      <div class="chip stop"><div class="k">止损②</div><div class="v">破 25.6 全部离场</div></div>
+    </div>
+    <p class="small" style="margin-top:10px">价位依据：34.25/35.20 为 10-27/10-28 收盘、34.6 为 10-29 季报日开盘；36.07 为东财平均成本、36.17 为 MA20；39.10 为 10-21 收盘、39.76 为 9-21 收盘；28.2 为 11-04 涨停价兼 70% 筹码下沿；26.38 为 MA250；25.62 为 60 日低点。</p>
+  </section>
+
+  <footer>
+    以上基于公开行情 / 公告 / 研报 / 现货报价的客观梳理，<b>非投资建议，市场有风险</b>。<br>
+    数据缺口（个股新闻、北向日度、PE 历史分位、2025 年报业务拆分原文、申万最新行业分类）已如实标注。同业对比为 2026Q3 口径，行情估值截至 2026-11-05 收盘。<br>
+    <span class="small">阿波罗框架 · 生成于 2026-11-05</span>
+  </footer>
+
+</div>
+</body>
+</html>
